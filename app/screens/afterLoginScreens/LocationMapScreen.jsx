@@ -6,6 +6,8 @@ import { TouchableOpacity, Text } from 'react-native';
 
 const LocationMapScreen = ({ route, navigation }) => {
     const { currentLocationCoords, destinationCoords, destination } = route.params;
+    console.log("current location", currentLocationCoords);
+    console.log("destination", destinationCoords);
 
     const [markerCoords, setMarkerCoords] = useState(currentLocationCoords); 
     const [currentLocationText, setCurrentLocationText] = useState(`${currentLocationCoords.latitude}, ${currentLocationCoords.longitude}`);

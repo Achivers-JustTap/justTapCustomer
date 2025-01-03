@@ -1,186 +1,108 @@
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import * as Location from 'expo-location'; 
-import Icon from 'react-native-vector-icons/Ionicons';
+// Import necessary modules
+import React, { useState } from 'react';
+import { View, TextInput, Button, StyleSheet, FlatList, Text, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
-const EnterLocation = ({ route, navigation }) => {
-    const { currentLocation } = route.params;
-    const [currentLocationText, setCurrentLocationText] = useState(currentLocation);
-    const [destination, setDestination] = useState('');
-    const [currentLocationCoords, setCurrentLocationCoords] = useState(null);
+const EnterLocation = ({ navigation }) => {
+  const [pickup, setPickup] = useState('');
+  const [destination, setDestination] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [isPickupFocused, setIsPickupFocused] = useState(true);
 
-    useEffect(() => {
-        navigation.setOptions({ headerShown: false });
-    }, [navigation]);
+  const handleInputChange = async (input) => {
+    try {
+      const response = await axios.get(`http://192.168.0.105:5000/api/maps/get-suggestions?input=${input}`);
+      setSuggestions(response.data.suggestions);
+    } catch (error) {
+      console.error('Error fetching suggestions:', error);
+    }
+  };
 
+  const handleSelectSuggestion = (address) => {
+    if (isPickupFocused) {
+      setPickup(address);
+    } else {
+      setDestination(address);
+    }
+    setSuggestions([]); // Clear suggestions after selection
+  };
 
-    const getCurrentLocationCoordinates = async (locationInput) => {
-        try {
-            const searchResults = await Location.geocodeAsync(locationInput);
-            if (searchResults.length === 0) {
-                Alert.alert('Current location not found');
-                return null;
-            }
-            return searchResults[0]; 
-        } catch (error) {
-            Alert.alert('Error fetching current location');
-            return null;
-        }
-    };
+  const handleConfirm = async () => {
+    try {
+      const pickupResponse = await axios.get(`http://192.168.0.105:5000/api/maps/get-coordinates?address=${pickup}`);
+      const destinationResponse = await axios.get(`http://192.168.0.105:5000/api/maps/get-coordinates?address=${destination}`);
 
+      const coordinates = {
+        pickupCoordinates: pickupResponse.data.coordinates,
+        destinationCoordinates: destinationResponse.data.coordinates,
+      };
 
-    const getDestinationCoordinates = async (destination) => {
-        try {
-            const searchResults = await Location.geocodeAsync(destination);
-            if (searchResults.length === 0) {
-                Alert.alert('Location not found');
-                return null;
-            }
-            return searchResults[0]; 
-        } catch (error) {
-            Alert.alert('Error fetching location');
-            return null;
-        }
-    };
+      navigation.navigate('LocationMapScreen', { coordinates });
+    } catch (error) {
+      console.error('Error fetching coordinates:', error);
+    }
+  };
 
-    const handleConfirm = async () => {
-        if (currentLocationText.trim() === '') {
-            Alert.alert('Please enter a current location');
-            return;
-        }
-    
-        const locationCoords = await getCurrentLocationCoordinates(currentLocationText);
-        if (!locationCoords) return; 
-    
-        setCurrentLocationCoords(locationCoords);
-        
-        if (destination.trim() === '') {
-            Alert.alert('Please enter a destination');
-            return;
-        }
-    
-        const destinationCoords = await getDestinationCoordinates(destination);
-        if (destinationCoords) {
-            navigation.navigate('LocationMapScreen', {
-                currentLocationCoords: { latitude: locationCoords.latitude, longitude: locationCoords.longitude },
-                destinationCoords: { latitude: destinationCoords.latitude, longitude: destinationCoords.longitude },
-                destination: destination,
-                currentLocationText: currentLocationText,
-                destinationText: destination,
-            });
-        }
-    };
-    
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
-                    <Icon name="arrow-back" size={24} color="white" />
-                </TouchableOpacity>
-            </View>
+  return (
+    <View style={styles.container}>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter pickup location"
+        value={pickup}
+        onFocus={() => setIsPickupFocused(true)}
+        onChangeText={(text) => {
+          setPickup(text);
+          handleInputChange(text);
+        }}
+      />
 
-            <View style={styles.inputContainer}>
-                <TouchableOpacity style={styles.searchBackground}>
-                    <TextInput
-                        style={styles.currentLocation}
-                        placeholder="Your Current Location"
-                        placeholderTextColor="white"
-                        value={currentLocationText}
-                        onChangeText={setCurrentLocationText}
-                    />
-                </TouchableOpacity>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter destination"
+        value={destination}
+        onFocus={() => setIsPickupFocused(false)}
+        onChangeText={(text) => {
+          setDestination(text);
+          handleInputChange(text);
+        }}
+      />
 
-                <TouchableOpacity style={[styles.searchBackground, { marginTop: 5 }]}>
-                    <TextInput
-                        style={styles.destination}
-                        placeholder="Enter Destination"
-                        placeholderTextColor="white"
-                        value={destination}
-                        onChangeText={setDestination}
-                    />
-                </TouchableOpacity>
-            </View>
-
-            <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
-                <Text style={styles.confirmButtonText}> Confirm </Text>
+      {suggestions.length > 0 && (
+        <FlatList
+          data={suggestions}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity onPress={() => handleSelectSuggestion(item)}>
+              <Text style={styles.suggestion}>{item}</Text>
             </TouchableOpacity>
-        </SafeAreaView>
-    );
+          )}
+        />
+      )}
+
+      <Button title="Confirm" onPress={handleConfirm} color="#0F4A97" />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        paddingTop: 50,
-        marginTop: 30,
-        backgroundColor: 'white',
-    },
-    header: {
-        position: 'absolute',
-        top: 20,
-        left: 10,
-        zIndex: 10,
-    },
-    backButton: {
-        backgroundColor: '#0F4A97',
-        padding: 10,
-        borderRadius: 5,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    inputContainer: {
-        flex: 1, 
-        justifyContent: 'flex-start', 
-        alignItems: 'center', 
-        paddingTop: 40, 
-    },
-    searchBackground: {
-        backgroundColor: 'white',
-        borderColor: '#0F4A97',
-        borderWidth: 3,
-        borderRadius: 25,
-        height: 45,
-        width: 300,
-        zIndex: 15,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 0, 
-    },
-    currentLocation: {
-        height: 35,
-        width: 290,
-        borderColor: '#0F4A97',
-        borderWidth: 1,
-        borderRadius: 20,
-        backgroundColor: '#0F4A97',
-        paddingHorizontal: 5,
-        color: 'white',
-    },
-    destination: {
-        height: 35,
-        width: 290,
-        borderColor: '#0F4A97',
-        borderWidth: 1,
-        borderRadius: 20,
-        backgroundColor: '#0F4A97',
-        paddingHorizontal: 5,
-        color: 'white',
-    },
-    confirmButton: {
-        marginTop: 20,
-        backgroundColor: '#0F4A97',
-        padding: 15,
-        borderRadius: 10,
-        width: 150,
-        alignItems: 'center',
-        position: 'absolute', 
-        bottom: 30, 
-        alignSelf: 'center', 
-    },
-    confirmButtonText: {
-        color: 'white',
-        fontSize: 16,
-    },
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: '#FFFFFF',
+  },
+  input: {
+    height: 50,
+    borderColor: '#CCCCCC',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  suggestion: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEEEEE',
+  },
 });
 
 export default EnterLocation;
