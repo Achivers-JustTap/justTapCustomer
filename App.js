@@ -26,6 +26,7 @@ import Legal from './app/screens/MenuScreens.jsx/Legal';
 import EnterLocation from './app/screens/afterLoginScreens/EnterLocation';
 import LocationMapScreen from './app/screens/afterLoginScreens/LocationMapScreen';
 import BookingScreen from './app/screens/afterLoginScreens/BookingScreen';
+import screen1 from './app/SplashScreens/screen1';
 
 
 
@@ -38,6 +39,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {/* Screens before authentication */}
+        <Stack.Screen name="screen1" component={screen1} options={{headerShown:false}} />
         <Stack.Screen name="WelcomeScreens" component={WelcomeScreens} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} />
         <Stack.Screen name="Login" component={Login} />
