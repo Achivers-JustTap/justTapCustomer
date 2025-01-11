@@ -27,6 +27,9 @@ import EnterLocation from './app/screens/afterLoginScreens/EnterLocation';
 import LocationMapScreen from './app/screens/afterLoginScreens/LocationMapScreen';
 import BookingScreen from './app/screens/afterLoginScreens/BookingScreen';
 import screen1 from './app/SplashScreens/screen1';
+import YourTrip from './app/screens/ActivityScreens/YourTrip';
+import YourReserved from './app/screens/ActivityScreens/YourReserved';
+import RebookScreen from './app/screens/ActivityScreens/RebookScreen';
 
 
 
@@ -67,6 +70,11 @@ export default function App() {
        <Stack.Screen name="SetUpDrivingDelivering" component={SetUpDrivingorDelivering} />
        <Stack.Screen name="Help" component={Help} />
        <Stack.Screen name="Legal" component={Legal} />
+
+       {/* Activity Screens */}
+       <Stack.Screen name="YourTrip" component={YourTrip} />
+       <Stack.Screen name="YourReserved" component={YourReserved} />
+       <Stack.Screen name="RebookScreen" component={RebookScreen} />
       </Stack.Navigator>
     </NavigationContainer>
     </UserLocationProvider>
