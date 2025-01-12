@@ -1,16 +1,30 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Feather } from '@expo/vector-icons'; 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-const YourTrip = () => {
+const YourTrip = ({navigation}) => {
+   useEffect(() => {
+      navigation.setOptions({ headerShown: false });
+    }, [navigation]);
+
+    const handleBack = () => {
+        navigation.goBack();
+      };
+  
   return (
     <View style={styles.container}>
+       <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+              <FontAwesome name="arrow-left" size={24} color="white" />
+            </TouchableOpacity>
+            
       <Text style={styles.upcomingTripsText}>You have no Upcoming Trips</Text>
       <View style={styles.planTripContainer}>
         <TouchableOpacity style={styles.planTripButton}>
           <Text style={styles.planTripText}>Plan a Trip</Text>
+          <Feather name="arrow-right" size={24} color='rgba(15,74,151, 0.76)' style={styles.arrowIcon} />
         </TouchableOpacity>
-        <Feather name="arrow-right" size={24} color="black" style={styles.arrowIcon} />
+        
       </View>
     </View>
   );
@@ -24,8 +38,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-start',
   },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 1,
+    backgroundColor: '#0F4A97', 
+    padding: 10,
+    borderRadius: 50,
+  },
   upcomingTripsText: {
-    fontSize: 18,
+    paddingTop: 100,
+    fontSize: 25,
+    fontWeight:'bold',
     marginBottom: 16,
   },
   planTripContainer: {
@@ -35,16 +60,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   planTripButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    backgroundColor: '#FFA500', 
+    paddingVertical: 6,
+    paddingHorizontal: 2,
     borderRadius: 8,
   },
   planTripText: {
     fontSize: 16,
-    color: 'white',
+    color: 'rgba(15,74,151, 0.76)',
   },
   arrowIcon: {
-    marginLeft: 8,
+    marginLeft:80,
+    marginTop: -21
   },
 });

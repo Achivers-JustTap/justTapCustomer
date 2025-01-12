@@ -101,7 +101,7 @@ const HomePage = ({ navigation }) => {
         if (item.isViewMore) {
             return (
                 <TouchableOpacity
-                    onPress={() => navigation.navigate(item.navigateTo)}  // Make "View More" clickable
+                    onPress={() => navigation.navigate(item.navigateTo)}  
                     style={styles.viewMoreContainer}
                 >
                     <Text style={styles.viewMoreText}>{item.title}</Text>
@@ -130,7 +130,7 @@ const HomePage = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.heading}>JUST TAP!</Text>
+            
             <TouchableWithoutFeedback onPress={handleDoubleTap}>
                 <View style={[styles.mapContainer, { height: mapHeight }]}>
                     <AppMapView
@@ -149,7 +149,7 @@ const HomePage = ({ navigation }) => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('EnterLocation', { currentLocation })} style={[styles.searchBackground, { marginTop: 47 }]}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EnterLocation', { currentLocation })} style={[styles.searchBackground, { marginTop:66 }]}>
                         <TextInput
                             style={styles.Destination}
                             placeholder="Enter Destination"
@@ -177,30 +177,21 @@ const HomePage = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 50,
+        paddingTop: 30,
         backgroundColor: 'white',
     },
-    heading: {
-        marginTop: 10,
-        marginBottom: -20,
-        fontFamily: 'SofadiOne',
-        fontSize: 35,
-        color: '#0F4A97',
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: 2, height: 2 },
-        textShadowRadius: 4,
-        textAlign: 'center',
-    },
+    
+    
     mapContainer: {
         borderRadius: 10,
         overflow: 'hidden',
         marginHorizontal: 10,
-        marginTop: 30,
     },
     map: {
         flex: 1,
     },
     searchBackground: {
+        marginTop:20,
         position: 'absolute',
         left: '50%',
         transform: [{ translateX: -150 }],
@@ -238,7 +229,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: -140,
+        marginTop: -200,
     },
     boxWrapper: {
         alignItems: 'center',
