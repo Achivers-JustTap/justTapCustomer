@@ -24,7 +24,7 @@ const YourTrip = ({navigation}) => {
       
       </Text>
       <View style={styles.planTripContainer}>
-        <TouchableOpacity style={styles.planTripButton}>
+        <TouchableOpacity style={styles.planTripButton} onPress={() => navigation.navigate('Reserved')}>
           <Text style={styles.planTripText}>Reserve</Text>
           <Feather name="arrow-right" size={24} color='rgba(15,74,151, 0.76)' style={styles.arrowIcon} />
         </TouchableOpacity>

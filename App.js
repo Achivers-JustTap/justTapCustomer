@@ -30,6 +30,18 @@ import screen1 from './app/SplashScreens/screen1';
 import YourTrip from './app/screens/ActivityScreens/YourTrip';
 import YourReserved from './app/screens/ActivityScreens/YourReserved';
 import RebookScreen from './app/screens/ActivityScreens/RebookScreen';
+import AddHomePage from './app/screens/ProfileScreens/AppSettingsScreens/AddHomePage';
+import AddWorkPage from './app/screens/ProfileScreens/AppSettingsScreens/AddWorkPage';
+import ShortcutsPage from './app/screens/ProfileScreens/AppSettingsScreens/ShortcutsPage';
+import PrivacyPage from './app/screens/ProfileScreens/AppSettingsScreens/PrivacyPage';
+import AppearancePage from './app/screens/ProfileScreens/AppSettingsScreens/AppearancePage';
+import InvoiceInformationPage from './app/screens/ProfileScreens/AppSettingsScreens/InvoiceInformationPage';
+import CommunicationPage from './app/screens/ProfileScreens/AppSettingsScreens/CommunicationPage';
+import SafetyPreferencePage from './app/screens/ProfileScreens/SafetyScreens/SafetyPreferencePage';
+import ManageTrustedContactsPage from './app/screens/ProfileScreens/SafetyScreens/ManageTrustedContactsPage';
+import RideCheckPage from './app/screens/ProfileScreens/SafetyScreens/RideCheckPage';
+import ReservePage from './app/screens/ProfileScreens/RidePreferencesScreens/ReservePage';
+import DriverNearbyAlertPage from './app/screens/ProfileScreens/RidePreferencesScreens/DriverNearbyAlertPage';
 
 
 
@@ -75,6 +87,21 @@ export default function App() {
        <Stack.Screen name="YourTrip" component={YourTrip} />
        <Stack.Screen name="YourReserved" component={YourReserved} />
        <Stack.Screen name="RebookScreen" component={RebookScreen} />
+
+       {/* Profile Screens */}
+       <Stack.Screen name="AddHomePage" component={AddHomePage} />
+       <Stack.Screen name="AddWorkPage" component={AddWorkPage} />
+       <Stack.Screen name="ShortcutsPage" component={ShortcutsPage} />
+       <Stack.Screen name="PrivacyPage" component={PrivacyPage} />
+       <Stack.Screen name="AppearancePage" component={AppearancePage} />
+       <Stack.Screen name="InvoiceInformationPage" component={InvoiceInformationPage} />
+       <Stack.Screen name="CommunicationPage" component={CommunicationPage} />
+       <Stack.Screen name="SafetyPreferencePage" component={SafetyPreferencePage} />
+       <Stack.Screen name="ManageTrustedContactsPage" component={ManageTrustedContactsPage} />
+       <Stack.Screen name="RideCheckPage" component={RideCheckPage} />
+       <Stack.Screen name="ReservePage" component={ReservePage} />
+       <Stack.Screen name="DriverNearbyAlertPage" component={DriverNearbyAlertPage} />
+
       </Stack.Navigator>
     </NavigationContainer>
     </UserLocationProvider>

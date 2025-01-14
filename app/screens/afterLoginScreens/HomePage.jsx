@@ -149,7 +149,7 @@ const HomePage = ({ navigation }) => {
                         />
                     </TouchableOpacity>
 
-                    <TouchableOpacity onPress={() => navigation.navigate('EnterLocation', { currentLocation })} style={[styles.searchBackground, { marginTop:66 }]}>
+                    <TouchableOpacity onPress={() => navigation.navigate('EnterLocation', { currentLocation })} style={[styles.searchBackground, { marginTop:57 }]}>
                         <TextInput
                             style={styles.Destination}
                             placeholder="Enter Destination"
@@ -185,13 +185,13 @@ const styles = StyleSheet.create({
     mapContainer: {
         borderRadius: 10,
         overflow: 'hidden',
-        marginHorizontal: 10,
+        marginHorizontal: 5,
     },
     map: {
         flex: 1,
     },
     searchBackground: {
-        marginTop:20,
+        marginTop:10,
         position: 'absolute',
         left: '50%',
         transform: [{ translateX: -150 }],
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         backgroundColor: '#0F4A97',
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         color: 'white',
     },
     Destination: {
@@ -222,14 +222,14 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         backgroundColor: '#0F4A97',
-        paddingHorizontal: 10,
+        paddingHorizontal: 15,
         color: 'white',
     },
     boxContainer: {
         paddingHorizontal: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: -200,
+        marginTop: -250,
     },
     boxWrapper: {
         alignItems: 'center',

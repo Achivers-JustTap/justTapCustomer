@@ -20,7 +20,7 @@ const YourTrip = ({navigation}) => {
             
       <Text style={styles.upcomingTripsText}>You have no Upcoming Trips</Text>
       <View style={styles.planTripContainer}>
-        <TouchableOpacity style={styles.planTripButton}>
+        <TouchableOpacity style={styles.planTripButton} onPress={() => navigation.navigate('Intercity')}>
           <Text style={styles.planTripText}>Plan a Trip</Text>
           <Feather name="arrow-right" size={24} color='rgba(15,74,151, 0.76)' style={styles.arrowIcon} />
         </TouchableOpacity>

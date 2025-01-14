@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, SectionList, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const Profile = ({ navigation }) => {
     const handleLogout = () => {
@@ -12,7 +13,7 @@ const Profile = ({ navigation }) => {
                 {
                     text: 'Logout',
                     onPress: () => {
-                        navigation.replace('Login');
+                        navigation.replace('WelcomeScreens');
                     },
                 },
             ],
@@ -20,45 +21,44 @@ const Profile = ({ navigation }) => {
         );
     };
 
-
     const settingsData = [
         {
             title: '',
             data: [
-                { subheading: 'Profile Header', type: 'header' },
+                { subheading: 'Profile Header', type: 'header', iconName: 'person-circle-outline' },
             ],
         },
         {
             title: 'App Settings',
             data: [
-                { subheading: 'Add Home', isSimple: true },
-                { subheading: 'Add Work', isSimple: true },
-                { subheading: 'Shortcuts', isSimple: true },
-                { subheading: 'Privacy', subcontent: ['Manage the data you share with us'], isSimple: true },
-                { subheading: 'Appearance', subcontent: ['Use device settings'], isSimple: true },
-                { subheading: 'Invoice Information', subcontent: ['Manage your tax invoices information'], isSimple: true },
-                { subheading: 'Communication', subcontent: ['Choose your preferred contact methods', 'Manage your notification settings'], isSimple: true },
+                { subheading: 'Add Home', isSimple: true, iconName: 'home-outline', route: 'AddHomePage' },
+                { subheading: 'Add Work', isSimple: true, iconName: 'briefcase-outline', route: 'AddWorkPage' },
+                { subheading: 'Shortcuts', isSimple: true, iconName: 'flash-outline', route: 'ShortcutsPage' },
+                { subheading: 'Privacy', subcontent: ['Manage the data you share with us'], isSimple: true, iconName: 'lock-closed-outline' ,route: 'PrivacyPage'},
+                { subheading: 'Appearance', subcontent: ['Use device settings'], isSimple: true, iconName: 'color-palette-outline',route: 'AppearancePage' },
+                { subheading: 'Invoice Information', subcontent: ['Manage your tax invoices information'], isSimple: true, iconName: 'document-text-outline',route: 'InvoiceInformationPage' },
+                { subheading: 'Communication', subcontent: ['Choose your preferred contact methods', 'Manage your notification settings'], isSimple: true, iconName: 'chatbubble-ellipses-outline',route: 'CommunicationPage' },
             ],
         },
         {
             title: 'Safety',
             data: [
-                { subheading: 'Safety Preferences', subcontent: ['Choose and schedule your favorite safety tools'], isSimple: true },
-                { subheading: 'Manage Trusted Contacts', subcontent: ['Share your trip status with family and friends with a single tap'], isSimple: true },
-                { subheading: 'RideCheck', subcontent: ['Manage your RideCheck notifications'], isSimple: true },
+                { subheading: 'Safety Preferences', subcontent: ['Choose and schedule your favorite safety tools'], isSimple: true, iconName: 'shield-outline', route: 'SafetyPreferencePage' },
+                { subheading: 'Manage Trusted Contacts', subcontent: ['Share your trip status with family and friends with a single tap'], isSimple: true, iconName: 'people-outline', route: 'ManageTrustedContactsPage' },
+                { subheading: 'RideCheck', subcontent: ['Manage your RideCheck notifications'], isSimple: true, iconName: 'alert-outline',route: 'RideCheckPage' },
             ],
         },
         {
             title: 'Ride Preferences',
             data: [
-                { subheading: 'Reserve', subcontent: ['Choose how you\'re matched with drivers when you book ahead'], isSimple: true },
-                { subheading: 'Driver Nearby Alert', subcontent: ['Manage how you want to be notified during pick-ups with long waits'], isSimple: true },
+                { subheading: 'Reserve', subcontent: ['Choose how you\'re matched with drivers when you book ahead'], isSimple: true, iconName: 'calendar-outline', route: 'ReservePage' },
+                { subheading: 'Driver Nearby Alert', subcontent: ['Manage how you want to be notified during pick-ups with long waits'], isSimple: true, iconName: 'car-outline', route: 'DriverNearbyAlertPage' },
             ],
         },
         {
             title: '',
             data: [
-                { subheading: 'Logout', type: 'logout' },
+                { subheading: 'Logout', type: 'logout', iconName: 'log-out-outline' },
             ],
         },
     ];
@@ -68,34 +68,49 @@ const Profile = ({ navigation }) => {
             return (
                 <View style={styles.profileHeaderContainer}>
                     <Text style={styles.profileHeader}>Profile (add name from backend)</Text>
-                    <Icon name="person-circle-outline" size={60} color="#0F4A97" style={styles.profileIcon} />
+                    <Icon name={item.iconName} size={60} color="#0F4A97" style={styles.profileIcon} />
                 </View>
             );
         }
         if (item.type === 'logout') {
             return (
                 <TouchableOpacity style={styles.logoutContainer} onPress={handleLogout}>
-                    <Icon name="log-out-outline" size={24} color="red" />
+                    <Icon name={item.iconName} size={24} color="red" />
                     <Text style={styles.logoutText}>Logout</Text>
                 </TouchableOpacity>
             );
         }
+
         return (
-            <View style={styles.listItem}>
-                <View style={styles.row}>
-                    <Text style={[styles.subheading, styles.boldText]}>{item.subheading}</Text>
-                    <Icon name="chevron-forward-outline" size={18} color="#555" />
-                </View>
-                {item.subcontent && (
-                    <View style={styles.subcontentContainer}>
-                        {item.subcontent.map((content, index) => (
-                            <Text key={index} style={[styles.subcontent, styles.lightBlueText]}>
-                                {content}
-                            </Text>
-                        ))}
+            <TouchableOpacity
+                style={styles.listItem}
+                onPress={() => {
+                    if (item.route) {
+                        navigation.navigate(item.route);  
+                    }
+                }}
+            >
+                <LinearGradient
+                    colors={['#0F4A97', '#1E90FF']}
+                    style={styles.gradientItem}
+                >
+                    <View style={styles.row}>
+                        <Icon name={item.iconName} size={18} color="#fff" style={styles.itemIcon} />
+                        <Text style={[styles.subheading, styles.boldText]}>{item.subheading}</Text>
+                        <View style={{ flex: 1 }} />
+                        <Icon name="chevron-forward-outline" size={18} color="#fff" />
                     </View>
-                )}
-            </View>
+                    {item.subcontent && (
+                        <View style={styles.subcontentContainer}>
+                            {item.subcontent.map((content, index) => (
+                                <Text key={index} style={[styles.subcontent, styles.lightBlueText]}>
+                                    {content}
+                                </Text>
+                            ))}
+                        </View>
+                    )}
+                </LinearGradient>
+            </TouchableOpacity>
         );
     };
 
@@ -105,7 +120,6 @@ const Profile = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            
             <SectionList
                 sections={settingsData}
                 keyExtractor={(item, index) => `${item.subheading}-${index}`}
@@ -120,13 +134,14 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#fff', 
     },
     profileHeaderContainer: {
         flexDirection: 'row',
+        top: 10,
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginBottom: 20,
+        marginBottom: 10,
     },
     profileHeader: {
         fontSize: 24,
@@ -138,7 +153,6 @@ const styles = StyleSheet.create({
         marginRight: 20,
     },
     list: {
-        top: 30,
         padding: 20,
         paddingBottom: 20,
     },
@@ -150,36 +164,42 @@ const styles = StyleSheet.create({
         color: '#0F4A97',
     },
     listItem: {
-        paddingVertical: 10,
-        paddingHorizontal: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eaeaea',
+        paddingVertical: 5,
+        paddingHorizontal: 5,
+    },
+    gradientItem: {
+        borderRadius: 8,
+        padding: 10,
+        marginVertical: 5,
     },
     row: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
+        justifyContent: 'flex-start',
     },
     subheading: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#0F4A97',
+        color: '#fff',
     },
     subcontentContainer: {
         marginTop: 4,
     },
     subcontent: {
         fontSize: 14,
-        color: '#555',
+        color: '#ddd',
         textAlign: 'left',
         marginLeft: 0,
     },
     lightBlueText: {
-        color: '#7590b4',
+        color: '#B0C4DE',
         fontWeight: 'bold',
     },
     boldText: {
         fontWeight: 'bold',
+    },
+    itemIcon: {
+        marginRight: 10,
     },
     logoutContainer: {
         flexDirection: 'row',
