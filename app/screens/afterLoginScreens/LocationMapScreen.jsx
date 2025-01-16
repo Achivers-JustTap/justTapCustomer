@@ -1,46 +1,21 @@
-import React, { useEffect, useState } from 'react'; 
-import { StyleSheet, SafeAreaView, View, TextInput, Alert } from 'react-native';
-import AppMapView from '../../../components/AppMapView'; 
+import React, { useEffect } from 'react';
+import { StyleSheet, SafeAreaView, View, TouchableOpacity, Text } from 'react-native';
+import AppMapView from '../afterLoginScreens/AppMapView'; // Import the new AppMapView component
 import Icon from 'react-native-vector-icons/Ionicons';
-import { TouchableOpacity, Text } from 'react-native';
 
 const LocationMapScreen = ({ route, navigation }) => {
     const { currentLocationCoords, destinationCoords, destination } = route.params;
-    console.log("current location", currentLocationCoords);
-    console.log("destination", destinationCoords);
-
-    const [markerCoords, setMarkerCoords] = useState(currentLocationCoords); 
-    const [currentLocationText, setCurrentLocationText] = useState(`${currentLocationCoords.latitude}, ${currentLocationCoords.longitude}`);
-    const [destinationText, setDestinationText] = useState(destination);
 
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
     }, [navigation]);
 
-    const handleMarkerDragEnd = (e) => {
-        const { latitude, longitude } = e.nativeEvent.coordinate;
-        setMarkerCoords({ latitude, longitude }); 
-        setCurrentLocationText(`${latitude}, ${longitude}`); 
-    };
-    
-    const handleMapPress = (e) => {
-        const { latitude, longitude } = e.nativeEvent.coordinate;
-        setMarkerCoords({ latitude, longitude }); 
-        setCurrentLocationText(`${latitude}, ${longitude}`); 
-    };
-
-   
-    const resetToCurrentLocation = () => {
-        setMarkerCoords(currentLocationCoords); 
-        setCurrentLocationText(`${currentLocationCoords.latitude}, ${currentLocationCoords.longitude}`); 
-    };
-
     const handleConfirm = () => {
         navigation.navigate('BookingScreen', {
-            markerCoords: markerCoords,
+            markerCoords: currentLocationCoords,
             destinationCoords,
-            destination 
-        });        
+            destination,
+        });
     };
 
     return (
@@ -50,15 +25,15 @@ const LocationMapScreen = ({ route, navigation }) => {
                     <Icon name="arrow-back" size={24} color="white" />
                 </TouchableOpacity>
             </View>
+
+            {/* Pass the current location and destination to AppMapView */}
             <View style={styles.mapContainer}>
-                <AppMapView 
-                    destinationCoords={destinationCoords} 
-                    markerCoords={markerCoords} 
-                    onMarkerDragEnd={handleMarkerDragEnd} 
-                    onMapPress={handleMapPress} 
-                    onResetLocation={resetToCurrentLocation} 
+                <AppMapView
+                    currentLocationCoords={currentLocationCoords}
+                    destinationCoords={destinationCoords}
                 />
             </View>
+
             {/* Confirm Button */}
             <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
                 <Text style={styles.confirmButtonText}>Confirm</Text>
@@ -71,8 +46,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginTop: 50,
-        justifyContent:'center',
-        alignItems:'center'
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     header: {
         position: 'absolute',
@@ -88,12 +63,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     mapContainer: {
-        width: "90%",
-        height: "80%",
+        width: '90%',
+        height: '80%',
         borderRadius: 20,
-        overflow: 'hidden',  
+        overflow: 'hidden',
         backgroundColor: 'white',
-        marginTop: -20, 
+        marginTop: -20,
     },
     confirmButton: {
         position: 'absolute',
