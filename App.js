@@ -42,6 +42,11 @@ import ManageTrustedContactsPage from './app/screens/ProfileScreens/SafetyScreen
 import RideCheckPage from './app/screens/ProfileScreens/SafetyScreens/RideCheckPage';
 import ReservePage from './app/screens/ProfileScreens/RidePreferencesScreens/ReservePage';
 import DriverNearbyAlertPage from './app/screens/ProfileScreens/RidePreferencesScreens/DriverNearbyAlertPage';
+import EditProfilePage from './app/screens/ProfileScreens/EditProfileScreens/EditProfilePage';
+import UpdateEmailId from './app/screens/ProfileScreens/EditProfileScreens/UpdateEmailId';
+import UpdateMobileNumber from './app/screens/ProfileScreens/EditProfileScreens/UpdateMobileNumber';
+import Security from './app/screens/ProfileScreens/EditProfileScreens/Security';
+import PrivacyAndData from './app/screens/ProfileScreens/EditProfileScreens/PrivacyAndData';
 
 
 
@@ -89,6 +94,8 @@ export default function App() {
        <Stack.Screen name="RebookScreen" component={RebookScreen} />
 
        {/* Profile Screens */}
+
+       <Stack.Screen name="EditProfilePage" component={EditProfilePage} />
        <Stack.Screen name="AddHomePage" component={AddHomePage} />
        <Stack.Screen name="AddWorkPage" component={AddWorkPage} />
        <Stack.Screen name="ShortcutsPage" component={ShortcutsPage} />
@@ -101,6 +108,11 @@ export default function App() {
        <Stack.Screen name="RideCheckPage" component={RideCheckPage} />
        <Stack.Screen name="ReservePage" component={ReservePage} />
        <Stack.Screen name="DriverNearbyAlertPage" component={DriverNearbyAlertPage} />
+        {/* EditProfileScreens */}
+       <Stack.Screen name="UpdateEmailId" component={UpdateEmailId} />
+       <Stack.Screen name="UpdateMobileNumber" component={UpdateMobileNumber} />
+       <Stack.Screen name="Security" component={Security} />
+       <Stack.Screen name="PrivacyAndData" component={PrivacyAndData} />
 
       </Stack.Navigator>
     </NavigationContainer>

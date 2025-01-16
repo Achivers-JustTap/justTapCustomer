@@ -34,10 +34,10 @@ const Profile = ({ navigation }) => {
                 { subheading: 'Add Home', isSimple: true, iconName: 'home-outline', route: 'AddHomePage' },
                 { subheading: 'Add Work', isSimple: true, iconName: 'briefcase-outline', route: 'AddWorkPage' },
                 { subheading: 'Shortcuts', isSimple: true, iconName: 'flash-outline', route: 'ShortcutsPage' },
-                { subheading: 'Privacy', subcontent: ['Manage the data you share with us'], isSimple: true, iconName: 'lock-closed-outline' ,route: 'PrivacyPage'},
-                { subheading: 'Appearance', subcontent: ['Use device settings'], isSimple: true, iconName: 'color-palette-outline',route: 'AppearancePage' },
-                { subheading: 'Invoice Information', subcontent: ['Manage your tax invoices information'], isSimple: true, iconName: 'document-text-outline',route: 'InvoiceInformationPage' },
-                { subheading: 'Communication', subcontent: ['Choose your preferred contact methods', 'Manage your notification settings'], isSimple: true, iconName: 'chatbubble-ellipses-outline',route: 'CommunicationPage' },
+                { subheading: 'Privacy', subcontent: ['Manage the data you share with us'], isSimple: true, iconName: 'lock-closed-outline', route: 'PrivacyPage' },
+                { subheading: 'Appearance', subcontent: ['Use device settings'], isSimple: true, iconName: 'color-palette-outline', route: 'AppearancePage' },
+                { subheading: 'Invoice Information', subcontent: ['Manage your tax invoices information'], isSimple: true, iconName: 'document-text-outline', route: 'InvoiceInformationPage' },
+                { subheading: 'Communication', subcontent: ['Choose your preferred contact methods', 'Manage your notification settings'], isSimple: true, iconName: 'chatbubble-ellipses-outline', route: 'CommunicationPage' },
             ],
         },
         {
@@ -45,7 +45,7 @@ const Profile = ({ navigation }) => {
             data: [
                 { subheading: 'Safety Preferences', subcontent: ['Choose and schedule your favorite safety tools'], isSimple: true, iconName: 'shield-outline', route: 'SafetyPreferencePage' },
                 { subheading: 'Manage Trusted Contacts', subcontent: ['Share your trip status with family and friends with a single tap'], isSimple: true, iconName: 'people-outline', route: 'ManageTrustedContactsPage' },
-                { subheading: 'RideCheck', subcontent: ['Manage your RideCheck notifications'], isSimple: true, iconName: 'alert-outline',route: 'RideCheckPage' },
+                { subheading: 'RideCheck', subcontent: ['Manage your RideCheck notifications'], isSimple: true, iconName: 'alert-outline', route: 'RideCheckPage' },
             ],
         },
         {
@@ -67,8 +67,13 @@ const Profile = ({ navigation }) => {
         if (item.type === 'header') {
             return (
                 <View style={styles.profileHeaderContainer}>
-                    <Text style={styles.profileHeader}>Profile (add name from backend)</Text>
-                    <Icon name={item.iconName} size={60} color="#0F4A97" style={styles.profileIcon} />
+                    <Text style={styles.profileHeader}>Charitha</Text>
+                    <TouchableOpacity
+                        onPress={() => navigation.navigate('EditProfilePage')}
+                        style={styles.profileIconTouchable}
+                    >
+                        <Icon name={item.iconName} size={60} color="#0F4A97" style={styles.profileIcon} />
+                    </TouchableOpacity>
                 </View>
             );
         }
@@ -86,7 +91,7 @@ const Profile = ({ navigation }) => {
                 style={styles.listItem}
                 onPress={() => {
                     if (item.route) {
-                        navigation.navigate(item.route);  
+                        navigation.navigate(item.route);
                     }
                 }}
             >
@@ -134,7 +139,7 @@ const Profile = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
     },
     profileHeaderContainer: {
         flexDirection: 'row',
