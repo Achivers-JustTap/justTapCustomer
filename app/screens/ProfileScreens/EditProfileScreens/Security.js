@@ -33,29 +33,33 @@ const Security = () => {
      const navigateToService = (service) => {
        navigation.navigate(service);
      };
-  const securityOptions = [
-    { id: '1', title: 'Change Password' },
-    { id: '2', title: 'Authentications' },
-    { id: '3', title: 'Two-Step Verification' },
-    { id: '4', title: 'Feedback and Reports' },
-  ];
+     const securityOptions = [
+      { id: '1', title: 'Change Password', route: 'ChangePasswordsPage' },
+      { id: '2', title: 'Authentications', route: 'AuthenticationsPage' },
+      { id: '3', title: 'Two-Step Verification', route: 'TwoStepVerification' },
+      { id: '4', title: 'Feedback and Reports', route: 'FeedbackAndReport' },
+    ];
+    
 
 
 
-  const handlePress = (option) => {
-    console.log(`${option} pressed`);
-  };
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.optionContainer}
-      onPress={() => handlePress(item.title)}
-    >
-      <Text style={styles.optionText}>{item.title}</Text>
-      <Ionicons name="chevron-forward" size={20} color="#fff" />
-    </TouchableOpacity>
-  );
- 
+    const handlePress = (option) => {
+      if (option.route) {
+        navigation.navigate(option.route);
+      } else {
+        console.log(`${option.title} pressed`);
+      }
+    };
+    
+    const renderItem = ({ item }) => (
+      <TouchableOpacity
+        style={styles.optionContainer}
+        onPress={() => handlePress(item)}
+      >
+        <Text style={styles.optionText}>{item.title}</Text>
+        <Ionicons name="chevron-forward" size={20} color="#fff" />
+      </TouchableOpacity>
+    );
 
   return (
     <SafeAreaView style={styles.container}>

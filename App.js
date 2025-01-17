@@ -47,6 +47,10 @@ import UpdateEmailId from './app/screens/ProfileScreens/EditProfileScreens/Updat
 import UpdateMobileNumber from './app/screens/ProfileScreens/EditProfileScreens/UpdateMobileNumber';
 import Security from './app/screens/ProfileScreens/EditProfileScreens/Security';
 import PrivacyAndData from './app/screens/ProfileScreens/EditProfileScreens/PrivacyAndData';
+import ChangePasswordsPage from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/ChangePasswordsPage';
+import AuthenticationsPage from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/AuthenticationsPage';
+import TwoStepVerification from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/TwoStepVerification';
+import FeedbackAndReport from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/FeedbackAndReport';
 
 
 
@@ -113,6 +117,13 @@ export default function App() {
        <Stack.Screen name="UpdateMobileNumber" component={UpdateMobileNumber} />
        <Stack.Screen name="Security" component={Security} />
        <Stack.Screen name="PrivacyAndData" component={PrivacyAndData} />
+
+        {/* SecurityScreens */}
+        <Stack.Screen name="ChangePasswordsPage" component={ChangePasswordsPage} />
+       <Stack.Screen name="AuthenticationsPage" component={AuthenticationsPage} />
+       <Stack.Screen name="TwoStepVerification" component={TwoStepVerification} />
+       <Stack.Screen name="FeedbackAndReport" component={FeedbackAndReport} />
+
 
       </Stack.Navigator>
     </NavigationContainer>
