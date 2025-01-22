@@ -2,24 +2,31 @@ import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Aler
 import React, { useEffect, useState } from 'react';
 
 const OtpPage = ({ route, navigation }) => {
-  const { phoneNumber, from } = route.params; // Get the 'from' parameter
+  const { phoneNumber } = route.params; // Get the phoneNumber parameter
   const [otp, setOtp] = useState('');
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
-   const exampleUserName = "Charitha"
-  const verifyOtp = () => {
-     const exampleUserName = "Charitha"
-    if (otp === '1234') { 
-      if (from === 'login') {
-        Alert.alert('Success', 'OTP verified successfully for login', [
-          { text: 'OK', onPress: () => navigation.navigate('DisplayScreen', { name: exampleUserName }) }
-        ]);
-      } else {
-        Alert.alert('Success', 'OTP verified successfully for sign up', [
-          { text: 'OK', onPress: () => navigation.navigate('SignUpPage') }
-        ]);
+
+  const verifyOtp = async () => {
+    if (otp === '1234') {
+      try {
+        const response = await fetch(`http://192.168.0.107:5000/api/users/check-mobile?phoneNumber=${phoneNumber}`);
+        const result = await response.json();
+
+        if (result.exists) {
+          Alert.alert('Success', 'Phone number exists.', [
+            { text: 'OK', onPress: () => navigation.navigate('DisplayScreen', { name: 'Charitha' }) }
+          ]);
+        } else {
+          Alert.alert('Success', 'Phone number does not exist. Redirecting to Sign Up.', [
+            { text: 'OK', onPress: () => navigation.navigate('SignUpPage',{phoneNumber}) }
+          ]);
+        }
+      } catch (error) {
+        console.error('Error verifying phone number:', error);
+        Alert.alert('Error', 'Unable to verify phone number. Please try again.');
       }
     } else {
       Alert.alert('Error', 'Invalid OTP');

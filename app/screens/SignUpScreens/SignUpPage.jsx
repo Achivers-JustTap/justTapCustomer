@@ -1,26 +1,69 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Picker } from '@react-native-picker/picker'; 
+import { Picker } from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useDispatch } from 'react-redux';
+import axios from 'axios';
+import { setCustomerData } from '../../../storemanagement_customer/actions_customer/customerActions';
+import { useSelector } from 'react-redux';
 
-const SignUp = ({ navigation }) => {
+const SignUp = ({ navigation, route }) => {
+  const { phoneNumber } = route.params;
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [gender, setGender] = useState('male'); 
+  const [gender, setGender] = useState('male');
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [showPicker, setShowPicker] = useState(false);
-  const [dateOfBirthString, setDateOfBirthString] = useState(''); 
-
+  const [dateOfBirthString, setDateOfBirthString] = useState('');
+  const dispatch = useDispatch();
+  const customer = useSelector((state) => state.customer);
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!name.trim() || !email.trim() || !dateOfBirthString.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
-    } else {
-      navigation.navigate('DisplayScreen',  { name, isSignUp: true }); 
+      return;
+    }
+
+    const customerData = {
+      name,
+      email,
+      phoneNumber,
+      gender,
+      dateOfBirth: dateOfBirthString,
+    };
+    console.log(" customerData ", customerData);
+    try {
+      // Make API request
+      const response = await axios.post('http://192.168.0.107:5000/api/users/register', customerData);
+
+      if (response.data) {
+        const { id } = response.data.user;
+
+        // Dispatch user data including the id
+        dispatch(
+          setCustomerData({
+            ...customerData,
+            id,
+          })
+        );
+
+        Alert.alert('Success', 'Account created successfully.', [
+          {
+            text: 'OK',
+            onPress: () =>
+              navigation.navigate('DisplayScreen', {
+                name,
+                isSignUp: true,
+              }),
+          },
+        ]);
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Failed to create account. Please try again.');
+      console.error('SignUp Error:', error);
     }
   };
 
@@ -28,32 +71,33 @@ const SignUp = ({ navigation }) => {
     const currentDate = selectedDate || dateOfBirth;
     setShowPicker(false);
     setDateOfBirth(currentDate);
-   
+
     const formattedDate = currentDate.toISOString().split('T')[0];
     setDateOfBirthString(formattedDate);
   };
+  console.log(" Customer ", customer)
 
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.header}>You are few steps away from taking your first ride</Text>
-      
+
       <View style={styles.centeredContent}>
         <Text style={styles.text}>Enter Your Details to Sign Up</Text>
-        
+
         <TextInput
           style={styles.input}
           placeholder="Enter your name..."
-          keyboardType='default'
+          keyboardType="default"
           value={name}
-          onChangeText={setName} 
+          onChangeText={setName}
         />
-        
+
         <TextInput
           style={styles.input}
           placeholder="Enter your email..."
-          keyboardType='email-address'
+          keyboardType="email-address"
           value={email}
-          onChangeText={setEmail} 
+          onChangeText={setEmail}
         />
 
         <View style={styles.pickerContainer}>
@@ -62,17 +106,14 @@ const SignUp = ({ navigation }) => {
             onValueChange={(itemValue) => setGender(itemValue)}
             style={styles.picker}
           >
-            <Picker.Item label="Male" value="male" />
-            <Picker.Item label="Female" value="female" />
-            <Picker.Item label="Other" value="other" />
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Female" value="Female" />
+            <Picker.Item label="Other" value="Other" />
           </Picker>
         </View>
 
-        <TouchableOpacity
-          style={styles.dateInput}
-          onPress={() => setShowPicker(true)} 
-        >
-          <Text style={{ fontSize: 16 }}>{dateOfBirthString || "date of birth..."}</Text>
+        <TouchableOpacity style={styles.dateInput} onPress={() => setShowPicker(true)}>
+          <Text style={{ fontSize: 16 }}>{dateOfBirthString || 'Select date of birth...'}</Text>
         </TouchableOpacity>
 
         {showPicker && (
@@ -83,11 +124,8 @@ const SignUp = ({ navigation }) => {
             onChange={onDateChange}
           />
         )}
-        
-        <TouchableOpacity
-          style={styles.signUpButton}
-          onPress={handleSignUp} 
-        >
+
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
@@ -134,7 +172,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   pickerContainer: {
-    width: '80%', 
+    width: '80%',
     backgroundColor: 'white',
     borderRadius: 8,
     overflow: 'hidden',

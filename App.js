@@ -1,4 +1,6 @@
 // App.js
+import { Provider } from 'react-redux'; 
+import customerStore from './storemanagement_customer/customerStore';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -34,6 +36,7 @@ const Stack = createStackNavigator();
 export default function App() {
   const [location, setLocation] = useState(null);
   return (
+    <Provider store={customerStore}> 
     <UserLocationProvider>
     <NavigationContainer>
       <Stack.Navigator>
@@ -68,6 +71,7 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
     </UserLocationProvider>
+    </Provider>
   );
 }
 
