@@ -28,6 +28,31 @@ import Legal from './app/screens/MenuScreens.jsx/Legal';
 import EnterLocation from './app/screens/afterLoginScreens/EnterLocation';
 import LocationMapScreen from './app/screens/afterLoginScreens/LocationMapScreen';
 import BookingScreen from './app/screens/afterLoginScreens/BookingScreen';
+import screen1 from './app/SplashScreens/screen1';
+import YourTrip from './app/screens/ActivityScreens/YourTrip';
+import YourReserved from './app/screens/ActivityScreens/YourReserved';
+import RebookScreen from './app/screens/ActivityScreens/RebookScreen';
+import AddHomePage from './app/screens/ProfileScreens/AppSettingsScreens/AddHomePage';
+import AddWorkPage from './app/screens/ProfileScreens/AppSettingsScreens/AddWorkPage';
+import ShortcutsPage from './app/screens/ProfileScreens/AppSettingsScreens/ShortcutsPage';
+import PrivacyPage from './app/screens/ProfileScreens/AppSettingsScreens/PrivacyPage';
+import AppearancePage from './app/screens/ProfileScreens/AppSettingsScreens/AppearancePage';
+import InvoiceInformationPage from './app/screens/ProfileScreens/AppSettingsScreens/InvoiceInformationPage';
+import CommunicationPage from './app/screens/ProfileScreens/AppSettingsScreens/CommunicationPage';
+import SafetyPreferencePage from './app/screens/ProfileScreens/SafetyScreens/SafetyPreferencePage';
+import ManageTrustedContactsPage from './app/screens/ProfileScreens/SafetyScreens/ManageTrustedContactsPage';
+import RideCheckPage from './app/screens/ProfileScreens/SafetyScreens/RideCheckPage';
+import ReservePage from './app/screens/ProfileScreens/RidePreferencesScreens/ReservePage';
+import DriverNearbyAlertPage from './app/screens/ProfileScreens/RidePreferencesScreens/DriverNearbyAlertPage';
+import EditProfilePage from './app/screens/ProfileScreens/EditProfileScreens/EditProfilePage';
+import UpdateEmailId from './app/screens/ProfileScreens/EditProfileScreens/UpdateEmailId';
+import UpdateMobileNumber from './app/screens/ProfileScreens/EditProfileScreens/UpdateMobileNumber';
+import Security from './app/screens/ProfileScreens/EditProfileScreens/Security';
+import PrivacyAndData from './app/screens/ProfileScreens/EditProfileScreens/PrivacyAndData';
+import ChangePasswordsPage from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/ChangePasswordsPage';
+import AuthenticationsPage from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/AuthenticationsPage';
+import TwoStepVerification from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/TwoStepVerification';
+import FeedbackAndReport from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/FeedbackAndReport';
 
 
 
@@ -41,6 +66,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         {/* Screens before authentication */}
+        <Stack.Screen name="screen1" component={screen1} options={{headerShown:false}} />
         <Stack.Screen name="WelcomeScreens" component={WelcomeScreens} />
         <Stack.Screen name="SignUpPage" component={SignUpPage} />
         <Stack.Screen name="Login" component={Login} />
@@ -68,6 +94,40 @@ export default function App() {
        <Stack.Screen name="SetUpDrivingDelivering" component={SetUpDrivingorDelivering} />
        <Stack.Screen name="Help" component={Help} />
        <Stack.Screen name="Legal" component={Legal} />
+
+       {/* Activity Screens */}
+       <Stack.Screen name="YourTrip" component={YourTrip} />
+       <Stack.Screen name="YourReserved" component={YourReserved} />
+       <Stack.Screen name="RebookScreen" component={RebookScreen} />
+
+       {/* Profile Screens */}
+
+       <Stack.Screen name="EditProfilePage" component={EditProfilePage} />
+       <Stack.Screen name="AddHomePage" component={AddHomePage} />
+       <Stack.Screen name="AddWorkPage" component={AddWorkPage} />
+       <Stack.Screen name="ShortcutsPage" component={ShortcutsPage} />
+       <Stack.Screen name="PrivacyPage" component={PrivacyPage} />
+       <Stack.Screen name="AppearancePage" component={AppearancePage} />
+       <Stack.Screen name="InvoiceInformationPage" component={InvoiceInformationPage} />
+       <Stack.Screen name="CommunicationPage" component={CommunicationPage} />
+       <Stack.Screen name="SafetyPreferencePage" component={SafetyPreferencePage} />
+       <Stack.Screen name="ManageTrustedContactsPage" component={ManageTrustedContactsPage} />
+       <Stack.Screen name="RideCheckPage" component={RideCheckPage} />
+       <Stack.Screen name="ReservePage" component={ReservePage} />
+       <Stack.Screen name="DriverNearbyAlertPage" component={DriverNearbyAlertPage} />
+        {/* EditProfileScreens */}
+       <Stack.Screen name="UpdateEmailId" component={UpdateEmailId} />
+       <Stack.Screen name="UpdateMobileNumber" component={UpdateMobileNumber} />
+       <Stack.Screen name="Security" component={Security} />
+       <Stack.Screen name="PrivacyAndData" component={PrivacyAndData} />
+
+        {/* SecurityScreens */}
+        <Stack.Screen name="ChangePasswordsPage" component={ChangePasswordsPage} />
+       <Stack.Screen name="AuthenticationsPage" component={AuthenticationsPage} />
+       <Stack.Screen name="TwoStepVerification" component={TwoStepVerification} />
+       <Stack.Screen name="FeedbackAndReport" component={FeedbackAndReport} />
+
+
       </Stack.Navigator>
     </NavigationContainer>
     </UserLocationProvider>

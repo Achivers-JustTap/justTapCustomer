@@ -4,32 +4,42 @@
     "slug": "CustomerApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png", 
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff" 
+      "backgroundColor": "#ffffff"
     },
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "We need your location to show your position on the map.",
-        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to provide better services."
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to provide better services.",
+        "NSCameraUsageDescription": "We need access to your camera to take profile pictures.",
+        "NSMicrophoneUsageDescription": "We need access to your microphone for recording audio if needed.",
+        "UIBackgroundModes": ["location"]
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png", 
-        "backgroundColor": "#ffffff" 
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
       },
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"] 
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "CAMERA",
+        "USE_FINGERPRINT",
+        "BIOMETRIC",
+        "ACCESS_BACKGROUND_LOCATION"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png" 
+      "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      "expo-font", 
+      "expo-font",
       [
         "expo-location",
         {

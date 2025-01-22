@@ -79,7 +79,7 @@ const ServicesScreen = () => {
 
             {/* Ride */}
             <View style={styles.boxContainer}>
-              <TouchableOpacity style={styles.squareBox}>
+              <TouchableOpacity style={styles.squareBox} onPress={() => navigateToService('EnterLocation')}>
               <Image style={styles.boxImage} source={require('../../../assets/images/icons/ride.png')} />
               </TouchableOpacity>
               <Text style={styles.boxText}>Ride</Text>
