@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
-import AppMapView from '../../../components/AppMapView';
+import AppMapView from '../afterLoginScreens/AppMapView';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const BookingScreen = ({ route, navigation }) => {
@@ -65,10 +65,9 @@ const BookingScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.mapContainer}>
-                <AppMapView 
-                    destinationCoords={destinationCoords} 
-                    markerCoords={markerCoords}
-                    draggable={false} 
+            <AppMapView
+                    currentLocationCoords={markerCoords}
+                    destinationCoords={destinationCoords}
                 />
             </View>
 

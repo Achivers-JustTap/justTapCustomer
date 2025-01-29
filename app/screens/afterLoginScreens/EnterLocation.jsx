@@ -1,18 +1,19 @@
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import * as Location from 'expo-location'; 
 import Icon from 'react-native-vector-icons/Ionicons';
+import axios from 'axios';
 
 const EnterLocation = ({ route, navigation }) => {
     const { currentLocation } = route.params;
     const [currentLocationText, setCurrentLocationText] = useState(currentLocation);
     const [destination, setDestination] = useState('');
     const [currentLocationCoords, setCurrentLocationCoords] = useState(null);
+    const [suggestions, setSuggestions] = useState([]);
 
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
     }, [navigation]);
-
 
     const getCurrentLocationCoordinates = async (locationInput) => {
         try {
@@ -28,7 +29,6 @@ const EnterLocation = ({ route, navigation }) => {
         }
     };
 
-
     const getDestinationCoordinates = async (destination) => {
         try {
             const searchResults = await Location.geocodeAsync(destination);
@@ -40,6 +40,25 @@ const EnterLocation = ({ route, navigation }) => {
         } catch (error) {
             Alert.alert('Error fetching location');
             return null;
+        }
+    };
+
+    const fetchSuggestions = async (input) => {
+        if (input.trim() === '') {
+            setSuggestions([]);
+            return;
+        }
+
+        try {
+            const response = await axios.get(`http://192.168.0.108:5000/api/maps/get-suggestions?input=${input}`);
+            if (response.data && response.data.length > 0) {
+                setSuggestions(response.data.slice(0, 5)); // Limit to 5 suggestions
+            } else {
+                setSuggestions([]);
+            }
+        } catch (error) {
+            console.error('Error fetching suggestions:', error);
+            Alert.alert('Error fetching suggestions');
         }
     };
 
@@ -70,7 +89,12 @@ const EnterLocation = ({ route, navigation }) => {
             });
         }
     };
-    
+
+    const handleSuggestionPress = (suggestion) => {
+        setDestination(suggestion); // Set the selected suggestion as the destination
+        setSuggestions([]); // Clear suggestions
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
@@ -83,7 +107,7 @@ const EnterLocation = ({ route, navigation }) => {
                 <TouchableOpacity style={styles.searchBackground}>
                     <TextInput
                         style={styles.currentLocation}
-                        placeholder="Your Current Location"
+                        placeholder="Your Source Location"
                         placeholderTextColor="white"
                         value={currentLocationText}
                         onChangeText={setCurrentLocationText}
@@ -96,13 +120,30 @@ const EnterLocation = ({ route, navigation }) => {
                         placeholder="Enter Destination"
                         placeholderTextColor="white"
                         value={destination}
-                        onChangeText={setDestination}
+                        onChangeText={(text) => {
+                            setDestination(text);
+                            fetchSuggestions(text); // Fetch suggestions on input change
+                        }}
                     />
                 </TouchableOpacity>
+
+                {/* Suggestions List */}
+                {suggestions.length > 0 && (
+                    <FlatList
+                        data={suggestions}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleSuggestionPress(item)} style={styles.suggestionItem}>
+                                <Text style={styles.suggestionText}>{item}</Text>
+                            </TouchableOpacity>
+                        )}
+                        style={styles.suggestionsList}
+                    />
+                )}
             </View>
 
             <TouchableOpacity onPress={handleConfirm} style={styles.confirmButton}>
-                <Text style={styles.confirmButtonText}> Confirm </Text>
+                <Text style={styles.confirmButtonText}>Confirm</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -165,6 +206,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#0F4A97',
         paddingHorizontal: 5,
         color: 'white',
+    },
+    suggestionsList: {
+        width: 300,
+        maxHeight: 150,
+        backgroundColor: 'white',
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginTop: 5,
+    },
+    suggestionItem: {
+        padding: 10,
+        borderBottomColor: '#eee',
+        borderBottomWidth: 1,
+    },
+    suggestionText: {
+        color: '#333',
     },
     confirmButton: {
         marginTop: 20,
