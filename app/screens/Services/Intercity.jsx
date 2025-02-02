@@ -54,7 +54,7 @@ const Intercity = () => {
   };
 
   const handlePlanTrip = () => {
-    console.log("Planning the trip with the selected options.");
+    navigation.navigate('EnterLocation');
   };
 
   const handleBackPress = () => {

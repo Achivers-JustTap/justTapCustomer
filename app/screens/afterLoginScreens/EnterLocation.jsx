@@ -50,7 +50,7 @@ const EnterLocation = ({ route, navigation }) => {
         }
 
         try {
-            const response = await axios.get(`http://192.168.0.108:5000/api/maps/get-suggestions?input=${input}`);
+            const response = await axios.get(`http://192.168.29.13:5000/api/maps/get-suggestions?input=${input}`);
             if (response.data && response.data.length > 0) {
                 setSuggestions(response.data.slice(0, 5)); // Limit to 5 suggestions
             } else {

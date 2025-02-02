@@ -37,7 +37,7 @@ const SignUp = ({ navigation, route }) => {
     console.log(" customerData ", customerData);
     try {
       // Make API request
-      const response = await axios.post('http://192.168.0.107:5000/api/users/register', customerData);
+      const response = await axios.post('http://192.168.29.13:5000/api/users/register', customerData);
 
       if (response.data) {
         const { id } = response.data.user;

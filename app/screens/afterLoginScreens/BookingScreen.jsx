@@ -18,10 +18,7 @@ const BookingScreen = ({ route, navigation }) => {
                 { id: '3', type: 'Mini Cab', image: require('../../../assets/images/icons/mini cab.png') },
                 { id: '4', type: 'Maxi Cab', image: require('../../../assets/images/icons/maxi cab.png') },
                 { id: '5', type: 'XL Cab', image: require('../../../assets/images/icons/XL cab.png') },
-                { id: '6', type: 'Reserved', image: require('../../../assets/images/icons/reserved.png') },
-                { id: '7', type: 'Rentals', image: require('../../../assets/images/icons/rentals.png') },
-                { id: '8', type: 'Parcel', image: require('../../../assets/images/icons/parcel.png') },
-                { id: '9', type: 'Intercity', image: require('../../../assets/images/icons/intercity.png') },
+                { id: '6', type: 'Parcel', image: require('../../../assets/images/icons/parcel.png') },
             ];
             setTimeout(() => {
                 setVehicles(vehicleOptions);
@@ -34,10 +31,16 @@ const BookingScreen = ({ route, navigation }) => {
     const handleBookRide = () => {
         if (selectedVehicle) {
             console.log(`Booking ${selectedVehicle.type}`);
+            navigation.navigate('WaitingForCaptainScreen', {
+                markerCoords,
+                destinationCoords,
+                vehicle: selectedVehicle,
+            });
         } else {
             console.log("Please select a vehicle to book.");
         }
     };
+    
 
     const handleCashClick = () => {
         navigation.navigate('PaymentMethods'); 
