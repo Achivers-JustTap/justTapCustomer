@@ -44,8 +44,12 @@ const BookingScreen = ({ route, navigation }) => {
     const handleBookRide = () => {
         if (selectedVehicle) {
             console.log(`Booking ${selectedVehicle.type} with fare: ${fares[selectedVehicle.type.toLowerCase()]}`);
-            // Pass vehicle type and fare to the next screen
-            navigation.navigate('NextScreen', {
+            // // Pass vehicle type and fare to the next screen
+            // navigation.navigate('WaitingForCaptainScreen', {
+            //     markerCoords,
+            //     destinationCoords,
+            //     vehicle: selectedVehicle,
+            navigation.navigate('WaitingForCaptainScreen', {
                 vehicleType: selectedVehicle.type,
                 fare: fares[selectedVehicle.type.toLowerCase()]
             });
@@ -53,6 +57,7 @@ const BookingScreen = ({ route, navigation }) => {
             console.log("Please select a vehicle to book.");
         }
     };
+    
 
     const handleCashClick = () => {
         navigation.navigate('PaymentMethods'); 

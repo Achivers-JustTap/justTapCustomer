@@ -19,8 +19,7 @@ const AppMapView = ({ currentLocationCoords, destinationCoords }) => {
             const destination = `${destinationCoords.latitude},${destinationCoords.longitude}`;
 
             const response = await axios.get(
-                `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`
-            );
+                `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`);
 
             if (response.data.routes.length) {
                 const points = response.data.routes[0].overview_polyline.points;
@@ -93,7 +92,7 @@ const AppMapView = ({ currentLocationCoords, destinationCoords }) => {
             onLayout={() => fitToMarkers([currentLocationCoords, destinationCoords])} // Ensure zoom adjustment on initial render
         >
             {/* Marker for Current Location */}
-            <Marker coordinate={currentLocationCoords} />
+            <Marker coordinate={currentLocationCoords}  pinColor="#0F4A97"/>
 
             {/* Marker for Destination */}
             <Marker coordinate={destinationCoords} pinColor="red" />
