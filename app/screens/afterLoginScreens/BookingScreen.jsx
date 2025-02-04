@@ -4,36 +4,51 @@ import AppMapView from '../afterLoginScreens/AppMapView';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const BookingScreen = ({ route, navigation }) => {
-    const { markerCoords, destinationCoords } = route.params;
+    const { markerCoords, dropoffCoords, pickupName, dropoffName } = route.params;
     const [vehicles, setVehicles] = useState([]);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const [fares, setFares] = useState({});
 
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
 
-        const fetchVehicles = () => {
+        const fetchVehicles = async () => {
             const vehicleOptions = [
                 { id: '1', type: 'Moto', image: require('../../../assets/images/icons/bike.png') },
                 { id: '2', type: 'Auto', image: require('../../../assets/images/icons/auto.png') },
                 { id: '3', type: 'Mini Cab', image: require('../../../assets/images/icons/mini cab.png') },
                 { id: '4', type: 'Maxi Cab', image: require('../../../assets/images/icons/maxi cab.png') },
                 { id: '5', type: 'XL Cab', image: require('../../../assets/images/icons/XL cab.png') },
-                { id: '6', type: 'Reserved', image: require('../../../assets/images/icons/reserved.png') },
-                { id: '7', type: 'Rentals', image: require('../../../assets/images/icons/rentals.png') },
+                // { id: '6', type: 'Reserved', image: require('../../../assets/images/icons/reserved.png') },
+                // { id: '7', type: 'Rentals', image: require('../../../assets/images/icons/rentals.png') },
                 { id: '8', type: 'Parcel', image: require('../../../assets/images/icons/parcel.png') },
-                { id: '9', type: 'Intercity', image: require('../../../assets/images/icons/intercity.png') },
+                // { id: '9', type: 'Intercity', image: require('../../../assets/images/icons/intercity.png') },
             ];
-            setTimeout(() => {
-                setVehicles(vehicleOptions);
-            }, 1000);
+            setVehicles(vehicleOptions);
+
+            // Fetch fares for each vehicle type
+            try {
+                const response = await fetch(`http://192.168.0.107:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
+                const fareData = await response.json();
+                console.log('Fare',fareData)
+                setFares(fareData);
+                console.log("Fares State", fares)
+            } catch (error) {
+                console.error("Error fetching fares:", error);
+            }
         };
 
         fetchVehicles();
-    }, [navigation]);
+    }, [navigation, pickupName, dropoffName]);
 
     const handleBookRide = () => {
         if (selectedVehicle) {
-            console.log(`Booking ${selectedVehicle.type}`);
+            console.log(`Booking ${selectedVehicle.type} with fare: ${fares[selectedVehicle.type.toLowerCase()]}`);
+            // Pass vehicle type and fare to the next screen
+            navigation.navigate('NextScreen', {
+                vehicleType: selectedVehicle.type,
+                fare: fares[selectedVehicle.type.toLowerCase()]
+            });
         } else {
             console.log("Please select a vehicle to book.");
         }
@@ -51,7 +66,8 @@ const BookingScreen = ({ route, navigation }) => {
             <View style={styles.vehicleInfoContainer}>
                 <Image source={item.image} style={styles.vehicleImage} />
                 <Text style={[styles.vehicleType, selectedVehicle?.id === item.id && styles.selectedVehicleText]}>
-                    {item.type}
+{item.type} - ₹{fares[item.type.toLowerCase().replace(/\s+/g, '')] || 'N/A'}
+
                 </Text>
             </View>
         </TouchableOpacity>
@@ -65,9 +81,9 @@ const BookingScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
             <View style={styles.mapContainer}>
-            <AppMapView
+                <AppMapView
                     currentLocationCoords={markerCoords}
-                    destinationCoords={destinationCoords}
+                    destinationCoords={dropoffCoords}
                 />
             </View>
 

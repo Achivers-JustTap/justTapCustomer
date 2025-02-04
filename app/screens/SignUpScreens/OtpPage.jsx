@@ -1,9 +1,12 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { setCustomerData } from '../../../storemanagement_customer/actions_customer/customerActions';
 
 const OtpPage = ({ route, navigation }) => {
   const { phoneNumber } = route.params; // Get the phoneNumber parameter
   const [otp, setOtp] = useState('');
+  const dispatch = useDispatch();
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -14,14 +17,16 @@ const OtpPage = ({ route, navigation }) => {
       try {
         const response = await fetch(`http://192.168.0.107:5000/api/users/check-mobile?phoneNumber=${phoneNumber}`);
         const result = await response.json();
-
+        console.log("result",result)
         if (result.exists) {
+          dispatch(setCustomerData(result.user)); // Store user info in Redux
+          
           Alert.alert('Success', 'Phone number exists.', [
-            { text: 'OK', onPress: () => navigation.navigate('DisplayScreen', { name: 'Charitha' }) }
+            { text: 'OK', onPress: () => navigation.navigate('DisplayScreen', { name: result.user.name }) }
           ]);
         } else {
           Alert.alert('Success', 'Phone number does not exist. Redirecting to Sign Up.', [
-            { text: 'OK', onPress: () => navigation.navigate('SignUpPage',{phoneNumber}) }
+            { text: 'OK', onPress: () => navigation.navigate('SignUpPage', { phoneNumber }) }
           ]);
         }
       } catch (error) {
@@ -45,10 +50,7 @@ const OtpPage = ({ route, navigation }) => {
           value={otp}
           onChangeText={setOtp}
         />
-        <TouchableOpacity
-          style={styles.loginButton}
-          onPress={verifyOtp}
-        >
+        <TouchableOpacity style={styles.loginButton} onPress={verifyOtp}>
           <Text style={styles.buttonText}>Verify</Text>
         </TouchableOpacity>
       </View>

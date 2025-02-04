@@ -4,17 +4,20 @@ import AppMapView from '../afterLoginScreens/AppMapView'; // Import the new AppM
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const LocationMapScreen = ({ route, navigation }) => {
-    const { currentLocationCoords, destinationCoords, destination } = route.params;
+    const { pickupCoords, dropoffCoords,pickupName,dropoffName } = route.params;
+    console.log("pickupCoords, dropoffCoords ", pickupCoords, dropoffCoords)
 
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
     }, [navigation]);
+   
 
     const handleConfirm = () => {
         navigation.navigate('BookingScreen', {
-            markerCoords: currentLocationCoords,
-            destinationCoords,
-            destination,
+            markerCoords: pickupCoords,
+            dropoffCoords,
+            pickupName,
+            dropoffName
         });
     };
 
@@ -29,8 +32,8 @@ const LocationMapScreen = ({ route, navigation }) => {
             {/* Pass the current location and destination to AppMapView */}
             <View style={styles.mapContainer}>
                 <AppMapView
-                    currentLocationCoords={currentLocationCoords}
-                    destinationCoords={destinationCoords}
+                    currentLocationCoords={pickupCoords}
+                    destinationCoords={dropoffCoords}
                 />
             </View>
 

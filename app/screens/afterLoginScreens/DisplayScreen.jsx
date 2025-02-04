@@ -1,10 +1,44 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, SafeAreaView } from 'react-native';
+import socket from '../../../socket'
+import { useSelector } from 'react-redux';
 
 const DisplayScreen = ({ route, navigation }) => {
+  const{customer}  = useSelector((state)=>state.customer)
+  console.log("customer", customer)
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
+//   useEffect(() => {
+//     // Emit the 'register-socket' event when the user logs in
+//     socket.emit('register-socket', {
+//         userId: customer._id,
+//         userType: 'user'
+//     });
+
+//     // Listen for ride notifications
+//     // socket.on('new-ride', (ride={
+//     //     "rideId": "64b435f5d3a56b7d930f3c61",
+//     //     "pickup": "123 Main Street, Springfield",
+//     //     "destination": "456 Elm Street, Springfield",
+//     //     "vehicleType": "car"
+//     // }) => {
+//     //     console.log('New ride request:', ride);
+//     //     // Add logic to display the ride request in the app
+//     // });
+
+   
+// }, []);
+useEffect(() => {
+  if (customer && customer._id) {
+      socket.emit('register-socket', {
+          userId: customer._id,
+          userType: 'user'
+      });
+  } else {
+      console.error("User ID is undefined, cannot register socket");
+  }
+}, [customer]);
 
   const { name, isSignUp } = route.params || { name: '', isSignUp: false };
 
