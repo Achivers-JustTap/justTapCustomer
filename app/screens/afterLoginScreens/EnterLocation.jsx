@@ -27,17 +27,17 @@ const EnterLocation = ({ route, navigation }) => {
         }
 
         try {
-<<<<<<< HEAD
+
             const response = await axios.get(`${API_URL}${input}`);
             setSuggestions(response.data.slice(0, 5) || []);
-=======
+
             const response = await axios.get(`http://192.168.29.13:5000/api/maps/get-suggestions?input=${input}`);
             if (response.data && response.data.length > 0) {
                 setSuggestions(response.data.slice(0, 5)); // Limit to 5 suggestions
             } else {
                 setSuggestions([]);
             }
->>>>>>> 231802818744a9dd4a19530a01b74f97541aa0c6
+
         } catch (error) {
             console.error('Error fetching suggestions:', error);
             Alert.alert('Error fetching suggestions');
