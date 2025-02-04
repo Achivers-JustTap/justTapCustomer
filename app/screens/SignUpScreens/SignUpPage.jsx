@@ -21,6 +21,7 @@ const SignUp = ({ navigation, route }) => {
     navigation.setOptions({ headerShown: false });
   }, [navigation]);
 
+
   const handleSignUp = async () => {
     if (!name.trim() || !email.trim() || !dateOfBirthString.trim()) {
       Alert.alert('Error', 'Please fill in all fields');
@@ -34,7 +35,6 @@ const SignUp = ({ navigation, route }) => {
       gender,
       dateOfBirth: dateOfBirthString,
     };
-    console.log(" customerData ", customerData);
     try {
       // Make API request
       const response = await axios.post('http://192.168.29.13:5000/api/users/register', customerData);

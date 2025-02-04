@@ -1,98 +1,94 @@
-import { StyleSheet, SafeAreaView, View, Text, TextInput, TouchableOpacity, Alert, FlatList } from 'react-native';
+import {
+    StyleSheet, SafeAreaView, View, Text, TextInput,
+    TouchableOpacity, Alert, FlatList
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
-import * as Location from 'expo-location'; 
+import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 
+const API_URL = 'http://192.168.0.107:5000/api/maps/get-suggestions?input=';
+
 const EnterLocation = ({ route, navigation }) => {
-    const { currentLocation } = route.params;
-    const [currentLocationText, setCurrentLocationText] = useState(currentLocation);
+    const { currentLocation } = route.params || {};
+    const [currentLocationText, setCurrentLocationText] = useState(currentLocation || '');
     const [destination, setDestination] = useState('');
-    const [currentLocationCoords, setCurrentLocationCoords] = useState(null);
     const [suggestions, setSuggestions] = useState([]);
+    const [currentLocationSuggestions, setCurrentLocationSuggestions] = useState([]);
 
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
     }, [navigation]);
 
-    const getCurrentLocationCoordinates = async (locationInput) => {
-        try {
-            const searchResults = await Location.geocodeAsync(locationInput);
-            if (searchResults.length === 0) {
-                Alert.alert('Current location not found');
-                return null;
-            }
-            return searchResults[0]; 
-        } catch (error) {
-            Alert.alert('Error fetching current location');
-            return null;
-        }
-    };
-
-    const getDestinationCoordinates = async (destination) => {
-        try {
-            const searchResults = await Location.geocodeAsync(destination);
-            if (searchResults.length === 0) {
-                Alert.alert('Location not found');
-                return null;
-            }
-            return searchResults[0]; 
-        } catch (error) {
-            Alert.alert('Error fetching location');
-            return null;
-        }
-    };
-
-    const fetchSuggestions = async (input) => {
+    const fetchSuggestions = async (input, setSuggestions) => {
         if (input.trim() === '') {
             setSuggestions([]);
             return;
         }
 
         try {
+<<<<<<< HEAD
+            const response = await axios.get(`${API_URL}${input}`);
+            setSuggestions(response.data.slice(0, 5) || []);
+=======
             const response = await axios.get(`http://192.168.29.13:5000/api/maps/get-suggestions?input=${input}`);
             if (response.data && response.data.length > 0) {
                 setSuggestions(response.data.slice(0, 5)); // Limit to 5 suggestions
             } else {
                 setSuggestions([]);
             }
+>>>>>>> 231802818744a9dd4a19530a01b74f97541aa0c6
         } catch (error) {
             console.error('Error fetching suggestions:', error);
             Alert.alert('Error fetching suggestions');
         }
     };
 
-    const handleConfirm = async () => {
-        if (currentLocationText.trim() === '') {
-            Alert.alert('Please enter a current location');
-            return;
-        }
-    
-        const locationCoords = await getCurrentLocationCoordinates(currentLocationText);
-        if (!locationCoords) return; 
-    
-        setCurrentLocationCoords(locationCoords);
-        
-        if (destination.trim() === '') {
-            Alert.alert('Please enter a destination');
-            return;
-        }
-    
-        const destinationCoords = await getDestinationCoordinates(destination);
-        if (destinationCoords) {
-            navigation.navigate('LocationMapScreen', {
-                currentLocationCoords: { latitude: locationCoords.latitude, longitude: locationCoords.longitude },
-                destinationCoords: { latitude: destinationCoords.latitude, longitude: destinationCoords.longitude },
-                destination: destination,
-                currentLocationText: currentLocationText,
-                destinationText: destination,
-            });
+    const getCoordinates = async (locationInput) => {
+        try {
+            const searchResults = await Location.geocodeAsync(locationInput);
+            if (searchResults.length === 0) {
+                Alert.alert('Location not found');
+                return null;
+            }
+            return {
+                latitude: searchResults[0].latitude,
+                longitude: searchResults[0].longitude,
+                name: locationInput
+            };
+        } catch (error) {
+            Alert.alert('Error fetching location coordinates');
+            return null;
         }
     };
 
-    const handleSuggestionPress = (suggestion) => {
-        setDestination(suggestion); // Set the selected suggestion as the destination
-        setSuggestions([]); // Clear suggestions
+    const handleSuggestionPress = (suggestion, isPickup = false) => {
+        if (isPickup) {
+            setCurrentLocationText(suggestion);
+            setCurrentLocationSuggestions([]);
+        } else {
+            setDestination(suggestion);
+            setSuggestions([]);
+        }
+    };
+
+    const handleConfirm = async () => {
+        if (!currentLocationText.trim() || !destination.trim()) {
+            Alert.alert('Please enter both pickup and destination locations');
+            return;
+        }
+
+        const pickup = await getCoordinates(currentLocationText);
+        const dropoff = await getCoordinates(destination);
+
+        if (pickup && dropoff) {
+            navigation.navigate('LocationMapScreen', {
+                pickupCoords: { latitude: pickup.latitude, longitude: pickup.longitude },
+                dropoffCoords: { latitude: dropoff.latitude, longitude: dropoff.longitude },
+                pickupName: pickup.name,
+                dropoffName: dropoff.name
+            });
+        }
     };
 
     return (
@@ -104,30 +100,53 @@ const EnterLocation = ({ route, navigation }) => {
             </View>
 
             <View style={styles.inputContainer}>
-                <TouchableOpacity style={styles.searchBackground}>
+                <View style={styles.inputWrapper}>
                     <TextInput
-                        style={styles.currentLocation}
-                        placeholder="Your Source Location"
+                        style={styles.input}
+                        placeholder="Your Pickup Location"
                         placeholderTextColor="white"
                         value={currentLocationText}
-                        onChangeText={setCurrentLocationText}
+                        onChangeText={(text) => {
+                            setCurrentLocationText(text);
+                            fetchSuggestions(text, setCurrentLocationSuggestions);
+                        }}
                     />
-                </TouchableOpacity>
+                    {currentLocationText !== '' && (
+                        <TouchableOpacity onPress={() => setCurrentLocationText('')} style={styles.clearButton}>
+                            <Icon name="close-circle" size={20} color="white" />
+                        </TouchableOpacity>
+                    )}
+                </View>
+                {currentLocationSuggestions.length > 0 && (
+                    <FlatList
+                        data={currentLocationSuggestions}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity onPress={() => handleSuggestionPress(item, true)} style={styles.suggestionItem}>
+                                <Text style={styles.suggestionText}>{item}</Text>
+                            </TouchableOpacity>
+                        )}
+                        style={styles.suggestionsList}
+                    />
+                )}
 
-                <TouchableOpacity style={[styles.searchBackground, { marginTop: 5 }]}>
+                <View style={[styles.inputWrapper, { marginTop: 5 }]}>
                     <TextInput
-                        style={styles.destination}
+                        style={styles.input}
                         placeholder="Enter Destination"
                         placeholderTextColor="white"
                         value={destination}
                         onChangeText={(text) => {
                             setDestination(text);
-                            fetchSuggestions(text); // Fetch suggestions on input change
+                            fetchSuggestions(text, setSuggestions);
                         }}
                     />
-                </TouchableOpacity>
-
-                {/* Suggestions List */}
+                    {destination !== '' && (
+                        <TouchableOpacity onPress={() => setDestination('')} style={styles.clearButton}>
+                            <Icon name="close-circle" size={20} color="white" />
+                        </TouchableOpacity>
+                    )}
+                </View>
                 {suggestions.length > 0 && (
                     <FlatList
                         data={suggestions}
@@ -175,37 +194,22 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         paddingTop: 40, 
     },
-    searchBackground: {
-        backgroundColor: 'white',
-        borderColor: '#0F4A97',
-        borderWidth: 3,
-        borderRadius: 25,
-        height: 45,
-        width: 300,
-        zIndex: 15,
-        justifyContent: 'center',
+    inputWrapper: {
+        flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 0, 
-    },
-    currentLocation: {
-        height: 35,
-        width: 290,
-        borderColor: '#0F4A97',
-        borderWidth: 1,
-        borderRadius: 20,
         backgroundColor: '#0F4A97',
-        paddingHorizontal: 5,
-        color: 'white',
-    },
-    destination: {
-        height: 35,
-        width: 290,
-        borderColor: '#0F4A97',
-        borderWidth: 1,
         borderRadius: 20,
-        backgroundColor: '#0F4A97',
-        paddingHorizontal: 5,
+        width: 300,
+        paddingHorizontal: 10,
+    },
+    input: {
+        flex: 1,
+        height: 40,
         color: 'white',
+        paddingHorizontal: 10,
+    },
+    clearButton: {
+        padding: 5,
     },
     suggestionsList: {
         width: 300,
