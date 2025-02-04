@@ -1,18 +1,62 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useRef } from 'react';
+import { 
+  StyleSheet, Text, View, TouchableOpacity, 
+  Image, ScrollView, Animated, Dimensions 
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
+const { height } = Dimensions.get('window');
+
 const Activity = () => {
   const navigation = useNavigation();
+  const [isVisible, setIsVisible] = useState(false);
+  const [tripDetails, setTripDetails] = useState(null); 
+  const slideAnim = useRef(new Animated.Value(height)).current;
+
+ 
+  const fetchTripDetails = () => {
+    
+    const exampleData = {
+      rideType: 'Auto Ride to Hitech City',
+      date: 'Jan 8, 2025',
+      time: '10:30 AM',
+      totalFare: '₹220.00',
+      pickupPoint: 'KPHB',
+      pickupTime: '10:30 AM',
+      destination: 'Hitech City',
+      dropoffTime: '10:50 AM',
+    };
+
+    setTripDetails(exampleData); 
+  };
+
+
+  const openSlide = () => {
+    fetchTripDetails(); 
+    setIsVisible(true);
+    Animated.timing(slideAnim, {
+      toValue: height * 0.2,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
+  };
+
+ 
+  const closeSlide = () => {
+    Animated.timing(slideAnim, {
+      toValue: height, 
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => setIsVisible(false));
+  };
 
   return (
     <LinearGradient colors={['#fff', '#fff']} style={styles.container}>
       <LinearGradient colors={['#0D47A1', '#1976D2']} style={styles.header}>
-      <Icon name="time" size={30} color="#fff" />
+        <Icon name="time" size={30} color="#fff" />
         <Text style={styles.headerTitle}>Your Activity</Text>
-        
       </LinearGradient>
 
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -49,31 +93,64 @@ const Activity = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Past Section */}
         <Text style={styles.sectionTitle}>PAST RIDES</Text>
-        <View style={[styles.historyCard, styles.cardWithShadow]}>
-          <Image
-            style={styles.historyImage}
-            source={require('../../../assets/images/icons/auto.png')}
-          />
+        <TouchableOpacity style={[styles.historyCard, styles.cardWithShadow]} onPress={openSlide}>
+          <Image style={styles.historyImage} source={require('../../../assets/images/icons/auto.png')} />
           <View style={styles.historyDetails}>
             <Text style={styles.historyTitle}>KPHB</Text>
             <Text style={styles.historyInfo}>Jan 8, 2025, 10:30 AM</Text>
             <Text style={styles.historyPrice}>₹220.00</Text>
           </View>
-          <TouchableOpacity
-            style={styles.rebookButton}
-            onPress={() => navigation.navigate('RebookScreen')}
-          >
+          <TouchableOpacity style={styles.rebookButton} onPress={() => navigation.navigate('RebookScreen')}>
             <Icon name="refresh-outline" size={20} color="#fff" />
           </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
+
+  
+      {isVisible && tripDetails && (
+        <Animated.View style={[styles.bottomSheet, { top: slideAnim }]}>
+          <View style={styles.bottomHeader}>
+            <Text style={styles.bottomTitle}>Trip Details</Text>
+            <TouchableOpacity onPress={closeSlide}>
+              <Icon name="close" size={24} color="#fff" />
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.grayBox}></View>
+          <View style={styles.bottomContainer}>
+
+          <Text style={styles.rideType}>{tripDetails.rideType}</Text>
+
+          <View style={styles.row}>
+            <Text style={styles.dateTimeText}>{tripDetails.date}</Text>
+            <Text style={styles.dateTimeText}>{tripDetails.time}</Text>
+          </View>
+
+    
+          <Text style={styles.totalFare}>Total Fare: {tripDetails.totalFare}</Text>
+
+        
+          <View style={styles.infoRow}>
+            <Text style={styles.pickupLabel}>Pickup Point:</Text>
+            <Text style={styles.location}>{tripDetails.pickupPoint}</Text>
+            <Text style={styles.pickupTime}>{tripDetails.pickupTime}</Text>
+          </View>
+
+          <View style={styles.infoRow}>
+            <Text style={styles.destinationLabel}>Destination:</Text>
+            <Text style={styles.location}>{tripDetails.destination}</Text>
+            <Text style={styles.dropoffTime}>{tripDetails.dropoffTime}</Text>
+          </View>
+          </View>
+        </Animated.View>
+      )}
     </LinearGradient>
-  );
+  ); 
 };
 
 export default Activity;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -81,15 +158,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    margin:0,
-    paddingLeft:20,
+    margin: 0,
+    paddingLeft: 20,
     flexDirection: 'row',
     paddingVertical: 20,
     elevation: 5,
   },
   headerTitle: {
     fontSize: 26,
-    top:-3,
+    top: -3,
     left: 5,
     fontWeight: '700',
     color: '#fff',
@@ -113,7 +190,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     marginRight: 10,
     alignItems: 'center',
-    overflow: 'hidden', 
+    overflow: 'hidden',
   },
   cardBackground: {
     flex: 1,
@@ -128,24 +205,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 5,
-  },
-  cardIcon: {
-    backgroundColor: '#1565C0',
-    borderRadius: 50,
-    padding: 10,
-    marginBottom: 10,
-  },
-  cardText: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#fff',
-    textAlign: 'center',
-  },
-  cardSubtitle: {
-    fontSize: 12,
-    color: '#d9e7f8',
-    textAlign: 'center',
-    marginTop: 5,
   },
   historyCard: {
     flexDirection: 'row',
@@ -185,5 +244,91 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
     elevation: 3,
+  },
+  bottomSheet: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    height: height * 0.35,
+    backgroundColor: '#1976D2',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  bottomHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    padding: 20,
+  },
+  bottomTitle: {
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#fff',
+  },
+  grayBox: {
+    backgroundColor: '#B0BEC5',
+    height: 200,
+    borderRadius: 10,
+    top:-40,
+    margin: 20,
+  },
+  bottomContainer:{
+    top:-53,
+     backgroundColor:'white',
+     height:height * 0.6,
+     padding:20,
+     
+  },
+  rideType: {
+    marginTop: 10,
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#000',
+    marginBottom: 5,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  dateTimeText: {
+    fontSize: 16,
+    color: '#000',
+  },
+  totalFare: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#000',
+    marginVertical: 5,
+  },
+  infoRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+    alignItems: 'center',
+  },
+  pickupLabel: {
+    fontSize: 16,
+    color: 'green',
+    fontWeight: '600',
+  },
+  destinationLabel: {
+    fontSize: 16,
+    color: 'red',
+    fontWeight: '600',
+  },
+  location: {
+    fontSize: 16,
+    color: '#000',
+    flex: 1,
+    marginLeft: 5,
+  },
+  pickupTime: {
+    fontSize: 16,
+    color: '#000',
+  },
+  dropoffTime: {
+    fontSize: 16,
+    color: '#000',
   },
 });

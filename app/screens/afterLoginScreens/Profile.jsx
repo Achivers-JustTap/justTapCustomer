@@ -63,18 +63,42 @@ const Profile = ({ navigation }) => {
         },
     ];
 
+    const renderStars = (rating) => {
+        const stars = [];
+        for (let i = 1; i <= 5; i++) {
+            stars.push(
+                <Icon
+                    key={i}
+                    name={i <= rating ? 'star' : 'star-outline'}
+                    size={20}
+                    color="#FFD700"
+                    style={styles.starIcon}
+                />
+            );
+        }
+        return stars;
+    };
+
     const renderItem = ({ item }) => {
         if (item.type === 'header') {
             return (
                 <View style={styles.profileHeaderContainer}>
+                <View style={styles.profileInfoContainer}>
                     <Text style={styles.profileHeader}>Charitha</Text>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('EditProfilePage')}
-                        style={styles.profileIconTouchable}
-                    >
-                        <Icon name={item.iconName} size={60} color="#0F4A97" style={styles.profileIcon} />
-                    </TouchableOpacity>
+                    <View style={styles.ratingContainer}>
+                        <Text style={styles.ratingText}>0.0</Text>
+                        <View style={styles.starsContainer}>
+                            {renderStars(0)} 
+                        </View>
+                    </View>
                 </View>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('EditProfilePage')}
+                    style={styles.profileIconTouchable}
+                >
+                    <Icon name={item.iconName} size={60} color="#0F4A97" style={styles.profileIcon} />
+                </TouchableOpacity>
+            </View>
             );
         }
         if (item.type === 'logout') {
@@ -148,12 +172,18 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         marginBottom: 10,
     },
+    profileInfoContainer: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
     profileHeader: {
+        top: 10,
         fontSize: 24,
         color: '#0F4A97',
-        fontWeight: 'bold',
-        marginLeft: 10,
+        fontWeight: 'bold', 
     },
+    
     profileIcon: {
         marginRight: 20,
     },
@@ -219,6 +249,24 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'red',
         marginLeft: 8,
+    },
+    ratingContainer: {
+        flexDirection: 'row',
+        marginTop: 10,
+        alignItems: 'center',
+    },
+    ratingText: {
+        top:3.5,
+        marginLeft: 5,
+        fontSize: 18,
+        color: '#0F4A97',
+        marginBottom: 5,
+    },
+    starsContainer: {
+        flexDirection: 'row',
+    },
+    starIcon: {
+        marginHorizontal: 2,
     },
 });
 

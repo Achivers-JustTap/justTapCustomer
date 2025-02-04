@@ -44,7 +44,6 @@ const RideTrackingScreen = ({ navigation }) => {
       { cancelable: true }
     );
   };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
