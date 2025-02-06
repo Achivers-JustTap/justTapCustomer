@@ -53,6 +53,11 @@ import ChangePasswordsPage from './app/screens/ProfileScreens/EditProfileScreens
 import AuthenticationsPage from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/AuthenticationsPage';
 import TwoStepVerification from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/TwoStepVerification';
 import FeedbackAndReport from './app/screens/ProfileScreens/EditProfileScreens/SecurityScreens/FeedbackAndReport';
+import RatingPage from './app/screens/afterLoginScreens/RatingPage';
+import WaitingForCaptainScreen from './app/screens/afterLoginScreens/WaitingForCaptainScreen';
+import RideConfirmedPage from './app/screens/afterLoginScreens/RideConfirmedPage';
+import DriverArrivingPage from './app/screens/afterLoginScreens/DriverArrivingPage';
+import RideTrackingScreen from './app/screens/afterLoginScreens/RideTrackingScreen';
 
 
 
@@ -82,6 +87,11 @@ export default function App() {
        <Stack.Screen name="EnterLocation" component={EnterLocation} />
        <Stack.Screen name="LocationMapScreen" component={LocationMapScreen} />
        <Stack.Screen name="BookingScreen" component={BookingScreen} />
+       <Stack.Screen name="WaitingForCaptainScreen" component={WaitingForCaptainScreen} />
+       <Stack.Screen name="RideConfirmedPage" component={RideConfirmedPage} />
+       <Stack.Screen name="DriverArrivingPage" component={DriverArrivingPage} />
+       <Stack.Screen name="RideTrackingScreen" component={RideTrackingScreen} />
+       <Stack.Screen name="RatingPage" component={RatingPage} />
        <Stack.Screen name="ServicesScreen" component={ServicesScreen} />
        <Stack.Screen name="Intercity" component={Intercity} />
        <Stack.Screen name="Rentals" component={Rentals} />

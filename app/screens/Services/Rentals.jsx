@@ -63,7 +63,7 @@ const Rentals = () => {
   };
 
   const handleChooseVehicle = () => {
-   
+   navigation.navigate('EnterLocation')
   };
 
   const handleBack = () => {
@@ -167,7 +167,7 @@ const Rentals = () => {
               </View>
 
               <TouchableOpacity style={styles.chooseVehicleButton} onPress={handleChooseVehicle}>
-                <Text style={styles.chooseVehicleText}>Choose Vehicle</Text>
+                <Text style={styles.chooseVehicleText}>Choose Vehicle For Trip</Text>
               </TouchableOpacity>
             </View>
           </LinearGradient>
