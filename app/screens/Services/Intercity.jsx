@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DateTimePicker from '@react-native-community/datetimepicker';
+// import DateTimePicker from '@react-native-community/datetimepicker'; // Commented out DateTimePicker import
 
 const Intercity = () => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -12,8 +12,7 @@ const Intercity = () => {
   const [pickupTime, setPickupTime] = useState(new Date());
   const [dropoffDate, setDropoffDate] = useState(new Date());
   const [dropoffTime, setDropoffTime] = useState(new Date());
-  
-  // New states to keep track of previous values
+
   const [prevSelectedTrip, setPrevSelectedTrip] = useState('oneWay');
   const [prevPickupDate, setPrevPickupDate] = useState(new Date());
   const [prevPickupTime, setPrevPickupTime] = useState(new Date());
@@ -107,44 +106,44 @@ const Intercity = () => {
               <View style={[styles.indicator, { left: selectedTrip === 'oneWay' ? 0 : '50%' }]} />
             </View>
 
-            {/* One Way Trip Input Fields */}
+            {/* One Way Input Fields */}
             {selectedTrip === 'oneWay' && (
               <View style={styles.oneWayContainer}>
                 <TouchableOpacity style={styles.timeDateBox} onPress={() => setShowPickupDatePicker(true)}>
                   <Text style={styles.label}>Pick Up Date</Text>
                   <Text>{pickupDate.toLocaleDateString()}</Text>
                 </TouchableOpacity>
-                {showPickupDatePicker && (
-                  <DateTimePicker
-                    value={pickupDate}
-                    mode="date"
-                    display="default"
-                    onChange={(event, selectedDate) => {
-                      setShowPickupDatePicker(false);
-                      if (selectedDate) {
-                        setPickupDate(selectedDate);
-                      }
-                    }}
-                  />
-                )}
-                
+                {/* <DateTimePicker
+                  value={pickupDate}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowPickupDatePicker(false);
+                    if (selectedDate) {
+                      setPickupDate(selectedDate);
+                    }
+                  }}
+                /> */}
+
                 <TouchableOpacity style={styles.timeDateBox} onPress={() => setShowPickupTimePicker(true)}>
                   <Text style={styles.label}>Pick Up Time</Text>
                   <Text>{pickupTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                 </TouchableOpacity>
-                {showPickupTimePicker && (
-                  <DateTimePicker
-                    value={pickupTime}
-                    mode="time"
-                    display="default"
-                    onChange={(event, selectedTime) => {
-                      setShowPickupTimePicker(false);
-                      if (selectedTime) {
-                        setPickupTime(selectedTime);
-                      }
-                    }}
-                  />
-                )}
+                {/* <DateTimePicker
+                  value={pickupTime}
+                  mode="time"
+                  display="default"
+                  onChange={(event, selectedTime) => {
+                    setShowPickupTimePicker(false);
+                    if (selectedTime) {
+                      setPickupTime(selectedTime);
+                    }
+                  }}
+                /> */}
+
+                {/* Replaced DateTimePicker with TextInput for Date */}
+               
+
               </View>
             )}
 
@@ -156,37 +155,36 @@ const Intercity = () => {
                     <Text style={styles.label}>Pick Up Date</Text>
                     <Text>{pickupDate.toLocaleDateString()}</Text>
                   </TouchableOpacity>
-                  {showPickupDatePicker && (
-                    <DateTimePicker
-                      value={pickupDate}
-                      mode="date"
-                      display="default"
-                      onChange={(event, selectedDate) => {
-                        setShowPickupDatePicker(false);
-                        if (selectedDate) {
-                          setPickupDate(selectedDate);
-                        }
-                      }}
-                    />
-                  )}
-                  
+                  {/* <DateTimePicker
+                    value={pickupDate}
+                    mode="date"
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      setShowPickupDatePicker(false);
+                      if (selectedDate) {
+                        setPickupDate(selectedDate);
+                      }
+                    }}
+                  /> */}
+                  {/* Replaced DateTimePicker with TextInput for Date */}
+                
+
                   <TouchableOpacity style={styles.timeDateBox} onPress={() => setShowPickupTimePicker(true)}>
                     <Text style={styles.label}>Pick Up Time</Text>
                     <Text>{pickupTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                   </TouchableOpacity>
-                  {showPickupTimePicker && (
-                    <DateTimePicker
-                      value={pickupTime}
-                      mode="time"
-                      display="default"
-                      onChange={(event, selectedTime) => {
-                        setShowPickupTimePicker(false);
-                        if (selectedTime) {
-                          setPickupTime(selectedTime);
-                        }
-                      }}
-                    />
-                  )}
+                  {/* <DateTimePicker
+                    value={pickupTime}
+                    mode="time"
+                    display="default"
+                    onChange={(event, selectedTime) => {
+                      setShowPickupTimePicker(false);
+                      if (selectedTime) {
+                        setPickupTime(selectedTime);
+                      }
+                    }}
+                  /> */}
+                
                 </View>
 
                 <View style={styles.timeDateRow}>
@@ -194,37 +192,35 @@ const Intercity = () => {
                     <Text style={styles.label}>Drop Off Date</Text>
                     <Text>{dropoffDate.toLocaleDateString()}</Text>
                   </TouchableOpacity>
-                  {showDropoffDatePicker && (
-                    <DateTimePicker
-                      value={dropoffDate}
-                      mode="date"
-                      display="default"
-                      onChange={(event, selectedDate) => {
-                        setShowDropoffDatePicker(false);
-                        if (selectedDate) {
-                          setDropoffDate(selectedDate);
-                        }
-                      }}
-                    />
-                  )}
-                  
+                  {/* <DateTimePicker
+                    value={dropoffDate}
+                    mode="date"
+                    display="default"
+                    onChange={(event, selectedDate) => {
+                      setShowDropoffDatePicker(false);
+                      if (selectedDate) {
+                        setDropoffDate(selectedDate);
+                      }
+                    }}
+                  /> */}
+                 
+
                   <TouchableOpacity style={styles.timeDateBox} onPress={() => setShowDropoffTimePicker(true)}>
                     <Text style={styles.label}>Drop Off Time</Text>
                     <Text>{dropoffTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                   </TouchableOpacity>
-                  {showDropoffTimePicker && (
-                    <DateTimePicker
-                      value={dropoffTime}
-                      mode="time"
-                      display="default"
-                      onChange={(event, selectedTime) => {
-                        setShowDropoffTimePicker(false);
-                        if (selectedTime) {
-                          setDropoffTime(selectedTime);
-                        }
-                      }}
-                    />
-                  )}
+                  {/* <DateTimePicker
+                    value={dropoffTime}
+                    mode="time"
+                    display="default"
+                    onChange={(event, selectedTime) => {
+                      setShowDropoffTimePicker(false);
+                      if (selectedTime) {
+                        setDropoffTime(selectedTime);
+                      }
+                    }}
+                  /> */}
+                 
                 </View>
               </View>
             )}

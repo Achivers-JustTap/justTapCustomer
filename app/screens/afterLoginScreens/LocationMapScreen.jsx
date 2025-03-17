@@ -5,7 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const LocationMapScreen = ({ route, navigation }) => {
     const { pickupCoords, dropoffCoords,pickupName,dropoffName } = route.params;
-    console.log("pickupCoords, dropoffCoords ", pickupCoords, dropoffCoords)
+    const { receiverName, receiverPhone, instructions } = route.params;
+
 
     useEffect(() => {
         navigation.setOptions({ headerShown: false });

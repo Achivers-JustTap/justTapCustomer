@@ -3,25 +3,37 @@ import { StyleSheet, Text, View, FlatList, TouchableOpacity, Image } from 'react
 
 const paymentMethodsData = [
   { id: '1', name: 'Cash', image: require('../../../assets/images/cash.png') },
-  { id: '2', name: 'Credit Card'},
-  { id: '3', name: 'Debit Card' },
-  { id: '4', name: 'Google Pay' },
+  { id: '2', name: 'UPI Payments', image: require('../../../assets/images/icons/UPI_Logo.png')},
 ];
 
-  const PaymentMethods = ({ navigation }) => {
-    const renderPaymentMethodItem = ({ item }) => (
-      <TouchableOpacity 
-        style={styles.paymentMethodItem}
-        onPress={() => navigation.navigate('BookingScreen', { selectedPaymentMethod: item })} // Pass the selected item
-      >
-        <Image source={item.image} style={styles.paymentMethodImage} />
-        <Text style={styles.paymentMethodName}>{item.name}</Text>
-      </TouchableOpacity>
-    );
+const PaymentMethods = ({ navigation }) => {
+  const renderPaymentMethodItem = ({ item }) => (
+    <TouchableOpacity 
+      style={styles.paymentMethodItem}
+      onPress={() => navigation.navigate('BookingScreen', { selectedPaymentMethod: item })} 
+    >
+
+      <Image 
+        source={item.image} 
+        style={[
+          styles.paymentMethodImage, 
+          item.name === 'UPI Payments' && styles.upiImage 
+        ]} 
+      />
+      <Text style={styles.paymentMethodName}>{item.name}</Text>
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Select Payment Method</Text>
+      <View style={styles.walletContainer}>
+        <Text style={styles.walletHeading}>Wallet</Text>
+        <Text style={styles.walletContainerText}>₹0.00</Text>
+        <TouchableOpacity style={styles.walletButton}><Text style={styles.walletButtonText}>+ Add Money</Text></TouchableOpacity>
+      </View>
+
+      <Text style={{fontSize: 20,fontWeight: 'bold',marginBottom: 16}}>Other Payment Methods</Text>
       <FlatList
         data={paymentMethodsData}
         keyExtractor={(item) => item.id}
@@ -55,10 +67,45 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
+  walletContainer: {
+    padding: 20,
+    backgroundColor:'#dae7f8',
+    borderRadius: 20,
+    marginBottom:20,
+  },
+  walletHeading:{
+  fontSize: 20,
+  fontWeight: 'bold',
+  },
+  walletContainerText:{
+    fontSize: 18,
+    color: 'grey',
+    fontWeight: 'bold',
+    marginTop: 10,
+
+  },
+  walletButton:{
+    backgroundColor:'#0F4A97',
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  walletButtonText:{
+    color:'#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  
+
   paymentMethodImage: {
     width: 30,
     height: 30,
     marginRight: 10,
+  },
+  upiImage: {
+    width: 37,
+    height: 10
   },
   paymentMethodName: {
     fontSize: 18,

@@ -5,12 +5,13 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { ThemeProvider, useTheme } from './app/Context/ThemeContext'
 import WelcomeScreens from './app/screens/SignUpScreens/WelcomeScreens';
 import SignUpPage from './app/screens/SignUpScreens/SignUpPage';
 import Login from './app/screens/SignUpScreens/Login';
 import OtpPage from './app/screens/SignUpScreens/OtpPage';
 import TabNavigationComponent from './app/screens/afterLoginScreens/TabNavigationComponent';
-import { useState } from 'react';
+import { useState} from 'react';
 import { UserLocationProvider } from './app/Context/UserLocationContext';
 import DisplayScreen from './app/screens/afterLoginScreens/DisplayScreen';
 import ServicesScreen from './app/screens/Services/ServicesScreen';
@@ -35,14 +36,12 @@ import RebookScreen from './app/screens/ActivityScreens/RebookScreen';
 import AddHomePage from './app/screens/ProfileScreens/AppSettingsScreens/AddHomePage';
 import AddWorkPage from './app/screens/ProfileScreens/AppSettingsScreens/AddWorkPage';
 import ShortcutsPage from './app/screens/ProfileScreens/AppSettingsScreens/ShortcutsPage';
-import PrivacyPage from './app/screens/ProfileScreens/AppSettingsScreens/PrivacyPage';
 import AppearancePage from './app/screens/ProfileScreens/AppSettingsScreens/AppearancePage';
 import InvoiceInformationPage from './app/screens/ProfileScreens/AppSettingsScreens/InvoiceInformationPage';
 import CommunicationPage from './app/screens/ProfileScreens/AppSettingsScreens/CommunicationPage';
 import SafetyPreferencePage from './app/screens/ProfileScreens/SafetyScreens/SafetyPreferencePage';
 import ManageTrustedContactsPage from './app/screens/ProfileScreens/SafetyScreens/ManageTrustedContactsPage';
 import RideCheckPage from './app/screens/ProfileScreens/SafetyScreens/RideCheckPage';
-import ReservePage from './app/screens/ProfileScreens/RidePreferencesScreens/ReservePage';
 import DriverNearbyAlertPage from './app/screens/ProfileScreens/RidePreferencesScreens/DriverNearbyAlertPage';
 import EditProfilePage from './app/screens/ProfileScreens/EditProfileScreens/EditProfilePage';
 import UpdateEmailId from './app/screens/ProfileScreens/EditProfileScreens/UpdateEmailId';
@@ -58,16 +57,21 @@ import WaitingForCaptainScreen from './app/screens/afterLoginScreens/WaitingForC
 import RideConfirmedPage from './app/screens/afterLoginScreens/RideConfirmedPage';
 import DriverArrivingPage from './app/screens/afterLoginScreens/DriverArrivingPage';
 import RideTrackingScreen from './app/screens/afterLoginScreens/RideTrackingScreen';
-
+import SendParcel from './app/screens/Services/ParcelScreens/SendParcel';
+import ReceiveParcel from './app/screens/Services/ParcelScreens/ReceiveParcel';
+import PickFromStore from './app/screens/Services/ParcelScreens/PickFromStore';
+import ParcelDetailsPage from './app/screens/Services/ParcelScreens/ParcelDetailsPage';
+import ReceiptPage from './app/screens/ActivityScreens/ReceiptPage';
+import InvoicePage from './app/screens/ActivityScreens/InvoicePage';
 
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  const [location, setLocation] = useState(null);
+const AppContent = () => {
+  const { isDarkMode } = useTheme(); 
+
+
   return (
-    <Provider store={customerStore}> 
-    <UserLocationProvider>
     <NavigationContainer>
       <Stack.Navigator>
         {/* Screens before authentication */}
@@ -105,10 +109,18 @@ export default function App() {
        <Stack.Screen name="Help" component={Help} />
        <Stack.Screen name="Legal" component={Legal} />
 
+       {/* parcelsScreens */}
+       <Stack.Screen name="SendParcel" component={SendParcel} options={{headerShown:false}} />
+       <Stack.Screen name="ReceiveParcel" component={ReceiveParcel} options={{headerShown:false}} />
+       <Stack.Screen name="PickFromStore" component={PickFromStore} options={{headerShown:false}} />
+       <Stack.Screen name="ParcelDetailsPage" component={ParcelDetailsPage} options={{headerShown:false}} />
+
        {/* Activity Screens */}
        <Stack.Screen name="YourTrip" component={YourTrip} />
        <Stack.Screen name="YourReserved" component={YourReserved} />
        <Stack.Screen name="RebookScreen" component={RebookScreen} />
+       <Stack.Screen name="ReceiptPage" component={ReceiptPage} options={{headerShown:false}} />
+       <Stack.Screen name="InvoicePage" component={InvoicePage} options={{headerShown:false}}/>
 
        {/* Profile Screens */}
 
@@ -116,14 +128,14 @@ export default function App() {
        <Stack.Screen name="AddHomePage" component={AddHomePage} />
        <Stack.Screen name="AddWorkPage" component={AddWorkPage} />
        <Stack.Screen name="ShortcutsPage" component={ShortcutsPage} />
-       <Stack.Screen name="PrivacyPage" component={PrivacyPage} />
+      
        <Stack.Screen name="AppearancePage" component={AppearancePage} />
        <Stack.Screen name="InvoiceInformationPage" component={InvoiceInformationPage} />
        <Stack.Screen name="CommunicationPage" component={CommunicationPage} />
        <Stack.Screen name="SafetyPreferencePage" component={SafetyPreferencePage} />
        <Stack.Screen name="ManageTrustedContactsPage" component={ManageTrustedContactsPage} />
        <Stack.Screen name="RideCheckPage" component={RideCheckPage} />
-       <Stack.Screen name="ReservePage" component={ReservePage} />
+       
        <Stack.Screen name="DriverNearbyAlertPage" component={DriverNearbyAlertPage} />
         {/* EditProfileScreens */}
        <Stack.Screen name="UpdateEmailId" component={UpdateEmailId} />
@@ -140,16 +152,40 @@ export default function App() {
 
       </Stack.Navigator>
     </NavigationContainer>
-    </UserLocationProvider>
-    </Provider>
+   
+
+
+  );
+}
+
+export default function App() {
+  const [location, setLocation] = useState(null);
+
+  return (
+    <ThemeProvider>
+      <Provider store={customerStore}>
+        <UserLocationProvider>
+          <AppContent />  
+        </UserLocationProvider>
+      </Provider>
+    </ThemeProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 20,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  lightContainer: {
+    flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: '#000',
   },
 });

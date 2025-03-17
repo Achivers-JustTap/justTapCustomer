@@ -18,10 +18,9 @@ const Menu = ({ navigation }) => {
     { id: '3', title: 'Payment Methods', icon: 'credit-card', type: 'FontAwesome', route: 'PaymentMethods' },
     { id: '4', title: 'Insurance', icon: 'shield', type: 'FontAwesome', route: 'Insurance' },
     { id: '5', title: 'Messages', icon: 'envelope', type: 'FontAwesome', route: 'Messages' },
-    { id: '6', title: 'Send a gift', icon: 'gift', type: 'FontAwesome', route: 'SendGift' },
-    { id: '7', title: 'Manage Account', icon: 'user', type: 'FontAwesome', route: 'Profile' },
-    { id: '8', title: 'Help', icon: 'question-circle', type: 'FontAwesome', route: 'Help' },
-    { id: '9', title: 'Legal', icon: 'gavel', type: 'FontAwesome', route: 'Legal' },
+    { id: '6', title: 'Manage Account', icon: 'user', type: 'FontAwesome', route: 'Profile' },
+    { id: '7', title: 'Help', icon: 'question-circle', type: 'FontAwesome', route: 'Help' },
+    { id: '8', title: 'Legal', icon: 'gavel', type: 'FontAwesome', route: 'Legal' },
   ];
 
   const handlePress = (route) => {

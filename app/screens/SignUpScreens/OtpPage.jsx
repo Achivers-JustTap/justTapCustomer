@@ -15,7 +15,7 @@ const OtpPage = ({ route, navigation }) => {
   const verifyOtp = async () => {
     if (otp === '1234') {
       try {
-        const response = await fetch(`http://192.168.29.13:5000/api/users/check-mobile?phoneNumber=${phoneNumber}`);
+        const response = await fetch(`http://192.168.0.107:5000/api/users/check-mobile?phoneNumber=${phoneNumber}`);
         const result = await response.json();
         console.log("result",result)
         if (result.exists) {

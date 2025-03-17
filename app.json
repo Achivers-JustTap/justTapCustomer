@@ -18,7 +18,8 @@
         "NSLocationAlwaysAndWhenInUseUsageDescription": "We need your location to provide better services.",
         "NSCameraUsageDescription": "We need access to your camera to take profile pictures.",
         "NSMicrophoneUsageDescription": "We need access to your microphone for recording audio if needed.",
-        "UIBackgroundModes": ["location"]
+        "UIBackgroundModes": ["location"],
+         "NSContactsUsageDescription": "We need access to your contacts to manage trusted contacts."
       }
     },
     "android": {
@@ -32,7 +33,8 @@
         "CAMERA",
         "USE_FINGERPRINT",
         "BIOMETRIC",
-        "ACCESS_BACKGROUND_LOCATION"
+        "ACCESS_BACKGROUND_LOCATION",
+        "READ_CONTACTS"
       ]
     },
     "web": {

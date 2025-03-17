@@ -6,18 +6,17 @@ import {
   import * as Location from 'expo-location';
   import Icon from 'react-native-vector-icons/Ionicons';
   import axios from 'axios';
-  import { UserLocationContext } from '../../Context/UserLocationContext';
+  import { UserLocationContext } from '../../../Context/UserLocationContext';
   
   const API_URL = 'http://192.168.0.107:5000/api/maps/get-suggestions?input=';
   
-  const EnterLocation = ({ route, navigation }) => {
+  const PickFromStore = ({ route, navigation }) => {
     const { location, setLocation } = useContext(UserLocationContext);
     const [currentLocationText, setCurrentLocationText] = useState('');
     const [destination, setDestination] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [currentLocationSuggestions, setCurrentLocationSuggestions] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
-     const { currentLocation } = route.params || {};
   
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
@@ -114,16 +113,29 @@ import {
             Alert.alert('Please enter both pickup and destination locations');
             return;
         }
+  
         const pickup = await getCoordinates(currentLocationText);
         const dropoff = await getCoordinates(destination);
-
+  
         if (pickup && dropoff) {
-            navigation.navigate('LocationMapScreen', {
-                pickupCoords: { latitude: pickup.latitude, longitude: pickup.longitude },
-                dropoffCoords: { latitude: dropoff.latitude, longitude: dropoff.longitude },
-                pickupName: pickup.name,
-                dropoffName: dropoff.name
+            navigation.navigate('ParcelDetailsPage', {
+              fromPickFromStore: true,  // Pass this flag to indicate it's coming from ReceiveParcel
+              currentLocationText,
+              destination,
+              pickupCoords: { latitude: pickup.latitude, longitude: pickup.longitude },
+        dropoffCoords: { latitude: dropoff.latitude, longitude: dropoff.longitude },
+        pickupName: pickup.name,
+        dropoffName: dropoff.name,
+               
             });
+        }
+    };
+  
+    const handleCurrentLocationClick = async () => {
+        // This method will be called when user clicks to update current location
+        const updatedLocation = await getLocation();
+        if (updatedLocation) {
+            setCurrentLocationText(updatedLocation);
         }
     };
   
@@ -136,20 +148,22 @@ import {
             </View>
   
             <View style={styles.inputContainer}>
-               
-                <View style={styles.inputWrapper}>
+                {/* Sender Location Input */}
+              
+                  
+                <View style={styles.inputWrapper} >
                     <TextInput
                         style={styles.input}
-                        placeholder="Current Location"
+                        placeholder="Store Location"
                         placeholderTextColor="white"
-                        value={currentLocationText}
+                        value={destination}
                         onChangeText={(text) => {
-                            setCurrentLocationText(text);
-                            fetchSuggestions(text, setCurrentLocationSuggestions);
+                            setDestination(text);
+                            fetchSuggestions(text, setSuggestions);
                         }}
                     />
-                    {currentLocationText !== '' && (
-                        <TouchableOpacity onPress={() => setCurrentLocationText('')} style={styles.clearButton}>
+                    {destination !== '' && (
+                        <TouchableOpacity onPress={() => setDestination('')} style={styles.clearButton}>
                             <Icon name="close-circle" size={20} color="white" />
                         </TouchableOpacity>
                     )}
@@ -170,22 +184,23 @@ import {
                 )}
   
                 {/* Receiver Location Input */}
-                <View style={[styles.inputWrapper, { marginTop: 5 }]}>
+                <View  style={[styles.inputWrapper, { marginTop: 5 }]}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Destination"
+                        placeholder="Receiver's Location"
                         placeholderTextColor="white"
-                        value={destination}
+                        value={currentLocationText}
                         onChangeText={(text) => {
-                            setDestination(text);
-                            fetchSuggestions(text, setSuggestions);
+                            setCurrentLocationText(text);
+                            fetchSuggestions(text, setCurrentLocationSuggestions);
                         }}
                     />
-                    {destination !== '' && (
-                        <TouchableOpacity onPress={() => setDestination('')} style={styles.clearButton}>
+                    {currentLocationText !== '' && (
+                        <TouchableOpacity onPress={() => setCurrentLocationText('')} style={styles.clearButton}>
                             <Icon name="close-circle" size={20} color="white" />
                         </TouchableOpacity>
                     )}
+                    
                 </View>
   
                 {/* Suggestion list for receiver location */}
@@ -299,5 +314,5 @@ import {
     },
   });
   
-  export default EnterLocation;
+  export default PickFromStore;
   

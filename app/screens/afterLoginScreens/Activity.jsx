@@ -142,6 +142,11 @@ const Activity = () => {
             <Text style={styles.location}>{tripDetails.destination}</Text>
             <Text style={styles.dropoffTime}>{tripDetails.dropoffTime}</Text>
           </View>
+
+          <View style={styles.invoiceContainer}>
+            <TouchableOpacity onPress={()=>navigation.navigate('ReceiptPage')} style={styles.invoiceButton}><Text style={{color:'white', fontSize:18}}>Receipt</Text></TouchableOpacity>
+            <TouchableOpacity onPress={()=>navigation.navigate('InvoicePage')} style={styles.invoiceButton}><Text style={{color:'white', fontSize:18}}>Invoice</Text></TouchableOpacity>
+            </View>
           </View>
         </Animated.View>
       )}
@@ -256,7 +261,8 @@ const styles = StyleSheet.create({
   },
   bottomHeader: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems:'center',
+        justifyContent: 'space-between',
     marginBottom: 10,
     padding: 20,
   },
@@ -331,4 +337,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000',
   },
+
+  invoiceContainer:{
+    flexDirection:'row',
+    justifycontainer:'center',
+    alignItems:'center',
+    marginLeft: 40,
+    marginTop: 20
+
+  },
+  invoiceButton:{
+    backgroundColor:'#0D47A1',
+    padding: 15,
+    borderRadius: 10,
+    marginLeft:20
+  }
 });

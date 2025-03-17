@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View } from 'react-native';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View, TextInput } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const Rentals = () => {
   const [showOverlay, setShowOverlay] = useState(false);
@@ -20,13 +19,11 @@ const Rentals = () => {
   const dayOfWeek = moment(currentDate).format('dddd');
   const currentTime = moment(currentDate).format('hh:mm A');
 
+  const [isPickupTimeSet,setIsPickupTimeSet] = useState(false);
 
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(formattedDate);
   const [selectedTime, setSelectedTime] = useState(currentTime);
   const [selectedDayOfWeek, setSelectedDayOfWeek] = useState(dayOfWeek);
-  const [isPickupTimeSet,setIsPickupTimeSet] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -42,12 +39,10 @@ const Rentals = () => {
     }
   }, [isFocused]);
 
-
   const handleIncreaseTime = () => {
     setTimeNeeded(prevTime => prevTime + 0.5);
     setCharge(prevTime => (timeNeeded >= 1 ? prevTime + 100 : 200));  
   };
-
 
   const handleDecreaseTime = () => {
     setTimeNeeded(prevTime => (prevTime > 1 ? prevTime - 0.5 : prevTime));
@@ -55,7 +50,7 @@ const Rentals = () => {
   };
 
   const handleTakeRide = () => {
- 
+    // Add your functionality here
   };
 
   const handleLater = () => {
@@ -63,7 +58,7 @@ const Rentals = () => {
   };
 
   const handleChooseVehicle = () => {
-   navigation.navigate('EnterLocation')
+    navigation.navigate('EnterLocation');
   };
 
   const handleBack = () => {
@@ -74,33 +69,6 @@ const Rentals = () => {
     }
   };
 
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirmDate = (date) => {
-    setSelectedDate(moment(date).format('MMMM Do YYYY'));
-    setSelectedDayOfWeek(moment(date).format('dddd'));
-    hideDatePicker();
-  };
-
-  const showTimePicker = () => {
-    setTimePickerVisibility(true);
-  };
-
-  const hideTimePicker = () => {
-    setTimePickerVisibility(false);
-  };
-
-  const handleConfirmTime = (time) => {
-    setSelectedTime(moment(time).format('hh:mm A'));
-    hideTimePicker();
-  };
-   
   const handleSetPickup =() =>{
     setIsPickupTimeSet(true);
     setIsLaterClicked(false);
@@ -154,16 +122,16 @@ const Rentals = () => {
 
                 {isPickupTimeSet ? (
                   <TouchableOpacity style={styles.setButton} onPress={handleLater} >
-                 <Text style={styles.pickupDetails}>
-                  Pickup on {selectedDayOfWeek},{'\n'}
-                  {selectedDate}{'\n'} at {selectedTime}
-                 </Text>
-                 </TouchableOpacity>
-               ) : (
-                 <TouchableOpacity style={styles.blueButton} onPress={handleLater}>
-                 <Text style={styles.buttonText}>Later</Text>
-                 </TouchableOpacity>
-                  )}
+                    <Text style={styles.pickupDetails}>
+                      Pickup on {selectedDayOfWeek},{'\n'}
+                      {selectedDate}{'\n'} at {selectedTime}
+                    </Text>
+                  </TouchableOpacity>
+                ) : (
+                  <TouchableOpacity style={styles.blueButton} onPress={handleLater}>
+                    <Text style={styles.buttonText}>Later</Text>
+                  </TouchableOpacity>
+                )}
               </View>
 
               <TouchableOpacity style={styles.chooseVehicleButton} onPress={handleChooseVehicle}>
@@ -183,26 +151,32 @@ const Rentals = () => {
             </Text>
             
             <View style={styles.whiteBox}>
-              <TouchableOpacity style={styles.whiteBox} onPress={showDatePicker}>
-                <Text style={styles.whiteBoxText}>{selectedDate}</Text>
-              </TouchableOpacity>
+              <TextInput
+                style={styles.whiteBoxText}
+                value={selectedDate}
+                onChangeText={setSelectedDate}
+                placeholder="Enter Date (e.g., March 10, 2025)"
+              />
               <Text style={styles.whiteBoxText}>{selectedDayOfWeek}</Text>
-              <TouchableOpacity style={styles.whiteBox} onPress={showTimePicker}>
-                <Text style={styles.whiteBoxText}>{selectedTime}</Text>
-              </TouchableOpacity>
+              <TextInput
+                style={styles.whiteBoxText}
+                value={selectedTime}
+                onChangeText={setSelectedTime}
+                placeholder="Enter Time (e.g., 10:00 AM)"
+              />
             </View>
 
             <View style={styles.buttonRow}>
               <TouchableOpacity style={styles.blueButton} onPress={handleSetPickup}>
                 <Text style={styles.buttonText}>Set Pick Up Date&Time</Text>
               </TouchableOpacity>
-      
             </View>
           </LinearGradient>
         )}
       </ImageBackground>
 
-      <DateTimePickerModal
+      {/* Commenting out DateTimePickerModal */}
+      {/* <DateTimePickerModal
         isVisible={isDatePickerVisible}
         mode="date"
         onConfirm={handleConfirmDate}
@@ -214,11 +188,10 @@ const Rentals = () => {
         mode="time"
         onConfirm={handleConfirmTime}
         onCancel={hideTimePicker}
-      />
+      /> */}
     </SafeAreaView>
   );
 };
-
 
 const { width, height } = Dimensions.get('window'); 
 
@@ -394,7 +367,7 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 16,
     textAlign: 'center',
-    
+    padding: 10,
   },
 });
 

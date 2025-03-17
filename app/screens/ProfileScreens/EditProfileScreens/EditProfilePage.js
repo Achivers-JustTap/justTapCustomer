@@ -1,86 +1,83 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
 
-const EditProfilePage = ({navigation}) => {
+const EditProfilePage = ({ navigation }) => {
   const [dob, setDob] = useState(new Date(2003, 3, 3));
   const [showPicker, setShowPicker] = useState(false);
   const [email, setEmail] = useState('svscharitha@gmail.com');
-  const [number,setNumber] = useState('+91 9121978725')
-
+  const [number, setNumber] = useState('+91 9121978725');
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: 'Profile Details', 
+      headerTitle: 'Profile Details',
       headerStyle: {
-        backgroundColor: '#fff', 
+        backgroundColor: '#fff',
       },
-      headerTintColor: '#000', 
+      headerTintColor: '#000',
       headerTitleStyle: {
-        fontWeight: 'bold', 
+        fontWeight: 'bold',
       },
     });
   }, [navigation]);
 
   const handleLogout = () => {
-          Alert.alert(
-              'Logout',
-              'Are you sure you want to logout?',
-              [
-                  { text: 'Cancel', style: 'cancel' },
-                  {
-                      text: 'Logout',
-                      onPress: () => {
-                          navigation.replace('WelcomeScreens');
-                      },
-                  },
-              ],
-              { cancelable: false }
-          );
-      };
+    Alert.alert(
+      'Logout',
+      'Are you sure you want to logout?',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Logout',
+          onPress: () => {
+            navigation.replace('WelcomeScreens');
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
 
-      React.useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-          const updatedEmail = navigation.getState()?.routes?.find(
-            (route) => route.name === 'EditProfilePage'
-          )?.params?.updatedEmail;
-      
-          if (updatedEmail) {
-            setEmail(updatedEmail);
-            navigation.setParams({ updatedEmail: null });
-          }
-        });
-      
-        return unsubscribe;
-      }, [navigation]);
-      
-      React.useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-          const updatedNumber = navigation.getState()?.routes?.find(
-            (route) => route.name === 'EditProfilePage'
-          )?.params?.updatedNumber;
-      
-          if (updatedNumber) {
-            setNumber(updatedNumber);
-            navigation.setParams({ updatedNumber: null });
-          }
-        });
-      
-        return unsubscribe;
-      }, [navigation]);
-      
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      const updatedEmail = navigation.getState()?.routes?.find(
+        (route) => route.name === 'EditProfilePage'
+      )?.params?.updatedEmail;
+
+      if (updatedEmail) {
+        setEmail(updatedEmail);
+        navigation.setParams({ updatedEmail: null });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  React.useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      const updatedNumber = navigation.getState()?.routes?.find(
+        (route) => route.name === 'EditProfilePage'
+      )?.params?.updatedNumber;
+
+      if (updatedNumber) {
+        setNumber(updatedNumber);
+        navigation.setParams({ updatedNumber: null });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   const handleDateChange = (event, selectedDate) => {
     const currentDate = selectedDate || dob;
-    setShowPicker(Platform.OS === 'ios'); 
-    setDob(currentDate); 
+    setShowPicker(Platform.OS === 'ios');
+    setDob(currentDate);
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.profileIcon}>
-        <Ionicons name="person-circle-outline" size={80}  color='#0F4A97' />
+        <Ionicons name="person-circle-outline" size={80} color='#0F4A97' />
       </TouchableOpacity>
 
       <View style={styles.section}>
@@ -92,25 +89,29 @@ const EditProfilePage = ({navigation}) => {
       <View style={styles.section}>
         <Text style={styles.heading}>Date of Birth</Text>
         <View style={styles.row}>
-          <Text style={styles.info}>
-            {dob.toLocaleDateString()}
-          </Text>
+          {/* TextInput for DOB */}
+          <TextInput
+            style={styles.textInput}
+            value={dob.toLocaleDateString()}
+            onChangeText={(text) => setDob(new Date(text))}
+          />
           <TouchableOpacity onPress={() => setShowPicker(true)}>
-            <Ionicons name="calendar" size={20} color= '#0F4A97' />
+            <Ionicons name="calendar" size={20} color='#0F4A97' />
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
       </View>
 
-      {showPicker && (
+      {/* Commented out DateTimePicker */}
+      {/* {showPicker && (
         <DateTimePicker
           value={dob}
           mode="date"
           display={Platform.OS === 'ios' ? 'spinner' : 'default'}
           onChange={handleDateChange}
-          maximumDate={new Date()} 
+          maximumDate={new Date()}
         />
-      )}
+      )} */}
 
       <View style={styles.section}>
         <Text style={styles.heading}>Gender</Text>
@@ -129,19 +130,18 @@ const EditProfilePage = ({navigation}) => {
         <View style={styles.line} />
       </View>
 
-<View style={styles.section}>
-<TouchableOpacity  onPress={() => navigation.navigate('UpdateMobileNumber', { number })}>
-    <View style={styles.row}>
-      <Text style={styles.heading}>Mobile</Text>
-      <Ionicons name="chevron-forward-outline" size={20} color="#0F4A97" />
-    </View>
-    <Text style={styles.info}>{number}</Text>
-    <View style={styles.line} />
-  </TouchableOpacity>
-</View>
+      <View style={styles.section}>
+        <TouchableOpacity onPress={() => navigation.navigate('UpdateMobileNumber', { number })}>
+          <View style={styles.row}>
+            <Text style={styles.heading}>Mobile</Text>
+            <Ionicons name="chevron-forward-outline" size={20} color="#0F4A97" />
+          </View>
+          <Text style={styles.info}>{number}</Text>
+          <View style={styles.line} />
+        </TouchableOpacity>
+      </View>
 
-
-      <TouchableOpacity style={styles.section}  onPress={() => navigation.navigate('Security')}>
+      <TouchableOpacity style={styles.section} onPress={() => navigation.navigate('Security')}>
         <View style={styles.row}>
           <Text style={styles.heading}>Security</Text>
           <Ionicons name="chevron-forward-outline" size={20} color="#0F4A97" />
@@ -149,7 +149,7 @@ const EditProfilePage = ({navigation}) => {
         <View style={styles.line} />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.section}  onPress={() => navigation.navigate('PrivacyAndData')}>
+      <TouchableOpacity style={styles.section} onPress={() => navigation.navigate('PrivacyAndData')}>
         <View style={styles.row}>
           <Text style={styles.heading}>Privacy and Data</Text>
           <Ionicons name="chevron-forward-outline" size={20} color="#0F4A97" />
@@ -211,5 +211,14 @@ const styles = StyleSheet.create({
     color: 'red',
     fontSize: 16,
     fontWeight: 'bold',
+  },
+  textInput: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#0F4A97',
+    paddingVertical: 5,
+    marginRight: 10,
+    width: '80%',
+    fontSize: 16,
+    color: 'gray',
   },
 });

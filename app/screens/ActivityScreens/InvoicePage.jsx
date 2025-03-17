@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const PrivacyPage = () => {
+const InvoicePage = () => {
   return (
     <View>
-      <Text>PrivacyPage</Text>
+      <Text>InvoicePage</Text>
     </View>
   )
 }
 
-export default PrivacyPage
+export default InvoicePage
 
 const styles = StyleSheet.create({})

@@ -4,7 +4,7 @@ import AppMapView from '../afterLoginScreens/AppMapView';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const WaitingForCaptainScreen = ({ route, navigation }) => {
-    const { markerCoords, destinationCoords, vehicle } = route.params;
+    const { markerCoords, dropoffCoords, vehicle } = route.params;
     const [isRideCancelled, setIsRideCancelled] = useState(false);
     const [progress, setProgress] = useState(new Animated.Value(0));
 
@@ -60,7 +60,10 @@ const WaitingForCaptainScreen = ({ route, navigation }) => {
             </View>
 
             <View style={styles.mapContainer}>
-                <AppMapView currentLocationCoords={markerCoords} destinationCoords={destinationCoords} />
+                <AppMapView
+                    currentLocationCoords={markerCoords}
+                    destinationCoords={dropoffCoords}
+                />
             </View>
 
             <View style={styles.loadingBarContainer}>

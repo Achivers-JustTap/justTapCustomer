@@ -6,11 +6,11 @@ import {
   import * as Location from 'expo-location';
   import Icon from 'react-native-vector-icons/Ionicons';
   import axios from 'axios';
-  import { UserLocationContext } from '../../Context/UserLocationContext';
+  import { UserLocationContext } from '../../../Context/UserLocationContext';
   
   const API_URL = 'http://192.168.0.107:5000/api/maps/get-suggestions?input=';
   
-  const EnterLocation = ({ route, navigation }) => {
+  const SendParcel = ({ route, navigation }) => {
     const { location, setLocation } = useContext(UserLocationContext);
     const [currentLocationText, setCurrentLocationText] = useState('');
     const [destination, setDestination] = useState('');
@@ -118,13 +118,16 @@ import {
         const dropoff = await getCoordinates(destination);
 
         if (pickup && dropoff) {
-            navigation.navigate('LocationMapScreen', {
-                pickupCoords: { latitude: pickup.latitude, longitude: pickup.longitude },
-                dropoffCoords: { latitude: dropoff.latitude, longitude: dropoff.longitude },
-                pickupName: pickup.name,
-                dropoffName: dropoff.name
-            });
-        }
+            navigation.navigate('ParcelDetailsPage', {
+                fromReceiveParcel: false,
+            currentLocationText,
+            destination,
+            pickupCoords: { latitude: pickup.latitude, longitude: pickup.longitude },
+      dropoffCoords: { latitude: dropoff.latitude, longitude: dropoff.longitude },
+      pickupName: pickup.name,
+      dropoffName: dropoff.name
+        });
+    }
     };
   
     return (
@@ -136,11 +139,11 @@ import {
             </View>
   
             <View style={styles.inputContainer}>
-               
+                {/* Sender Location Input */}
                 <View style={styles.inputWrapper}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Current Location"
+                        placeholder="Sender Location"
                         placeholderTextColor="white"
                         value={currentLocationText}
                         onChangeText={(text) => {
@@ -173,7 +176,7 @@ import {
                 <View style={[styles.inputWrapper, { marginTop: 5 }]}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Destination"
+                        placeholder="Receiver Location"
                         placeholderTextColor="white"
                         value={destination}
                         onChangeText={(text) => {
@@ -299,5 +302,5 @@ import {
     },
   });
   
-  export default EnterLocation;
+  export default SendParcel;
   

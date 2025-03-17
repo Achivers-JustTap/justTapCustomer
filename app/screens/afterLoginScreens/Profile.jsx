@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const Profile = ({ navigation }) => {
+
     const handleLogout = () => {
         Alert.alert(
             'Logout',
@@ -25,34 +26,33 @@ const Profile = ({ navigation }) => {
         {
             title: '',
             data: [
-                { subheading: 'Profile Header', type: 'header', iconName: 'person-circle-outline' },
+                { subheading: 'User Profile', type: 'header', iconName: 'person-circle-outline' },
             ],
         },
         {
-            title: 'App Settings',
+            title: 'Account Settings',
             data: [
-                { subheading: 'Add Home', isSimple: true, iconName: 'home-outline', route: 'AddHomePage' },
-                { subheading: 'Add Work', isSimple: true, iconName: 'briefcase-outline', route: 'AddWorkPage' },
-                { subheading: 'Shortcuts', isSimple: true, iconName: 'flash-outline', route: 'ShortcutsPage' },
-                { subheading: 'Privacy', subcontent: ['Manage the data you share with us'], isSimple: true, iconName: 'lock-closed-outline', route: 'PrivacyPage' },
-                { subheading: 'Appearance', subcontent: ['Use device settings'], isSimple: true, iconName: 'color-palette-outline', route: 'AppearancePage' },
-                { subheading: 'Invoice Information', subcontent: ['Manage your tax invoices information'], isSimple: true, iconName: 'document-text-outline', route: 'InvoiceInformationPage' },
-                { subheading: 'Communication', subcontent: ['Choose your preferred contact methods', 'Manage your notification settings'], isSimple: true, iconName: 'chatbubble-ellipses-outline', route: 'CommunicationPage' },
+                { subheading: 'Add Home Address', isSimple: true, iconName: 'home-outline', route: 'AddHomePage' },
+                { subheading: 'Add Work Address', isSimple: true, iconName: 'briefcase-outline', route: 'AddWorkPage' },
+                { subheading: 'Set Up Shortcuts', isSimple: true, iconName: 'flash-outline', route: 'ShortcutsPage' },
+                { subheading: 'Privacy & Data', subcontent: ['Control the information shared with us'], isSimple: true, iconName: 'lock-closed-outline', route: 'PrivacyAndData' },
+                { subheading: 'Customize Appearance', subcontent: ['Use device settings to personalize the app'], isSimple: true, iconName: 'color-palette-outline', route: 'AppearancePage' },
+                { subheading: 'Manage Invoices', subcontent: ['Update your tax and invoice details'], isSimple: true, iconName: 'document-text-outline', route: 'InvoiceInformationPage' },
+                { subheading: 'Communication Preferences', subcontent: ['Select your preferred contact and notification methods'], isSimple: true, iconName: 'chatbubble-ellipses-outline', route: 'CommunicationPage' },
             ],
         },
         {
-            title: 'Safety',
+            title: 'Safety Features',
             data: [
-                { subheading: 'Safety Preferences', subcontent: ['Choose and schedule your favorite safety tools'], isSimple: true, iconName: 'shield-outline', route: 'SafetyPreferencePage' },
-                { subheading: 'Manage Trusted Contacts', subcontent: ['Share your trip status with family and friends with a single tap'], isSimple: true, iconName: 'people-outline', route: 'ManageTrustedContactsPage' },
-                { subheading: 'RideCheck', subcontent: ['Manage your RideCheck notifications'], isSimple: true, iconName: 'alert-outline', route: 'RideCheckPage' },
+                { subheading: 'Safety Preferences', subcontent: ['Choose and schedule your safety tools for protection'], isSimple: true, iconName: 'shield-outline', route: 'SafetyPreferencePage' },
+                { subheading: 'Trusted Contacts', subcontent: ['Share your trip status with family or friends instantly'], isSimple: true, iconName: 'people-outline', route: 'ManageTrustedContactsPage' },
+                { subheading: 'RideCheck Alerts', subcontent: ['Manage your RideCheck notifications for added safety'], isSimple: true, iconName: 'alert-outline', route: 'RideCheckPage' },
             ],
         },
         {
             title: 'Ride Preferences',
             data: [
-                { subheading: 'Reserve', subcontent: ['Choose how you\'re matched with drivers when you book ahead'], isSimple: true, iconName: 'calendar-outline', route: 'ReservePage' },
-                { subheading: 'Driver Nearby Alert', subcontent: ['Manage how you want to be notified during pick-ups with long waits'], isSimple: true, iconName: 'car-outline', route: 'DriverNearbyAlertPage' },
+                { subheading: 'Driver Wait Notifications', subcontent: ['Receive notifications when drivers are nearby or waiting too long'], isSimple: true, iconName: 'car-outline', route: 'DriverNearbyAlertPage' },
             ],
         },
         {
@@ -62,6 +62,7 @@ const Profile = ({ navigation }) => {
             ],
         },
     ];
+    
 
     const renderStars = (rating) => {
         const stars = [];
