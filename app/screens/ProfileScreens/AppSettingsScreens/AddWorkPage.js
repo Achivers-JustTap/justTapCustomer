@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 import { UserLocationContext } from '../../../Context/UserLocationContext';
 
-const API_URL = 'http://192.168.0.107:5000/api/maps/get-suggestions?input=';
+const API_URL = 'http://192.168.0.115:5000/api/maps/get-suggestions?input=';
 
 const AddWorkPage = ({ route, navigation }) => {
   const { location, setLocation } = useContext(UserLocationContext);

@@ -37,7 +37,6 @@ import AddHomePage from './app/screens/ProfileScreens/AppSettingsScreens/AddHome
 import AddWorkPage from './app/screens/ProfileScreens/AppSettingsScreens/AddWorkPage';
 import ShortcutsPage from './app/screens/ProfileScreens/AppSettingsScreens/ShortcutsPage';
 import AppearancePage from './app/screens/ProfileScreens/AppSettingsScreens/AppearancePage';
-import InvoiceInformationPage from './app/screens/ProfileScreens/AppSettingsScreens/InvoiceInformationPage';
 import CommunicationPage from './app/screens/ProfileScreens/AppSettingsScreens/CommunicationPage';
 import SafetyPreferencePage from './app/screens/ProfileScreens/SafetyScreens/SafetyPreferencePage';
 import ManageTrustedContactsPage from './app/screens/ProfileScreens/SafetyScreens/ManageTrustedContactsPage';
@@ -130,7 +129,6 @@ const AppContent = () => {
        <Stack.Screen name="ShortcutsPage" component={ShortcutsPage} />
       
        <Stack.Screen name="AppearancePage" component={AppearancePage} />
-       <Stack.Screen name="InvoiceInformationPage" component={InvoiceInformationPage} />
        <Stack.Screen name="CommunicationPage" component={CommunicationPage} />
        <Stack.Screen name="SafetyPreferencePage" component={SafetyPreferencePage} />
        <Stack.Screen name="ManageTrustedContactsPage" component={ManageTrustedContactsPage} />

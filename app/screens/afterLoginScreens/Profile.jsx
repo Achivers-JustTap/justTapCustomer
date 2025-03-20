@@ -37,7 +37,6 @@ const Profile = ({ navigation }) => {
                 { subheading: 'Set Up Shortcuts', isSimple: true, iconName: 'flash-outline', route: 'ShortcutsPage' },
                 { subheading: 'Privacy & Data', subcontent: ['Control the information shared with us'], isSimple: true, iconName: 'lock-closed-outline', route: 'PrivacyAndData' },
                 { subheading: 'Customize Appearance', subcontent: ['Use device settings to personalize the app'], isSimple: true, iconName: 'color-palette-outline', route: 'AppearancePage' },
-                { subheading: 'Manage Invoices', subcontent: ['Update your tax and invoice details'], isSimple: true, iconName: 'document-text-outline', route: 'InvoiceInformationPage' },
                 { subheading: 'Communication Preferences', subcontent: ['Select your preferred contact and notification methods'], isSimple: true, iconName: 'chatbubble-ellipses-outline', route: 'CommunicationPage' },
             ],
         },

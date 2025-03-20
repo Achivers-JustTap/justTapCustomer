@@ -41,7 +41,7 @@ const ReceiptPage = ({navigation}) => {
           style={styles.paymentImage}
         />
         <Text style={styles.leftText}>Cash</Text>
-        <Text style={styles.rightText}>₹350</Text>
+        <Text style={styles.rightText}>₹220</Text>
       </View>
 
       <Text style={styles.dateTimeText}>08/01/2025   10.55AM</Text>
