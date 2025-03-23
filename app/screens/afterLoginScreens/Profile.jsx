@@ -57,7 +57,7 @@ const Profile = ({ navigation }) => {
         {
             title: '',
             data: [
-                { subheading: 'Logout', type: 'logout', iconName: 'log-out-outline' },
+                { subheading: 'Deactivate', type: 'logout', iconName: 'power' },
             ],
         },
     ];
@@ -105,7 +105,7 @@ const Profile = ({ navigation }) => {
             return (
                 <TouchableOpacity style={styles.logoutContainer} onPress={handleLogout}>
                     <Icon name={item.iconName} size={24} color="red" />
-                    <Text style={styles.logoutText}>Logout</Text>
+                    <Text style={styles.logoutText}>Deactivate</Text>
                 </TouchableOpacity>
             );
         }

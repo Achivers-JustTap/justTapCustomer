@@ -22,8 +22,6 @@ import DriverRegistration from './app/screens/MenuScreens.jsx/DriverRegistration
 import PaymentMethods from './app/screens/MenuScreens.jsx/PaymentMethods';
 import Insurance from './app/screens/MenuScreens.jsx/Insurance';
 import Messages from './app/screens/MenuScreens.jsx/Messages';
-import SendGift from './app/screens/MenuScreens.jsx/SendGift';
-import SetUpDrivingorDelivering from './app/screens/MenuScreens.jsx/SetUpDrivingorDelivering';
 import Help from './app/screens/MenuScreens.jsx/Help';
 import Legal from './app/screens/MenuScreens.jsx/Legal';
 import EnterLocation from './app/screens/afterLoginScreens/EnterLocation';
@@ -62,6 +60,13 @@ import PickFromStore from './app/screens/Services/ParcelScreens/PickFromStore';
 import ParcelDetailsPage from './app/screens/Services/ParcelScreens/ParcelDetailsPage';
 import ReceiptPage from './app/screens/ActivityScreens/ReceiptPage';
 import InvoicePage from './app/screens/ActivityScreens/InvoicePage';
+import AddMoneyScreen from './app/screens/PaymentMethodsScreens/AddMoneyScreen';
+import AddMoneyEnterUpi from './app/screens/PaymentMethodsScreens/AddMoneyEnterUpi';
+import AddMoneyUPI from './app/screens/PaymentMethodsScreens/AddMoneyUPI';
+import PaymentMethodSelection from './app/screens/PaymentMethodsScreens/PaymentMethodSelection';
+import TransactionRecord from './app/screens/PaymentMethodsScreens/TransactionRecord';
+import LoansRegistration from './app/screens/MenuScreens.jsx/LoansRegistration';
+import ReferFriends from './app/screens/MenuScreens.jsx/ReferFriends';
 
 
 const Stack = createStackNavigator();
@@ -99,12 +104,14 @@ const AppContent = () => {
        <Stack.Screen name="Intercity" component={Intercity} />
        <Stack.Screen name="Rentals" component={Rentals} />
        <Stack.Screen name="Reserved" component={Reserved} />
+
+       {/* menu Screens */}
        <Stack.Screen name="DriverRegistration" component={DriverRegistration} />
+       <Stack.Screen name="LoansRegistration" component={LoansRegistration} />
        <Stack.Screen name="PaymentMethods" component={PaymentMethods} />
        <Stack.Screen name="Insurance" component={Insurance} />
        <Stack.Screen name="Messages" component={Messages} />
-       <Stack.Screen name="SendGift" component={SendGift} />
-       <Stack.Screen name="SetUpDrivingDelivering" component={SetUpDrivingorDelivering} />
+       <Stack.Screen name="ReferFriends" component={ReferFriends} />
        <Stack.Screen name="Help" component={Help} />
        <Stack.Screen name="Legal" component={Legal} />
 
@@ -147,6 +154,12 @@ const AppContent = () => {
        <Stack.Screen name="TwoStepVerification" component={TwoStepVerification} />
        <Stack.Screen name="FeedbackAndReport" component={FeedbackAndReport} />
 
+       {/* PaymentMethodsScreens */}
+       <Stack.Screen name="AddMoneyScreen" component={AddMoneyScreen} />
+       <Stack.Screen name="AddMoneyUPI" component={AddMoneyUPI} />
+       <Stack.Screen name="AddMoneyEnterUpi" component={AddMoneyEnterUpi} />
+       <Stack.Screen name="PaymentMethodSelection" component={PaymentMethodSelection} />
+       <Stack.Screen name="TransactionRecord" component={TransactionRecord} />
 
       </Stack.Navigator>
     </NavigationContainer>

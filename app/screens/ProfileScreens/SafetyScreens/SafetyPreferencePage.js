@@ -38,8 +38,7 @@ const CommunicationPage = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-         <Text style={styles.description}>
-         Your Safety Our First Priority. Below You can Trun On safety Preference</Text>
+        
         <ImageBackground
               source={require('../../../../assets/images/otherImages/SafetyPreferenceBG.jpeg')}
               style={styles.backgroundImage}
@@ -47,10 +46,12 @@ const CommunicationPage = () => {
             >
       {showOverlay && (
         <LinearGradient
-          colors={['rgba(177, 164, 238, 0.5)', 'rgba(110,161,227,0.3)']}
+          colors={['rgba(255, 255, 255, 0.7)', 'rgba(255, 255, 255, 0.7)']}
           style={styles.overlay}
         >
           <View style={styles.Maincontainer}>
+          <Text style={styles.description}>
+          Your Safety Our First Priority. Below You can Trun On safety Preference</Text>
            
 
             <View style={styles.buttonContainer}>
@@ -70,7 +71,7 @@ const CommunicationPage = () => {
                 >
                   Drop-Off Check
                 </Text>
-                <Text>We check on you immediately, if the ride ends early.</Text>
+                <Text style={styles.buttonDescription}>We check on you immediately, if the ride ends early.</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -88,7 +89,7 @@ const CommunicationPage = () => {
                 >
                   Audio Recording
                 </Text>
-                <Text>We record audio during the ride for your safety.</Text>
+                <Text style={styles.buttonDescription}>We record audio during the ride for your safety.</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
@@ -106,7 +107,7 @@ const CommunicationPage = () => {
                 >
                   Trip Info Sharing
                 </Text>
-                <Text>We share your trip info with your trusted contacts.</Text>
+                <Text style={styles.buttonDescription}>We share your trip info with your trusted contacts.</Text>
               </TouchableOpacity>
             </View>
 
@@ -149,7 +150,7 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     width: 450,
-    height: 670,
+    height: 730,
     right: 35,
     marginTop:-10,
     justifyContent: 'center',
@@ -157,14 +158,14 @@ const styles = StyleSheet.create({
   },
   overlay: {
     width: width * 0.94,
-    height: height * 0.85,
+    height: height * 0.9,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
     left: 35,
     borderRadius: 20,
     alignSelf: 'center',
-    marginTop: -15,
+    marginTop: 10,
     position: 'relative',
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -190,10 +191,15 @@ const styles = StyleSheet.create({
   },
   selectedButton: {
     backgroundColor: '#0F4A97',
+    color: '#fff',
   },
   buttonText: {
     fontSize: 16,
-    color: '#333',
+    color: '#000',
+    fontWeight: 'bold',
+  },
+  buttonDescription:{
+   fontWeight:'bold',
   },
   selectedButtonText: {
     color: '#fff',

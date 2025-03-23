@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const SendGift = () => {
+const TransactionRecord = () => {
   return (
     <View>
-      <Text>SendGift</Text>
+      <Text>TransactionRecord</Text>
     </View>
   )
 }
 
-export default SendGift
+export default TransactionRecord
 
 const styles = StyleSheet.create({})

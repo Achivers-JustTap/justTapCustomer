@@ -1,4 +1,4 @@
-import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity, LayoutAnimation, FlatList, TextInput, TouchableWithoutFeedback, Image } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, TouchableOpacity, LayoutAnimation, FlatList, TextInput, TouchableWithoutFeedback, Image, ScrollView } from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import AppMapView from '../../../components/AppMapView';
 import * as Location from 'expo-location';
@@ -130,7 +130,7 @@ const HomePage = ({ navigation }) => {
 
     return (
         <SafeAreaView style={styles.container}>
-            
+              <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <TouchableWithoutFeedback onPress={handleDoubleTap}>
                 <View style={[styles.mapContainer, { height: mapHeight }]}>
                     <AppMapView
@@ -169,7 +169,21 @@ const HomePage = ({ navigation }) => {
                 contentContainerStyle={styles.boxContainer}
             />
 
+
+
             {errorMsg && <Text style={styles.errorText}>{errorMsg}</Text>}
+            <View style={styles.PromotionHeaderContainer}>
+            <View style={styles.promotionContainer}>
+                <Image source={require('../../../assets/images/otherImages/LoansAPP.png')} style={styles.promoImage} />
+                <Text style={styles.promoText}>Download our Loan App for easy credit access!</Text>
+            </View>
+            
+            <View style={styles.promotionContainer}>
+                <Image source={require('../../../assets/images/otherImages/DriverAPP1.png')} style={styles.promoImage} />
+                <Text style={styles.promoText}>Earn by installing Just Tap Earner app!</Text>
+            </View>
+            </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -179,6 +193,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingTop: 30,
         backgroundColor: 'white',
+        
     },
     
     
@@ -229,7 +244,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         flexDirection: 'row',
         alignItems: 'center',
-        marginTop: -250,
+        marginTop: 20,
     },
     boxWrapper: {
         alignItems: 'center',
@@ -280,6 +295,32 @@ const styles = StyleSheet.create({
         color: 'red',
         textAlign: 'center',
         marginTop: 10,
+    },
+    PromotionHeaderContainer:{
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    promotionContainer: {
+       
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderColor: '#0f4a97',
+        borderWidth: 2,
+        padding: 15,
+        margin: 10,
+        alignItems: 'center',
+        width: '90%'
+    },
+    promoImage: {
+        width: '100%',
+        height: 200,
+        marginBottom: 10,
+    },
+    promoText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+        textAlign: 'center',
     },
 });
 

@@ -22,29 +22,6 @@ const RideTrackingScreen = ({ navigation }) => {
     navigation.navigate('PaymentMethods'); 
   };
 
-  const cancelRide = () => {
-    Alert.alert(
-      'Cancel Ride',
-      'Are you sure you want to cancel the ride?',
-      [
-        { 
-          text: 'No', 
-          style: 'cancel', 
-          onPress: () => setIsRideCancelled(false)  
-        },
-        { 
-          text: 'Yes', 
-          style: 'destructive', 
-          onPress: () => {
-            setIsRideCancelled(true);  
-            navigation.navigate("HomeTabs");  
-          }
-        },
-      ],
-      { cancelable: true }
-    );
-  };
-
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -140,18 +117,9 @@ const RideTrackingScreen = ({ navigation }) => {
           <View style={styles.triangle} />
         </TouchableOpacity>
       </View>
+      <View style={{marginBottom: 100}}></View>
 
-      <View style={styles.cancelRideContainer}>
-        <TouchableOpacity style={styles.cancelButton} onPress={cancelRide}>
-          <Text style={styles.cancelButtonText}>Cancel Ride</Text>
-        </TouchableOpacity>
-      </View>
-
-      {isRideCancelled && (
-        <View style={styles.cancelConfirmationContainer}>
-          <Text style={styles.cancelConfirmationText}>Ride Cancelled!</Text>
-        </View>
-      )}
+      
     </ScrollView>
   );
 };
@@ -377,29 +345,7 @@ const styles = StyleSheet.create({
     borderRightColor: 'transparent',
     borderBottomColor: 'green',
   },
-  cancelRideContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-    paddingBottom: 100,
-  },
-  cancelButton: {
-    backgroundColor: 'red',
-    padding: 12,
-    borderRadius: 10,
-  },
-  cancelButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  cancelConfirmationContainer: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  cancelConfirmationText: {
-    fontSize: 18,
-    color: 'red',
-  },
+ 
 }); 
 
 export default RideTrackingScreen;

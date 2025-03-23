@@ -158,6 +158,7 @@ const EditProfilePage = ({ navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+      <Ionicons name="log-out-outline" size={30} color="red" />
         <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
     </View>
@@ -202,6 +203,9 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginTop: 20,
+    justifyContent:'center',
+    alignItems:'center',
+    flexDirection: 'row',
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 5,

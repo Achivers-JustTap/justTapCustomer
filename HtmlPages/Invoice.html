@@ -1,17 +1,82 @@
 <html>
 <head>
   <style>
-    body { font-family: Arial, sans-serif; background-color: #f8f9fa; padding: 20px; margin: 0; }
-    .container { width: 100%; max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 10px; }
-    .header { text-align: center; font-size: 20px; font-weight: bold; margin-bottom: 20px; }
-    .section { padding: 20px; border-radius: 5px; background: #fff; border: 1px solid #ddd; margin-bottom: 20px; }
-    .row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 10px; }
+    body { 
+      font-family: Arial, sans-serif; 
+      background-color: #f8f9fa; 
+      padding: 20px; 
+      margin: 0; 
+      line-height: 1.8; /* Increased line height */
+    }
+    .container { 
+      max-width: 800px; 
+      max-height: 2000px;
+      margin: auto; 
+      padding: 30px; 
+      border-radius: 10px; 
+      margin-bottom: 40px; /* Increased spacing between containers */
+    }
+    .header { 
+      text-align: center; 
+      font-size: 50px; 
+      font-weight: bold; 
+      margin-bottom: 20px; 
+    }
+    .section { 
+      width: 95%; 
+      padding: 20px; 
+      border-radius: 5px; 
+      background: #fff; 
+      border: 1px solid #ddd; 
+      margin-bottom: 20px; 
+    }
+    .row { 
+      display: flex; 
+      justify-content: space-between; 
+      font-size: 20px; 
+      margin-bottom: 10px; 
+    }
     .bold { font-weight: bold; }
-    .map-container { text-align: center; padding: 20px; background: #ddd; border-radius: 10px; margin-bottom: 20px; }
-    .location-container { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-    .location { display: flex; align-items: center; font-size: 16px; margin-bottom: 10px; }
-    .full-page { height: 100vh; display: flex; flex-direction: column; justify-content: center; }
-    .page-break { page-break-before: always; }
+    .map-container { 
+      text-align: center; 
+      padding: 20px; 
+      height: 250px; 
+      width: 50%; 
+      background: #ddd; 
+      border-radius: 10px; 
+      margin-bottom: 20px; 
+    }
+    .location-container {
+      width: 95%; 
+      background: #fff; 
+      padding: 20px; 
+      border-radius: 10px; 
+      margin-bottom: 20px; 
+    }
+    .location { 
+      display: flex; 
+      align-items: center; 
+      font-size: 20px; 
+      margin-bottom: 10px; 
+    }
+    .full-page { 
+      display: flex; 
+      flex-direction: column; 
+      padding: 20px; 
+      justify-content: center; 
+      align-items: center;
+    }
+    .page-break { 
+      page-break-before: always; 
+    }
+    .headings {
+      font-size: 25px; 
+      font-weight: bold; 
+    }
+    .amount{
+      font-size : 20px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -37,25 +102,25 @@
   <div class="page-break"></div>
   <div class="container full-page">
     <div class="section">
-      <div class="bold">Bill Details</div>
+      <div class="headings">Bill Details</div>
       <div class="row"><span>Ride Charge:</span> <span>₹{{RIDE_CHARGE}}</span></div>
       <div class="row"><span>Booking Fees & Charges:</span> <span>₹{{BOOKING_FEES}}</span></div>
     </div>
 
     <div class="section">
-      <div class="bold">Payment Method</div>
+      <div class="headings">Payment Method</div>
       <div class="row"><span>Cash:</span> <span>₹{{TOTAL_AMOUNT}}</span></div>
     </div>
 
     <div class="section">
-      <div class="bold">Tax Invoice</div>
+      <div class="headings">Tax Invoice</div>
       <div class="row"><span>Invoice No.:</span> <span>#{{INVOICE_NO}}</span></div>
       <div class="row"><span>Invoice Date:</span> <span>{{INVOICE_DATE}}</span></div>
       <div class="row"><span>GST Number:</span> <span>{{GST_NUMBER}}</span></div>
       <div class="row"><span>Captain Name:</span> <span>{{CAPTAIN_NAME}}</span></div>
       <div class="row"><span>Vehicle Number:</span> <span>{{VEHICLE_NUMBER}}</span></div>
       <div class="row"><span>Customer Name:</span> <span>{{CUSTOMER_NAME}}</span></div>
-      <div class="row"><span>Total Amount:</span> <span>₹{{TOTAL_AMOUNT}}</span></div>
+      <div class="row"><span class="amount">Total Amount:</span> <span class="amount">₹{{TOTAL_AMOUNT}}</span></div>
     </div>
   </div>
 
@@ -68,6 +133,7 @@
       <div class="row"><span>CGST (0%):</span> <span>₹{{CGST}}</span></div>
       <div class="row"><span>SGST (0%):</span> <span>₹{{SGST}}</span></div>
       <div class="row"><span>IGST (0%):</span> <span>₹{{IGST}}</span></div>
+      <div class="row"><span class="amount">Ride Charge:</span> <span class="amount">₹{{RIDE_CHARGE}}</span></div>
     </div>
   </div>
 

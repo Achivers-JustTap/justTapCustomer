@@ -8,7 +8,7 @@ import {
   import axios from 'axios';
   import { UserLocationContext } from '../../../Context/UserLocationContext';
   
-  const API_URL = 'http://192.168.0.115:5000/api/maps/get-suggestions?input=';
+  const API_URL = 'http://192.168.29.13:5000/api/maps/get-suggestions?input=';
   
   const SendParcel = ({ route, navigation }) => {
     const { location, setLocation } = useContext(UserLocationContext);
@@ -139,7 +139,8 @@ import {
             </View>
   
             <View style={styles.inputContainer}>
-                {/* Sender Location Input */}
+               <View style={styles.inputRow}>
+                 <Icon name="location-sharp" size={24} color="green" style={styles.pinIcon} />
                 <View style={styles.inputWrapper}>
                     <TextInput
                         style={styles.input}
@@ -150,12 +151,11 @@ import {
                             setCurrentLocationText(text);
                             fetchSuggestions(text, setCurrentLocationSuggestions);
                         }}
+                        
                     />
-                    {currentLocationText !== '' && (
-                        <TouchableOpacity onPress={() => setCurrentLocationText('')} style={styles.clearButton}>
-                            <Icon name="close-circle" size={20} color="white" />
-                        </TouchableOpacity>
-                    )}
+                    
+                    
+                </View>
                 </View>
   
                 {/* Suggestion list for sender location */}
@@ -171,9 +171,11 @@ import {
                         style={styles.suggestionsList}
                     />
                 )}
-  
+                    <View style={styles.inputRow}>
+                    <Icon name="location-sharp" size={24} color="red" style={styles.pinIcon} />
                 {/* Receiver Location Input */}
                 <View style={[styles.inputWrapper, { marginTop: 5 }]}>
+                    
                     <TextInput
                         style={styles.input}
                         placeholder="Receiver Location"
@@ -184,11 +186,8 @@ import {
                             fetchSuggestions(text, setSuggestions);
                         }}
                     />
-                    {destination !== '' && (
-                        <TouchableOpacity onPress={() => setDestination('')} style={styles.clearButton}>
-                            <Icon name="close-circle" size={20} color="white" />
-                        </TouchableOpacity>
-                    )}
+                    
+                </View>
                 </View>
   
                 {/* Suggestion list for receiver location */}
@@ -240,12 +239,15 @@ import {
         alignItems: 'center',
         paddingTop: 40,
     },
-    inputWrapper: {
+    inputRow: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    inputWrapper: {
         backgroundColor: '#0F4A97',
         borderRadius: 20,
         width: 300,
+        height: 40,
         paddingHorizontal: 10,
     },
     input: {
@@ -254,9 +256,7 @@ import {
         color: 'white',
         paddingHorizontal: 10,
     },
-    clearButton: {
-        padding: 5,
-    },
+   
     suggestionsList: {
         width: 300,
         maxHeight: 150,

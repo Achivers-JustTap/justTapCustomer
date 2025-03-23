@@ -8,7 +8,11 @@ const BookingScreen = ({ route, navigation }) => {
     const [vehicles, setVehicles] = useState([]);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [fares, setFares] = useState({});
-
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState({
+        method: 'Cash',
+        icon: require('../../../assets/images/cash.png')
+    });
+   
     useEffect(() => {
         navigation.setOptions({ headerShown: false });
 
@@ -28,7 +32,7 @@ const BookingScreen = ({ route, navigation }) => {
 
             // Fetch fares for each vehicle type
             try {
-                const response = await fetch(`http://192.168.0.115:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
+                const response = await fetch(`http://192.168.29.13:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
                 const fareData = await response.json();
                 console.log('Fare',fareData)
                 setFares(fareData);
@@ -60,8 +64,36 @@ const BookingScreen = ({ route, navigation }) => {
     
 
     const handleCashClick = () => {
-        navigation.navigate('PaymentMethods'); 
+        if (selectedVehicle) {
+            const selectedFare = fares[selectedVehicle.type.toLowerCase().replace(/\s+/g, '')];
+    
+            navigation.navigate('PaymentMethodSelection', { 
+                totalAmount: selectedFare, 
+                setPaymentMethod: (method) => {
+                    let iconSource = null; // Default: No image for Wallet
+    
+                    if (method === 'Cash') {
+                        iconSource = require('../../../assets/images/cash.png');
+                    } else if (method === 'AmazonPay') {
+                        iconSource = require('../../../assets/images/amazonPay.png');
+                    } else if (method === 'gpay') {
+                        iconSource = require('../../../assets/images/gpay.png');
+                    } else if (method === 'paytm') {
+                        iconSource = require('../../../assets/images/Paytm.png');
+                    } else if (method === 'phonepe') {
+                        iconSource = require('../../../assets/images/phonepe.png');
+                    } 
+    
+                    setSelectedPaymentMethod({ method, icon: iconSource }); 
+                } 
+            });
+        } else {
+            console.log("Please select a vehicle before proceeding to payment.");
+        }
     };
+    
+
+    
 
     const renderVehicleItem = ({ item }) => (
         <TouchableOpacity 
@@ -103,8 +135,10 @@ const BookingScreen = ({ route, navigation }) => {
                 
                 <View style={styles.bookRideContainer}>
                     <TouchableOpacity onPress={handleCashClick} style={styles.cashOptionContainer}>
-                        <Image source={require('../../../assets/images/cash.png')} style={styles.cashImage} />
-                        <Text style={styles.cashOption}>Cash</Text>
+                    {selectedPaymentMethod.method !== 'Wallet' && selectedPaymentMethod.icon && (
+        <Image source={selectedPaymentMethod.icon} style={styles.cashImage} />
+    )}
+                        <Text style={styles.cashOption}>{selectedPaymentMethod.method}</Text>
                         <View style={styles.triangle} />
                     </TouchableOpacity>
                     <TouchableOpacity 
@@ -200,13 +234,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginTop: 10,
-        paddingVertical: 10,
+        paddingVertical: 5,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
     },
     cashImage: {
-        width: 30,
-        height: 30,
+        width: 40,
+        height: 40,
+        resizeMode: 'contain',
         marginRight: 10,
     },
     bookButton: {
@@ -223,11 +258,14 @@ const styles = StyleSheet.create({
     cashOption: {
         fontSize: 16,
         color: 'green',
+        marginLeft: -20,
+        marginTop: -10,
         textAlign: 'center',
     },
     triangle: {
         width: 0,
         height: 0,
+        marginTop: -10,
         borderLeftWidth: 10,
         borderRightWidth: 10,
         borderBottomWidth: 10,
