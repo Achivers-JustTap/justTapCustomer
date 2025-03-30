@@ -1,6 +1,6 @@
 
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View, Image } from 'react-native';
+import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View, Image, Animated } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -18,7 +18,24 @@ const DriverRegistration = () => {
       });
     }, [navigation]);
 
- 
+     const fadeAnim = useRef(new Animated.Value(1)).current;
+   
+     useEffect(() => {
+       Animated.loop(
+         Animated.sequence([
+           Animated.timing(fadeAnim, {
+             toValue: 0.3, // Reduce opacity
+             duration: 500, // 500ms fade out
+             useNativeDriver: true,
+           }),
+           Animated.timing(fadeAnim, {
+             toValue: 1, // Restore opacity
+             duration: 500, // 500ms fade in
+             useNativeDriver: true,
+           }),
+         ])
+       ).start();
+     }, []);
 
   useEffect(() => {
     if (isFocused) {
@@ -55,12 +72,14 @@ const DriverRegistration = () => {
                 Get the best fares, instant payouts, and 24/7 support to maximize your earnings!
               </Text>
 
-              <TouchableOpacity onPress={() => Linking.openURL('https://play.google.com/store')}>
-                <Image
-                  source={require('../../../assets/images/OnGooglePlay.png')}
-                  style={styles.playstoreImage}
-                />
-              </TouchableOpacity>
+              <Animated.View style={{ opacity: fadeAnim }}>
+                    <TouchableOpacity onPress={() => Linking.openURL('https://play.google.com/store')}>
+                      <Image
+                        source={require('../../../assets/images/OnGooglePlay.png')}
+                        style={styles.playstoreImage}
+                      />
+                    </TouchableOpacity>
+                  </Animated.View>
             </View>
 
           </LinearGradient>

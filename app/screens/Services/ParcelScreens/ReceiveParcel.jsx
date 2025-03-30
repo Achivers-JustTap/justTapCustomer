@@ -268,7 +268,7 @@ input: {
 
   suggestionsList: {
       width: 300,
-      maxHeight: 150,
+      maxHeight: 300,
       backgroundColor: 'white',
       borderColor: '#ccc',
       borderWidth: 1,

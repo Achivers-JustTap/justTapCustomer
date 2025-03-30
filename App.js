@@ -67,6 +67,9 @@ import PaymentMethodSelection from './app/screens/PaymentMethodsScreens/PaymentM
 import TransactionRecord from './app/screens/PaymentMethodsScreens/TransactionRecord';
 import LoansRegistration from './app/screens/MenuScreens.jsx/LoansRegistration';
 import ReferFriends from './app/screens/MenuScreens.jsx/ReferFriends';
+import LanguagePreference from './app/screens/ProfileScreens/AppSettingsScreens/LanguagePreference';
+import LocationPinScreen from './app/screens/afterLoginScreens/LocationPinScreen';
+import CancellationReasons from './app/screens/afterLoginScreens/CancellationReasons';
 
 
 const Stack = createStackNavigator();
@@ -95,7 +98,9 @@ const AppContent = () => {
        <Stack.Screen name="EnterLocation" component={EnterLocation} />
        <Stack.Screen name="LocationMapScreen" component={LocationMapScreen} />
        <Stack.Screen name="BookingScreen" component={BookingScreen} />
+       <Stack.Screen name="LocationPinScreen" component={LocationPinScreen} />
        <Stack.Screen name="WaitingForCaptainScreen" component={WaitingForCaptainScreen} />
+       <Stack.Screen name="CancellationReasons" component={CancellationReasons} options={{headerShown:false}} />
        <Stack.Screen name="RideConfirmedPage" component={RideConfirmedPage} />
        <Stack.Screen name="DriverArrivingPage" component={DriverArrivingPage} />
        <Stack.Screen name="RideTrackingScreen" component={RideTrackingScreen} />
@@ -134,7 +139,8 @@ const AppContent = () => {
        <Stack.Screen name="AddHomePage" component={AddHomePage} />
        <Stack.Screen name="AddWorkPage" component={AddWorkPage} />
        <Stack.Screen name="ShortcutsPage" component={ShortcutsPage} />
-      
+
+       <Stack.Screen name="LanguagePreference" component={LanguagePreference} />
        <Stack.Screen name="AppearancePage" component={AppearancePage} />
        <Stack.Screen name="CommunicationPage" component={CommunicationPage} />
        <Stack.Screen name="SafetyPreferencePage" component={SafetyPreferencePage} />

@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text, Dimensions, View, ImageBackground, Clipboard, Share } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { SafeAreaView, StyleSheet, TouchableOpacity, Text, Dimensions, View, ImageBackground, Clipboard, Share,Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 
 const ReferFriends = () => {
-  const [showOverlay, setShowOverlay] = useState(false);
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const referralCode = "REFER@123";
@@ -16,17 +14,7 @@ const ReferFriends = () => {
     });
   }, [navigation]);
 
-  useEffect(() => {
-    if (isFocused) {
-      setShowOverlay(false);
-
-      const timer = setTimeout(() => {
-        setShowOverlay(true);
-      }, 1000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [isFocused]);
+ 
 
   const copyToClipboard = () => {
     Clipboard.setString(referralCode);
@@ -44,17 +32,14 @@ const ReferFriends = () => {
   };
 
   return (
+    <ScrollView>
     <SafeAreaView style={styles.container}>
-      <ImageBackground
-        source={require('../../../assets/images/otherImages/ReferFriendsBG.jpeg')}
+    
+      <Image
+        source={require('../../../assets/images/otherImages/ReferFriendsBG1.jpeg')}
         style={styles.backgroundImage}
         imageStyle={styles.imageStyle}
-      >
-        {showOverlay && (
-          <LinearGradient
-            colors={['rgba(254, 254, 254, 0.82)', 'rgba(199, 221, 249, 0.82)']}
-            style={styles.overlay}
-          >
+      />
             <View style={styles.referralContainer}>
               <Text style={styles.referralCode}>{referralCode}</Text>
               <TouchableOpacity style={styles.copyButton} onPress={copyToClipboard}>
@@ -74,10 +59,10 @@ const ReferFriends = () => {
             <TouchableOpacity style={styles.inviteButton} onPress={shareReferral}>
               <Text style={styles.inviteButtonText}>Invite Your Friends</Text>
             </TouchableOpacity>
-          </LinearGradient>
-        )}
-      </ImageBackground>
+            
+    
     </SafeAreaView>
+    </ScrollView>
   );
 };
 
@@ -86,24 +71,17 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
   },
   backgroundImage: {
-    width: '100%',
-    height: 700,
+    width: 400,
+    height: 320,
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
-  overlay: {
-    width: width * 0.96,
-    height: height * 0.9,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
-    borderRadius: 20,
-  },
+ 
   referralContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -114,6 +92,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     marginBottom: 15,
+    marginTop: 30
   },
   referralCode: {
     fontSize: 20,
@@ -126,17 +105,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#5b9bd5',
     borderRadius: 5,
   },
-  copyButtonText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
+
   inviteButton: {
     marginTop: 25,
     padding: 20,
     backgroundColor: '#0f4a97',
     borderRadius: 10,
-    marginBottom: 20,
-    width: '100%'
+    marginBottom: 30,
+    width: '80%'
   },
   inviteButtonText: {
     color: 'white',
@@ -151,11 +127,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'black',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   howItWorksText: {
     fontSize: 18,
     color: 'black',
+    padding: 10,
     fontWeight: 'bold',
     textAlign: 'center',
     marginVertical: 5,

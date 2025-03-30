@@ -92,7 +92,7 @@ const AppMapView = ({ currentLocationCoords, destinationCoords }) => {
             onLayout={() => fitToMarkers([currentLocationCoords, destinationCoords])} // Ensure zoom adjustment on initial render
         >
             {/* Marker for Current Location */}
-            <Marker coordinate={currentLocationCoords}  pinColor="#0F4A97"/>
+            <Marker coordinate={currentLocationCoords}  pinColor="skyblue"/>
 
             {/* Marker for Destination */}
             <Marker coordinate={destinationCoords} pinColor="red" />

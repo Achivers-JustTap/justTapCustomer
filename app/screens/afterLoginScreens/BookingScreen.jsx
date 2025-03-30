@@ -53,7 +53,7 @@ const BookingScreen = ({ route, navigation }) => {
             //     markerCoords,
             //     destinationCoords,
             //     vehicle: selectedVehicle,
-            navigation.navigate('WaitingForCaptainScreen', {
+            navigation.navigate('LocationPinScreen', {
                 vehicleType: selectedVehicle.type, markerCoords,dropoffCoords,
                 fare: fares[selectedVehicle.type.toLowerCase()]
             });

@@ -85,7 +85,7 @@ const PaymentMethods = ({ navigation }) => {
         renderItem={renderPaymentMethodItem}
         contentContainerStyle={styles.paymentList}
       />
-      <TouchableOpacity style={styles.transactionButton}>
+      <TouchableOpacity onPress = {()=> navigation.navigate('TransactionRecord')}style={styles.transactionButton}  >
         <AntDesign name="profile" size={20} color="white" />
         <Text style={styles.transactionButtonText}>Transaction Record</Text>
       </TouchableOpacity>

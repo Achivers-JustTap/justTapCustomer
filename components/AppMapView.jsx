@@ -69,14 +69,16 @@ export default function AppMapView({
                     }}
                     style={styles.userLocationMarker} 
                 >
-                    <View style={styles.userLocationDot} />
+                    <View style={styles.userLocationDot}>
+                        <View style={styles.userLocationInnerDot} />
+                    </View>
                 </Marker>
 
                 {/* Draggable Marker */}
                 <Marker
                     coordinate={markerCoords || location}
                     title="Your Location"
-                    pinColor="#0F4A97" 
+                    pinColor="skyblue" 
                     draggable={draggable} // Use the draggable prop here
                     onDragEnd={draggable ? handleMarkerDragEnd : undefined}
                 />
@@ -116,10 +118,19 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     userLocationDot: {
-        width: 10, 
-        height: 10,
-        borderRadius: 5, 
-        backgroundColor: '#0F4A97',
+        width: 25, 
+        height: 25,
+        borderRadius:25 , 
+        backgroundColor: 'rgba(36, 91, 163, 0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 5,
+    },
+    userLocationInnerDot: {
+        width: 15,
+        height: 15,
+        borderRadius: 10,
+        backgroundColor: '#0f4a97',
     },
     locationButton: {
         position: 'absolute',

@@ -37,7 +37,6 @@ const Security = () => {
       { id: '1', title: 'Change Password', route: 'ChangePasswordsPage' },
       { id: '2', title: 'Authentications', route: 'AuthenticationsPage' },
       { id: '3', title: 'Two-Step Verification', route: 'TwoStepVerification' },
-      { id: '4', title: 'Feedback and Reports', route: 'FeedbackAndReport' },
     ];
     
 

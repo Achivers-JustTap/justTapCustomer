@@ -1,9 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Linking } from 'react-native';
 import React, { useLayoutEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const AddMoneyUPI = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { amount } = route.params;
+
    useLayoutEffect(() => {
       navigation.setOptions({
         title: 'Add Money',
@@ -11,22 +14,29 @@ const AddMoneyUPI = () => {
     }, [navigation]);
   
   const upiMethods = [
-    { name: 'GPay', image: require('../../../assets/images/gpay.png') },
-    { name: 'Paytm', image: require('../../../assets/images/Paytm.png') },
-    { name: 'PhonePe', image: require('../../../assets/images/phonepe.png') },
-    { name: 'AmazonPay', image: require('../../../assets/images/amazonPay.png') }
+    { name: 'GPay', uri: `tez://upi/pay?pa=yourupi@bank&pn=YourName&mc=&tid=&tr=&tn=Payment&am=${amount}&cu=INR`, image: require('../../../assets/images/gpay.png') },
+    { name: 'Paytm', uri: `paytmmp://pay?pa=yourupi@bank&pn=YourName&mc=&tid=&tr=&tn=Payment&am=${amount}&cu=INR`, image: require('../../../assets/images/Paytm.png') },
+    { name: 'PhonePe', uri: `phonepe://upi/pay?pa=yourupi@bank&pn=YourName&mc=&tid=&tr=&tn=Payment&am=${amount}&cu=INR`, image: require('../../../assets/images/phonepe.png') },
+    { name: 'AmazonPay', uri: `amazonpay://upi/pay?pa=yourupi@bank&pn=YourName&mc=&tid=&tr=&tn=Payment&am=${amount}&cu=INR`, image: require('../../../assets/images/amazonPay.png') },
   ];
 
+
   const handleSelectMethod = (method) => {
-    navigation.navigate('AddMoneyEnterUpi', { method });
+    Linking.canOpenURL(method.uri).then((supported) => {
+      if (supported) {
+        Linking.openURL(method.uri);
+      } else {
+        Alert.alert('App Not Found', `Please install ${method.name} to continue.`);
+      }
+    });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Select a UPI Method</Text>
+     <Text style={styles.title}>Select a UPI Method</Text>
       <View style={styles.methodContainer}>
         {upiMethods.map((method, index) => (
-          <TouchableOpacity key={index} style={styles.method} onPress={() => handleSelectMethod(method.name)}>
+          <TouchableOpacity key={index} style={styles.method} onPress={() => handleSelectMethod(method)}>
             <Image source={method.image} style={styles.methodImage} resizeMode="contain" />
             <Text style={styles.methodText}>{method.name}</Text>
           </TouchableOpacity>
@@ -36,9 +46,9 @@ const AddMoneyUPI = () => {
       <Text style={styles.stepsTitle}>Steps to Add Money</Text>
       <View style={styles.stepsContainer}>
         <Text style={styles.step}>1. Select a UPI Method</Text>
-        <Text style={styles.step}>2. Enter your UPI ID</Text>
-        <Text style={styles.step}>3. Click on the Send button to request payment</Text>
-        <Text style={styles.step}>4. Open your UPI payment app and complete the payment</Text>
+        <Text style={styles.step}>2. Go to Respective UPI App</Text>
+        <Text style={styles.step}>3.Complete the payment</Text>
+        <Text style={styles.step}>4. Come Back to Payment Methods and check whether the money is added or not</Text>
       </View>
     </View>
   );

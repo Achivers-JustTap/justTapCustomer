@@ -37,7 +37,7 @@ const DriverArrivingPage = ({ navigation }) => {
           style: 'destructive', 
           onPress: () => {
             setIsRideCancelled(true);  
-            navigation.navigate("HomeTabs");  
+            navigation.navigate("CancellationReasons");  
           }
         },
       ],

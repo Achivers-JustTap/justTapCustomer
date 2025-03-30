@@ -13,7 +13,7 @@ const API_URL = 'http://192.168.29.13:5000/api/maps/get-suggestions?input=';
 const AddWorkPage = ({ route, navigation }) => {
   const { location, setLocation } = useContext(UserLocationContext);
   const [currentLocationText, setCurrentLocationText] = useState('');
-  const [workAddress, setWorkAddress] = useState(''); // Corrected the name here
+  const [workAddress, setWorkAddress] = useState(''); 
   const [suggestions, setSuggestions] = useState([]);
   const [confirmedWorkAddress, setConfirmedWorkAddress] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
@@ -71,7 +71,7 @@ const AddWorkPage = ({ route, navigation }) => {
     try {
       const response = await axios.get(`${API_URL}${input}`);
       if (response.data && response.data.length > 0) {
-        setSuggestions(response.data.slice(0, 5)); // Limit to 5 suggestions
+        setSuggestions(response.data.slice(0, 5));
       } else {
         setSuggestions([]);
       }
@@ -120,7 +120,7 @@ const AddWorkPage = ({ route, navigation }) => {
   const handleSave = () => {
     if (confirmedWorkAddress) {
       navigation.goBack({
-        confirmedWorkAddress, // Pass the work address back
+        confirmedWorkAddress, 
       });
     }
   };
@@ -135,6 +135,8 @@ const AddWorkPage = ({ route, navigation }) => {
       </View>
 
       <View style={styles.inputContainer}>
+         <View style={styles.inputRow}>
+               <Icon name="briefcase" size={30} color="#0f4a97" marginRight={5} style={styles.pinIcon} />
         <View style={[styles.inputWrapper, { marginTop: 5 }]}>
           <TextInput
             style={styles.input}
@@ -151,6 +153,7 @@ const AddWorkPage = ({ route, navigation }) => {
               <Icon name="close-circle" size={20} color="white" />
             </TouchableOpacity>
           )}
+        </View>
         </View>
 
         {confirmedWorkAddress && (
@@ -209,27 +212,30 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     paddingTop: 40,
-  },
-  inputWrapper: {
+},
+inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
+},
+inputWrapper: {
     backgroundColor: '#0F4A97',
     borderRadius: 20,
     width: 300,
+    height: 40,
     paddingHorizontal: 10,
-  },
-  input: {
+},
+input: {
     flex: 1,
     height: 40,
     color: 'white',
     paddingHorizontal: 10,
-  },
+},
   clearButton: {
     padding: 5,
   },
   suggestionsList: {
     width: 300,
-    maxHeight: 150,
+    maxHeight: 300,
     backgroundColor: 'white',
     borderColor: '#ccc',
     borderWidth: 1,
@@ -237,7 +243,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   suggestionItem: {
-    padding: 10,
+    padding: 20,
     borderBottomColor: '#eee',
     borderBottomWidth: 1,
   },

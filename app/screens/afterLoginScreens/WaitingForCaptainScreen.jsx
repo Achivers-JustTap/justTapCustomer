@@ -6,50 +6,55 @@ import Icon from 'react-native-vector-icons/Ionicons';
 const WaitingForCaptainScreen = ({ route, navigation }) => {
     const { markerCoords, dropoffCoords, vehicle } = route.params;
     const [isRideCancelled, setIsRideCancelled] = useState(false);
-    const [progress, setProgress] = useState(new Animated.Value(0));
+    const progress = useState(new Animated.Value(0))[0]; 
 
-     useEffect(() => {
-            navigation.setOptions({ headerShown: false });
-     });
-
+    useEffect(() => {
+        navigation.setOptions({ headerShown: false });
+    }, [navigation]);
 
     const startLoading = () => {
+        progress.setValue(0); 
         Animated.timing(progress, {
             toValue: 1,
-            duration: 3000,
+            duration: 10000,
             easing: Easing.linear,
             useNativeDriver: false,
-        }).start(() => {
-            navigation.navigate('RideConfirmedPage'); 
+        }).start(({ finished }) => {
+            if (finished && !isRideCancelled) { 
+                navigation.navigate('RideConfirmedPage');
+            }
         });
     };
+
+    useEffect(() => {
+        if (!isRideCancelled) {
+            startLoading();
+        } else {
+            progress.stopAnimation(); 
+            progress.setValue(0);     
+        }
+    }, [isRideCancelled]);
 
     const cancelRide = () => {
         Alert.alert(
             'Cancel Ride',
             'Are you sure you want to cancel the ride?',
             [
-                { 
-                    text: 'No', 
-                    style: 'cancel', 
-                    onPress: () => setIsRideCancelled(false)  
-                },
+                { text: 'No', style: 'cancel' },
                 { 
                     text: 'Yes', 
                     style: 'destructive', 
                     onPress: () => {
-                        setIsRideCancelled(true);  
-                        navigation.goBack();  
+                        setIsRideCancelled(true); 
+                        setTimeout(() => {
+                            navigation.navigate('CancellationReasons'); 
+                        }, 100);
                     }
                 },
             ],
             { cancelable: true }
         );
     };
-
-    React.useEffect(() => {
-        startLoading();
-    }, []);
 
     return (
         <SafeAreaView style={styles.container}>
@@ -81,11 +86,6 @@ const WaitingForCaptainScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {isRideCancelled && (
-                <View style={styles.cancelConfirmationContainer}>
-                    <Text style={styles.cancelConfirmationText}>Ride Cancelled!</Text>
-                </View>
-            )}
         </SafeAreaView>
     );
 };

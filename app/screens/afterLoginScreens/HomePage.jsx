@@ -301,7 +301,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     promotionContainer: {
-       
+        marginTop: 30,
         backgroundColor: '#fff',
         borderRadius: 10,
         borderColor: '#0f4a97',
