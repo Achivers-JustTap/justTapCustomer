@@ -1,8 +1,18 @@
-import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+  Alert,
+  Platform,
+} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { setCustomerData } from '../../../storemanagement_customer/actions_customer/customerActions';
 
 const SignUpPage = ({ navigation, route }) => {
@@ -11,6 +21,7 @@ const SignUpPage = ({ navigation, route }) => {
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('Male');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const dispatch = useDispatch();
   const customer = useSelector((state) => state.customer);
 
@@ -41,7 +52,7 @@ const SignUpPage = ({ navigation, route }) => {
     };
 
     try {
-      const response = await axios.post('http://192.168.29.13:5000/api/users/register', customerData);
+      const response = await axios.post('http://192.168.163.170:5000/api/users/register', customerData);
 
       if (response.data) {
         const { id } = response.data.user;
@@ -95,13 +106,32 @@ const SignUpPage = ({ navigation, route }) => {
           </Picker>
         </View>
 
-        <TextInput
+        <TouchableOpacity
           style={styles.input}
-          placeholder="Enter your date of birth (dd/mm/yyyy)"
-          keyboardType="default"
-          value={dateOfBirth}
-          onChangeText={setDateOfBirth}
-        />
+          onPress={() => setShowDatePicker(true)}
+        >
+          <Text style={{ color: dateOfBirth ? 'black' : '#888' }}>
+            {dateOfBirth || 'Select your date of birth'}
+          </Text>
+        </TouchableOpacity>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={new Date()}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'calendar'}
+            maximumDate={new Date()}
+            onChange={(event, selectedDate) => {
+              setShowDatePicker(false);
+              if (selectedDate) {
+                const day = selectedDate.getDate().toString().padStart(2, '0');
+                const month = (selectedDate.getMonth() + 1).toString().padStart(2, '0');
+                const year = selectedDate.getFullYear();
+                setDateOfBirth(`${day}/${month}/${year}`);
+              }
+            }}
+          />
+        )}
 
         <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Sign Up</Text>

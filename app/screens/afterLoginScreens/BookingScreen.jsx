@@ -32,7 +32,7 @@ const BookingScreen = ({ route, navigation }) => {
 
             // Fetch fares for each vehicle type
             try {
-                const response = await fetch(`http://192.168.29.13:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
+                const response = await fetch(`http://192.168.163.170:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
                 const fareData = await response.json();
                 console.log('Fare',fareData)
                 setFares(fareData);

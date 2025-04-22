@@ -8,7 +8,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
   import axios from 'axios';
   import { UserLocationContext } from '../../Context/UserLocationContext';
   
-  const API_URL = 'http://192.168.29.13:5000/api/maps/get-suggestions?input=';
+  const API_URL = 'http://192.168.163.170:5000/api/maps/get-suggestions?input=';
 
 const Rentals = ({route,navigation}) => {
   const [showOverlay, setShowOverlay] = useState(false);
