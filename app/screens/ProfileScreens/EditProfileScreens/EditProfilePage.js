@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Platform, TextInput, Alert } from 'react-native';
+import React, { useState, useLayoutEffect, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Platform, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const EditProfilePage = ({ navigation }) => {
   const [dob, setDob] = useState(new Date(2003, 3, 3));
@@ -8,37 +9,26 @@ const EditProfilePage = ({ navigation }) => {
   const [email, setEmail] = useState('svscharitha@gmail.com');
   const [number, setNumber] = useState('+91 9121978725');
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: 'Profile Details',
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
+      headerStyle: { backgroundColor: '#fff' },
       headerTintColor: '#000',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
+      headerTitleStyle: { fontWeight: 'bold' },
     });
   }, [navigation]);
 
   const handleLogout = () => {
-    Alert.alert(
-      'Logout',
-      'Are you sure you want to logout?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Logout',
-          onPress: () => {
-            navigation.replace('WelcomeScreens');
-          },
-        },
-      ],
-      { cancelable: false }
-    );
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Logout',
+        onPress: () => navigation.replace('WelcomeScreens'),
+      },
+    ]);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       const updatedEmail = navigation.getState()?.routes?.find(
         (route) => route.name === 'EditProfilePage'
@@ -49,11 +39,10 @@ const EditProfilePage = ({ navigation }) => {
         navigation.setParams({ updatedEmail: null });
       }
     });
-
     return unsubscribe;
   }, [navigation]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       const updatedNumber = navigation.getState()?.routes?.find(
         (route) => route.name === 'EditProfilePage'
@@ -64,20 +53,20 @@ const EditProfilePage = ({ navigation }) => {
         navigation.setParams({ updatedNumber: null });
       }
     });
-
     return unsubscribe;
   }, [navigation]);
 
   const handleDateChange = (event, selectedDate) => {
-    const currentDate = selectedDate || dob;
-    setShowPicker(Platform.OS === 'ios');
-    setDob(currentDate);
+    if (event.type === 'set') {
+      setDob(selectedDate || dob);
+    }
+    setShowPicker(false);
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.profileIcon}>
-        <Ionicons name="person-circle-outline" size={80} color='#0F4A97' />
+        <Ionicons name="person-circle-outline" size={80} color="#0F4A97" />
       </TouchableOpacity>
 
       <View style={styles.section}>
@@ -89,21 +78,15 @@ const EditProfilePage = ({ navigation }) => {
       <View style={styles.section}>
         <Text style={styles.heading}>Date of Birth</Text>
         <View style={styles.row}>
-          {/* TextInput for DOB */}
-          <TextInput
-            style={styles.textInput}
-            value={dob.toLocaleDateString()}
-            onChangeText={(text) => setDob(new Date(text))}
-          />
+          <Text style={styles.info}>{dob.toLocaleDateString()}</Text>
           <TouchableOpacity onPress={() => setShowPicker(true)}>
-            <Ionicons name="calendar" size={20} color='#0F4A97' />
+            <Ionicons name="calendar" size={20} color="#0F4A97" />
           </TouchableOpacity>
         </View>
         <View style={styles.line} />
       </View>
 
-      {/* Commented out DateTimePicker */}
-      {/* {showPicker && (
+      {showPicker && (
         <DateTimePicker
           value={dob}
           mode="date"
@@ -111,7 +94,7 @@ const EditProfilePage = ({ navigation }) => {
           onChange={handleDateChange}
           maximumDate={new Date()}
         />
-      )} */}
+      )}
 
       <View style={styles.section}>
         <Text style={styles.heading}>Gender</Text>
@@ -158,8 +141,8 @@ const EditProfilePage = ({ navigation }) => {
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-      <Ionicons name="log-out-outline" size={30} color="red" />
-        <Text style={styles.logoutText}>Logout</Text>
+        <Ionicons name="log-out-outline" size={30} color="red" />
+        <Text style={styles.logoutText}> Logout</Text>
       </TouchableOpacity>
     </View>
   );
@@ -187,7 +170,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   info: {
-    color: '#0F4A97',
     fontSize: 14,
     color: 'gray',
   },
@@ -203,26 +185,16 @@ const styles = StyleSheet.create({
   },
   logoutButton: {
     marginTop: 20,
-    justifyContent:'center',
-    alignItems:'center',
+    justifyContent: 'center',
+    alignItems: 'center',
     flexDirection: 'row',
     padding: 15,
     backgroundColor: 'white',
     borderRadius: 5,
-    alignItems: 'center',
   },
   logoutText: {
     color: 'red',
     fontSize: 16,
     fontWeight: 'bold',
-  },
-  textInput: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#0F4A97',
-    paddingVertical: 5,
-    marginRight: 10,
-    width: '80%',
-    fontSize: 16,
-    color: 'gray',
   },
 });

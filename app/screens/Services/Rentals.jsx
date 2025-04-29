@@ -1,29 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, TouchableOpacity, Text, ImageBackground, Dimensions, View, TextInput } from 'react-native';
+import {
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  ImageBackground,
+  Dimensions,
+  View,
+  TextInput,
+  Platform
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 
 const Rentals = () => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [selectedTrip, setSelectedTrip] = useState('oneWay');
   const [timeNeeded, setTimeNeeded] = useState(1);
-  const [charge, setCharge] = useState(200); 
+  const [charge, setCharge] = useState(200);
   const [isLaterClicked, setIsLaterClicked] = useState(false);
+  const [isPickupTimeSet, setIsPickupTimeSet] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showTimePicker, setShowTimePicker] = useState(false);
+
   const isFocused = useIsFocused();
   const navigation = useNavigation();
 
   const currentDate = new Date();
-  const formattedDate = moment(currentDate).format('MMMM Do YYYY');
-  const dayOfWeek = moment(currentDate).format('dddd');
-  const currentTime = moment(currentDate).format('hh:mm A');
-
-  const [isPickupTimeSet,setIsPickupTimeSet] = useState(false);
-
-  const [selectedDate, setSelectedDate] = useState(formattedDate);
-  const [selectedTime, setSelectedTime] = useState(currentTime);
-  const [selectedDayOfWeek, setSelectedDayOfWeek] = useState(dayOfWeek);
+  const [selectedDateObj, setSelectedDateObj] = useState(currentDate);
+  const [selectedDate, setSelectedDate] = useState(moment(currentDate).format('MMMM Do YYYY'));
+  const [selectedDayOfWeek, setSelectedDayOfWeek] = useState(moment(currentDate).format('dddd'));
+  const [selectedTime, setSelectedTime] = useState(moment(currentDate).format('hh:mm A'));
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -32,25 +42,25 @@ const Rentals = () => {
   useEffect(() => {
     if (isFocused) {
       setShowOverlay(false);
-      const timer = setTimeout(() => {
-        setShowOverlay(true);
-      }, 1000);
+      const timer = setTimeout(() => setShowOverlay(true), 1000);
       return () => clearTimeout(timer);
     }
   }, [isFocused]);
 
+  useEffect(() => {
+    setCharge(200 * timeNeeded);
+  }, [timeNeeded]);
+
   const handleIncreaseTime = () => {
-    setTimeNeeded(prevTime => prevTime + 0.5);
-    setCharge(prevTime => (timeNeeded >= 1 ? prevTime + 100 : 200));  
+    setTimeNeeded(prev => prev + 0.5);
   };
 
   const handleDecreaseTime = () => {
-    setTimeNeeded(prevTime => (prevTime > 1 ? prevTime - 0.5 : prevTime));
-    setCharge(prevTime => (timeNeeded > 1.5 ? prevTime - 100 : 200));  
+    setTimeNeeded(prev => (prev > 1 ? prev - 0.5 : prev));
   };
 
   const handleTakeRide = () => {
-    // Add your functionality here
+    // Ride booking logic here
   };
 
   const handleLater = () => {
@@ -69,9 +79,25 @@ const Rentals = () => {
     }
   };
 
-  const handleSetPickup =() =>{
+  const handleSetPickup = () => {
     setIsPickupTimeSet(true);
     setIsLaterClicked(false);
+  };
+
+  const handleDateChange = (event, date) => {
+    if (event.type === 'set' && date) {
+      setSelectedDateObj(date);
+      setSelectedDate(moment(date).format('MMMM Do YYYY'));
+      setSelectedDayOfWeek(moment(date).format('dddd'));
+    }
+    setShowDatePicker(false);
+  };
+
+  const handleTimeChange = (event, date) => {
+    if (event.type === 'set' && date) {
+      setSelectedTime(moment(date).format('hh:mm A'));
+    }
+    setShowTimePicker(false);
   };
 
   return (
@@ -79,15 +105,15 @@ const Rentals = () => {
       <TouchableOpacity style={styles.backButton} onPress={handleBack}>
         <FontAwesome name="arrow-left" size={24} color="white" />
       </TouchableOpacity>
-      
-      <ImageBackground 
+
+      <ImageBackground
         source={require('../../../assets/images/rentals.png')}
         style={styles.backgroundImage}
-        imageStyle={styles.imageStyle} 
+        imageStyle={styles.imageStyle}
       >
         {showOverlay && !isLaterClicked && (
           <LinearGradient
-            colors={['rgba(185, 206, 233, 0.48)', 'rgba(177, 167, 130, 0.48)']} 
+            colors={['rgba(185, 206, 233, 0.48)', 'rgba(177, 167, 130, 0.48)']}
             style={styles.overlay}
           >
             <Text style={styles.timeSettingText}>
@@ -121,7 +147,7 @@ const Rentals = () => {
                 </TouchableOpacity>
 
                 {isPickupTimeSet ? (
-                  <TouchableOpacity style={styles.setButton} onPress={handleLater} >
+                  <TouchableOpacity style={styles.setButton} onPress={handleLater}>
                     <Text style={styles.pickupDetails}>
                       Pickup on {selectedDayOfWeek},{'\n'}
                       {selectedDate}{'\n'} at {selectedTime}
@@ -143,63 +169,55 @@ const Rentals = () => {
 
         {isLaterClicked && (
           <LinearGradient
-            colors={['rgba(185, 206, 233, 0.48)', 'rgba(177, 167, 130, 0.48)']} 
+            colors={['rgba(185, 206, 233, 0.48)', 'rgba(177, 167, 130, 0.48)']}
             style={styles.overlay}
           >
-            <Text style={styles.laterText}>
-              When do you want to get picked up?
-            </Text>
-            
+            <Text style={styles.laterText}>When do you want to get picked up?</Text>
+
             <View style={styles.whiteBox}>
-              <TextInput
-                style={styles.whiteBoxText}
-                value={selectedDate}
-                onChangeText={setSelectedDate}
-                placeholder="Enter Date (e.g., March 10, 2025)"
-              />
+              <TouchableOpacity onPress={() => setShowDatePicker(true)}>
+                <Text style={styles.whiteBoxText}>📅 {selectedDate}</Text>
+              </TouchableOpacity>
               <Text style={styles.whiteBoxText}>{selectedDayOfWeek}</Text>
-              <TextInput
-                style={styles.whiteBoxText}
-                value={selectedTime}
-                onChangeText={setSelectedTime}
-                placeholder="Enter Time (e.g., 10:00 AM)"
-              />
+              <TouchableOpacity onPress={() => setShowTimePicker(true)}>
+                <Text style={styles.whiteBoxText}>⏰ {selectedTime}</Text>
+              </TouchableOpacity>
             </View>
 
             <View style={styles.buttonRow}>
               <TouchableOpacity style={styles.blueButton} onPress={handleSetPickup}>
-                <Text style={styles.buttonText}>Set Pick Up Date&Time</Text>
+                <Text style={styles.buttonText}>Set Pick Up Date & Time</Text>
               </TouchableOpacity>
             </View>
           </LinearGradient>
         )}
       </ImageBackground>
 
-      {/* Commenting out DateTimePickerModal */}
-      {/* <DateTimePickerModal
-        isVisible={isDatePickerVisible}
-        mode="date"
-        onConfirm={handleConfirmDate}
-        onCancel={hideDatePicker}
-      />
-
-      <DateTimePickerModal
-        isVisible={isTimePickerVisible}
-        mode="time"
-        onConfirm={handleConfirmTime}
-        onCancel={hideTimePicker}
-      /> */}
+      {showDatePicker && (
+        <DateTimePicker
+          value={selectedDateObj}
+          mode="date"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={handleDateChange}
+        />
+      )}
+      {showTimePicker && (
+        <DateTimePicker
+          value={selectedDateObj}
+          mode="time"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={handleTimeChange}
+        />
+      )}
     </SafeAreaView>
   );
 };
 
-const { width, height } = Dimensions.get('window'); 
+const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: 'white',
   },
   backButton: {
@@ -207,13 +225,13 @@ const styles = StyleSheet.create({
     top: 40,
     right: 20,
     zIndex: 1,
-    backgroundColor: '#0F4A97', 
+    backgroundColor: '#0F4A97',
     padding: 10,
     borderRadius: 50,
   },
   backgroundImage: {
-    width: width,
-    height: height,
+    width,
+    height,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -221,37 +239,32 @@ const styles = StyleSheet.create({
     resizeMode: 'stretch',
   },
   overlay: {
-    width: width * 0.94, 
-    height: height * 0.9, 
-    justifyContent: 'center', 
+    width: width * 0.94,
+    height: height * 0.9,
+    justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    borderRadius: 20, 
-    alignSelf: 'center',
+    borderRadius: 20,
     marginTop: height * 0.04,
-    position: 'relative',
   },
   timeSettingText: {
     fontSize: 18,
     fontWeight: '700',
     color: '#0F4A97',
-    position: 'absolute', 
-    top: 20, 
+    position: 'absolute',
+    top: 20,
   },
   justTapText: {
-    fontFamily: 'SofadiOne',
     fontSize: 25,
     color: '#0F4A97',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 2, height: 2 }, 
-    textShadowRadius: 4, 
+    fontWeight: 'bold',
   },
   laterText: {
     fontSize: 20,
     fontWeight: '700',
     color: '#0F4A97',
-    position: 'absolute', 
-    top: 20, 
+    position: 'absolute',
+    top: 20,
   },
   centerContent: {
     flex: 1,
@@ -293,7 +306,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'white',
     borderRadius: 10,
-    alignItems: 'flex-start',
   },
   chargeRow: {
     flexDirection: 'row',
@@ -305,42 +317,46 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   chargeText: {
-    fontSize: 24, 
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#0F4A97', 
-    marginLeft: 10, 
+    color: '#0F4A97',
+    marginLeft: 10,
   },
   perHourText: {
     fontSize: 16,
     color: 'grey',
-    marginLeft:'37%',
     marginTop: 5,
+    textAlign: 'center',
   },
   buttonRow: {
     flexDirection: 'row',
     marginTop: 20,
-  },
-  setButton:{
-   backgroundColor:'#0F4A97',
-   padding: 10,
-   width:150,
-   borderRadius: 5,
-   marginHorizontal: 10,
-  },
-  pickupDetails:{
-    color: 'white'
+    flexWrap: 'wrap',
+    justifyContent: 'center',
   },
   blueButton: {
     backgroundColor: '#0F4A97',
     padding: 10,
-    justifyContent: 'center',
     borderRadius: 5,
-    marginHorizontal: 10,
+    margin: 10,
+    minWidth: 140,
+    alignItems: 'center',
+  },
+  setButton: {
+    backgroundColor: '#0F4A97',
+    padding: 10,
+    borderRadius: 5,
+    margin: 10,
+    minWidth: 150,
   },
   buttonText: {
     color: 'white',
-    textAlign:'center',
-    fontSize: 18,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  pickupDetails: {
+    color: 'white',
+    textAlign: 'center',
   },
   chooseVehicleButton: {
     marginTop: 20,
@@ -356,12 +372,11 @@ const styles = StyleSheet.create({
   },
   whiteBox: {
     backgroundColor: 'white',
-    padding: 5,
+    padding: 10,
     borderRadius: 10,
-    marginTop: 20,
+    marginTop: 60,
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
   },
   whiteBoxText: {
     color: 'black',

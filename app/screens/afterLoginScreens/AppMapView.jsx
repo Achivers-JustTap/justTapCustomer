@@ -14,7 +14,7 @@ const AppMapView = ({ currentLocationCoords, destinationCoords }) => {
 
     const fetchRoute = async () => {
         try {
-            const apiKey = 'AIzaSyDRWDCH-MCMYS0ohxiCENn4v2NBCw1tZb8';
+            const apiKey = 'AIzaSyDA7QxXq1FaHe3W4xLDgCF5XSB6n-RN8TA';
             const origin = `${currentLocationCoords.latitude},${currentLocationCoords.longitude}`;
             const destination = `${destinationCoords.latitude},${destinationCoords.longitude}`;
 

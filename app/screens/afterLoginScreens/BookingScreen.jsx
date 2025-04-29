@@ -20,9 +20,9 @@ const BookingScreen = ({ route, navigation }) => {
             const vehicleOptions = [
                 { id: '1', type: 'Moto', image: require('../../../assets/images/icons/bike.png') },
                 { id: '2', type: 'Auto', image: require('../../../assets/images/icons/auto.png') },
-                { id: '3', type: 'Mini Cab', image: require('../../../assets/images/icons/mini cab.png') },
-                { id: '4', type: 'Maxi Cab', image: require('../../../assets/images/icons/maxi cab.png') },
-                { id: '5', type: 'XL Cab', image: require('../../../assets/images/icons/XL cab.png') },
+                 { id: '3', type: 'Car', image: require('../../../assets/images/icons/mini cab.png') },
+                // { id: '4', type: 'Maxi Cab', image: require('../../../assets/images/icons/maxi cab.png') },
+                // { id: '5', type: 'XL Cab', image: require('../../../assets/images/icons/XL cab.png') },
                 // { id: '6', type: 'Reserved', image: require('../../../assets/images/icons/reserved.png') },
                 // { id: '7', type: 'Rentals', image: require('../../../assets/images/icons/rentals.png') },
                 { id: '8', type: 'Parcel', image: require('../../../assets/images/icons/parcel.png') },
@@ -32,7 +32,7 @@ const BookingScreen = ({ route, navigation }) => {
 
             // Fetch fares for each vehicle type
             try {
-                const response = await fetch(`http://192.168.163.170:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
+                const response = await fetch(`http://192.168.193.170:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
                 const fareData = await response.json();
                 console.log('Fare',fareData)
                 setFares(fareData);

@@ -6,11 +6,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
   import * as Location from 'expo-location';
   import Icon from 'react-native-vector-icons/Ionicons';
   import axios from 'axios';
+  import DateTimePicker from '@react-native-community/datetimepicker';
   import { UserLocationContext } from '../../Context/UserLocationContext';
   
-  const API_URL = 'http://192.168.163.170:5000/api/maps/get-suggestions?input=';
+  const API_URL = 'http://192.168.193.170:5000/api/maps/get-suggestions?input=';
 
-const Rentals = ({route,navigation}) => {
+const Reserved = ({route,navigation}) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const isFocused = useIsFocused();
   const { location, setLocation } = useContext(UserLocationContext);
@@ -325,33 +326,37 @@ const Rentals = ({route,navigation}) => {
                                           <Text style={styles.label}>Pick Up Date</Text>
                                           <Text>{pickupDate.toLocaleDateString()}</Text>
                                         </TouchableOpacity>
-                                        {/* <DateTimePicker
-                                          value={pickupDate}
-                                          mode="date"
-                                          display="default"
-                                          onChange={(event, selectedDate) => {
-                                            setShowPickupDatePicker(false);
-                                            if (selectedDate) {
-                                              setPickupDate(selectedDate);
-                                            }
-                                          }}
-                                        /> */}
+                                        {showPickupDatePicker && (
+                                          <DateTimePicker
+                                            value={pickupDate}
+                                            mode="date"
+                                            display="default"
+                                            onChange={(event, selectedDate) => {
+                                              setShowPickupDatePicker(false);
+                                              if (selectedDate) {
+                                                setPickupDate(selectedDate);
+                                              }
+                                            }}
+                                          />
+                                        )}
                         
                                         <TouchableOpacity style={styles.timeDateBox} onPress={() => setShowPickupTimePicker(true)}>
                                           <Text style={styles.label}>Pick Up Time</Text>
                                           <Text>{pickupTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                                         </TouchableOpacity>
-                                        {/* <DateTimePicker
-                                          value={pickupTime}
-                                          mode="time"
-                                          display="default"
-                                          onChange={(event, selectedTime) => {
-                                            setShowPickupTimePicker(false);
-                                            if (selectedTime) {
-                                              setPickupTime(selectedTime);
-                                            }
-                                          }}
-                                        /> */}
+                                        {showPickupTimePicker && (
+                                          <DateTimePicker
+                                            value={pickupTime}
+                                            mode="time"
+                                            display="default"
+                                            onChange={(event, selectedTime) => {
+                                              setShowPickupTimePicker(false);
+                                              if (selectedTime) {
+                                                setPickupTime(selectedTime);
+                                              }
+                                            }}
+                                          />
+                                        )}
                         
                                         {/* Replaced DateTimePicker with TextInput for Date */}
                                        
@@ -368,34 +373,38 @@ const Rentals = ({route,navigation}) => {
                                             <Text style={styles.label}>Drop Off Date</Text>
                                             <Text>{dropoffDate.toLocaleDateString()}</Text>
                                           </TouchableOpacity>
-                                          {/* <DateTimePicker
-                                            value={dropoffDate}
-                                            mode="date"
-                                            display="default"
-                                            onChange={(event, selectedDate) => {
-                                              setShowDropoffDatePicker(false);
-                                              if (selectedDate) {
-                                                setDropoffDate(selectedDate);
-                                              }
-                                            }}
-                                          /> */}
+                                          {showDropoffDatePicker && (
+                                            <DateTimePicker
+                                              value={dropoffDate}
+                                              mode="date"
+                                              display="default"
+                                              onChange={(event, selectedDate) => {
+                                                setShowDropoffDatePicker(false);
+                                                if (selectedDate) {
+                                                  setDropoffDate(selectedDate);
+                                                }
+                                              }}
+                                            />
+                                          )}
                                          
                         
                                           <TouchableOpacity style={styles.timeDateBox} onPress={() => setShowDropoffTimePicker(true)}>
                                             <Text style={styles.label}>Drop Off Time</Text>
                                             <Text>{dropoffTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
                                           </TouchableOpacity>
-                                          {/* <DateTimePicker
-                                            value={dropoffTime}
-                                            mode="time"
-                                            display="default"
-                                            onChange={(event, selectedTime) => {
-                                              setShowDropoffTimePicker(false);
-                                              if (selectedTime) {
-                                                setDropoffTime(selectedTime);
-                                              }
-                                            }}
-                                          /> */}
+                                          {showDropoffTimePicker && (
+                                            <DateTimePicker
+                                              value={dropoffTime}
+                                              mode="time"
+                                              display="default"
+                                              onChange={(event, selectedTime) => {
+                                                setShowDropoffTimePicker(false);
+                                                if (selectedTime) {
+                                                  setDropoffTime(selectedTime);
+                                                }
+                                              }}
+                                            />
+                                          )}
                                          
                                         </View>
                                       
@@ -631,4 +640,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Rentals;
+export default Reserved;

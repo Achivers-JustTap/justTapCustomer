@@ -9,7 +9,7 @@ import {
   import axios from 'axios';
   import { UserLocationContext } from '../../../Context/UserLocationContext';
   
-  const API_URL = 'http://192.168.163.170:5000/api/maps/get-suggestions?input=';
+  const API_URL = 'http://192.168.193.170:5000/api/maps/get-suggestions?input=';
   
   const PickFromStore = ({ route, navigation }) => {
     const { location, setLocation } = useContext(UserLocationContext);
