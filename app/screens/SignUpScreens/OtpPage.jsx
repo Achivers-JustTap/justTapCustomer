@@ -1,12 +1,14 @@
 import { SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { setCustomerData } from '../../../storemanagement_customer/actions_customer/customerActions';
+import { UserContext } from '../../Context/UserContext';
 
 const OtpPage = ({ route, navigation }) => {
   const { phoneNumber } = route.params; // Get the phoneNumber parameter
   const [otp, setOtp] = useState('');
   const dispatch = useDispatch();
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     navigation.setOptions({ headerShown: false });
@@ -15,11 +17,12 @@ const OtpPage = ({ route, navigation }) => {
   const verifyOtp = async () => {
     if (otp === '1234') {
       try {
-        const response = await fetch(`http://192.168.193.170:5000/api/users/check-mobile?phoneNumber=${phoneNumber}`);
+        const response = await fetch(`http://192.168.29.13:5000/api/users/check-mobile?phoneNumber=${phoneNumber}`);
         const result = await response.json();
         console.log("result",result)
         if (result.exists) {
           dispatch(setCustomerData(result.user)); // Store user info in Redux
+          setUser(result.user); // Set user info in UserContext
           
           Alert.alert('Success', 'Phone number exists.', [
             { text: 'OK', onPress: () => navigation.navigate('DisplayScreen', { name: result.user.name }) }

@@ -14,7 +14,7 @@ const RatingPage = ({ navigation }) => {
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                const response = await axios.get('http://192.168.193.170:5000/rides');
+                const response = await axios.get('http://192.168.29.13:5000/rides');
 
                 const { rideId, customerId, driverId } = response.data;  
 
@@ -43,7 +43,7 @@ const RatingPage = ({ navigation }) => {
         }
 
         try {
-            const response = await axios.post('http://192.168.193.170:5000/rating/rate', {
+            const response = await axios.post('http://192.168.29.13:5000/rating/rate', {
                 rideId,
                 customerId,
                 driverId,

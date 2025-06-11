@@ -2,6 +2,7 @@
 import { Provider } from 'react-redux'; 
 import customerStore from './storemanagement_customer/customerStore';
 import { StatusBar } from 'expo-status-bar';
+import SocketProvider from './app/Context/SocketContext';
 import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,6 +14,7 @@ import OtpPage from './app/screens/SignUpScreens/OtpPage';
 import TabNavigationComponent from './app/screens/afterLoginScreens/TabNavigationComponent';
 import { useState} from 'react';
 import { UserLocationProvider } from './app/Context/UserLocationContext';
+import { UserProvider } from './app/Context/UserContext';
 import DisplayScreen from './app/screens/afterLoginScreens/DisplayScreen';
 import ServicesScreen from './app/screens/Services/ServicesScreen';
 import Intercity from './app/screens/Services/Intercity';
@@ -70,6 +72,7 @@ import ReferFriends from './app/screens/MenuScreens.jsx/ReferFriends';
 import LanguagePreference from './app/screens/ProfileScreens/AppSettingsScreens/LanguagePreference';
 import LocationPinScreen from './app/screens/afterLoginScreens/LocationPinScreen';
 import CancellationReasons from './app/screens/afterLoginScreens/CancellationReasons';
+
 
 
 const Stack = createStackNavigator();
@@ -182,7 +185,11 @@ export default function App() {
     <ThemeProvider>
       <Provider store={customerStore}>
         <UserLocationProvider>
-          <AppContent />  
+          <UserProvider>
+            <SocketProvider>
+              <AppContent /> 
+            </SocketProvider> 
+          </UserProvider>
         </UserLocationProvider>
       </Provider>
     </ThemeProvider>

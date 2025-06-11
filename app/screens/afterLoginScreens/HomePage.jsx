@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import AppMapView from '../../../components/AppMapView';
 import * as Location from 'expo-location';
 import { UserLocationContext } from '../../Context/UserLocationContext';
+import { SocketContext } from '../../Context/SocketContext';
+import { UserContext } from '../../Context/UserContext';
 
 const HomePage = ({ navigation }) => {
     const { location, setLocation } = useContext(UserLocationContext);
@@ -14,6 +16,13 @@ const HomePage = ({ navigation }) => {
     const [currentLocation, setCurrentLocation] = useState('Loading current location...');
     const [destinationCoords, setDestinationCoords] = useState(null);
     const [mapCenter, setMapCenter] = useState(null);
+    const {socket} = useContext(SocketContext);
+    const {user} = useContext(UserContext);
+        useEffect(() => {
+
+            socket.emit('join',{userType:'user', userId: user._id});
+          
+        },[user])
 
     let lastTap = null;
 
@@ -108,6 +117,8 @@ const HomePage = ({ navigation }) => {
                 </TouchableOpacity>
             );
         }
+
+        
 
         return (
             <View style={styles.boxWrapper}>

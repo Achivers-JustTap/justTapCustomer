@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import axios from 'axios';
 
-const API_URL = 'http://192.168.193.170:5000/api/maps/get-suggestions?input=';
+const API_URL = 'http://192.168.29.13:5000/api/maps/get-suggestions?input=';
 
 const ShortcutsPage = ({ navigation, route }) => {
   const [showNewPlaceForm, setShowNewPlaceForm] = useState(false);

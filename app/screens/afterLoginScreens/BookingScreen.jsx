@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { StyleSheet, SafeAreaView, View, Text, FlatList, TouchableOpacity, Image } from 'react-native';
 import AppMapView from '../afterLoginScreens/AppMapView';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { UserContext } from '../../Context/UserContext';
 
 const BookingScreen = ({ route, navigation }) => {
     const { markerCoords, dropoffCoords, pickupName, dropoffName } = route.params;
     const [vehicles, setVehicles] = useState([]);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [fares, setFares] = useState({});
+     const {user} = useContext(UserContext);
+    const userId = user._id; // Assuming you have the user ID from context or props
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState({
         method: 'Cash',
         icon: require('../../../assets/images/cash.png')
@@ -32,7 +35,7 @@ const BookingScreen = ({ route, navigation }) => {
 
             // Fetch fares for each vehicle type
             try {
-                const response = await fetch(`http://192.168.193.170:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
+                const response = await fetch(`http://192.168.29.13:5000/api/maps/calculate-fare?pickup=${pickupName}&destination=${dropoffName}`);
                 const fareData = await response.json();
                 console.log('Fare',fareData)
                 setFares(fareData);
@@ -54,6 +57,9 @@ const BookingScreen = ({ route, navigation }) => {
             //     destinationCoords,
             //     vehicle: selectedVehicle,
             navigation.navigate('LocationPinScreen', {
+                pickup: pickupName,
+                destination: dropoffName,
+                userId: userId,
                 vehicleType: selectedVehicle.type, markerCoords,dropoffCoords,
                 fare: fares[selectedVehicle.type.toLowerCase()]
             });
@@ -61,6 +67,47 @@ const BookingScreen = ({ route, navigation }) => {
             console.log("Please select a vehicle to book.");
         }
     };
+
+//     const handleBookRide = async () => {
+//     if (selectedVehicle) {
+//         const rideData = {
+//             userId: userId, // Replace with actual user ID dynamically later
+//             pickup: pickupName,
+//             destination: dropoffName,
+//             vehicleType: selectedVehicle.type.toLowerCase()
+//         };
+
+//         try {
+//             const response = await fetch('http://192.168.29.13:5000/rides/create', {
+//                 method: 'POST',
+//                 headers: {
+//                     'Content-Type': 'application/json'
+//                 },
+//                 body: JSON.stringify(rideData)
+//             });
+
+//             if (!response.ok) {
+//                 throw new Error('Failed to create ride');
+//             }
+
+//             const result = await response.json();
+//             console.log('Ride Created:', result);
+
+//             // Navigate after successful ride creation
+//             navigation.navigate('LocationPinScreen', {
+//                         markerCoords,
+//                 dropoffCoords,
+//                 fare: fares[selectedVehicle.type.toLowerCase()]
+//             });
+
+//         } catch (error) {
+//             console.error("Error booking ride:", error);
+//         }
+//     } else {
+//         console.log("Please select a vehicle to book.");
+//     }
+// };
+
     
 
     const handleCashClick = () => {
@@ -274,5 +321,6 @@ const styles = StyleSheet.create({
         borderBottomColor: 'green',
     },
 });
+
 
 export default BookingScreen;

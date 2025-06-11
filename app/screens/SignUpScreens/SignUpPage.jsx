@@ -52,7 +52,7 @@ const SignUpPage = ({ navigation, route }) => {
     };
 
     try {
-      const response = await axios.post('http://192.168.193.170:5000/api/users/register', customerData);
+      const response = await axios.post('http://192.168.29.13:5000/api/users/register', customerData);
 
       if (response.data) {
         const { id } = response.data.user;

@@ -11,7 +11,16 @@ const LocationPinScreen = ({ route, navigation }) => {
       }, [navigation]);
 
       
-    const { markerCoords, dropoffCoords, vehicle,fare } = route.params;
+     const {
+        pickup,
+        destination,
+        userId,
+        vehicleType,
+        markerCoords,
+        dropoffCoords,
+        fare
+    } = route.params;
+
     if (!route.params) {
         console.error('No route parameters received');
         return <Text>Error: No data provided</Text>;
@@ -22,10 +31,55 @@ const LocationPinScreen = ({ route, navigation }) => {
         return <Text>Error: Missing location data</Text>;
     }
 
-    const handleConfirm = () => {
-        navigation.navigate('WaitingForCaptainScreen', {  vehicle, markerCoords,dropoffCoords,
-            fare});
+    const handleConfirm = async () => {
+    const rideData = {
+        userId: userId,
+        pickup: pickup,
+        destination: destination,
+        vehicleType: vehicleType.toLowerCase()
+
     };
+
+    console.log("Sending Ride Data:", rideData);
+
+    try {
+        const response = await fetch('http://192.168.29.13:5000/rides/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(rideData)
+        });
+
+        const responseText = await response.text();
+        console.log("Response Status:", response.status);
+        console.log("Raw Response Text:", responseText);
+
+        if (!response.ok) {
+            // Show the exact backend error
+            throw new Error(`Status ${response.status}: ${responseText}`);
+        }
+
+        const result = JSON.parse(responseText);
+        console.log('Ride Created Successfully:', result);
+
+        navigation.navigate('WaitingForCaptainScreen', {
+            vehicle: vehicleType,
+            markerCoords,
+            dropoffCoords,
+            fare
+        });
+
+    } catch (error) {
+        console.error("Error booking ride:", error.message);
+    }
+};
+
+
+    // const handleConfirm = () => {
+    //     navigation.navigate('WaitingForCaptainScreen', {  vehicle, markerCoords,dropoffCoords,
+    //         fare});
+    // };
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

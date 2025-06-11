@@ -12,7 +12,7 @@ const RideTrackingScreen = ({ navigation }) => {
     // Navigate to RideTracking screen after 2 seconds
     const timer = setTimeout(() => {
       navigation.navigate('RatingPage');
-    }, 5000);
+    });
 
     // Cleanup the timer if the component unmounts
     return () => clearTimeout(timer);

@@ -9,7 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
   import DateTimePicker from '@react-native-community/datetimepicker';
   import { UserLocationContext } from '../../Context/UserLocationContext';
   
-  const API_URL = 'http://192.168.193.170:5000/api/maps/get-suggestions?input=';
+  const API_URL = 'http://192.168.29.13:5000/api/maps/get-suggestions?input=';
 
 const Reserved = ({route,navigation}) => {
   const [showOverlay, setShowOverlay] = useState(false);
